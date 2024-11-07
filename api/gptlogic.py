@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-@app.route('/api/gptlogic', methods=['GET'])
+@app.route('/gptlogic', methods=['GET'])
 def my_api():
     try:
         # Ambil parameter dari request
