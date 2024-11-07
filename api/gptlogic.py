@@ -56,4 +56,5 @@ def my_api():
             "error": "An error occurred on our server."
         }), 500
 
-app = app
+if __name__ == '__main__':
+    app.run(debug=True)
