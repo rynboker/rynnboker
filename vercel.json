@@ -4,6 +4,6 @@
     { "src": "api/gptlogic.py", "use": "@vercel/python" }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/api/myapi.py" }
+    { "src": "/(.*)", "dest": "/api/gptlogic.py" }
   ]
 }
