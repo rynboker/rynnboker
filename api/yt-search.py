@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-@app.route('/yt-search', methods=['GET'])
+@app.route('/api/yt-search', methods=['GET'])
 def ytsearch():
     # Ambil parameter message dari request
     message = request.args.get('message')
@@ -65,3 +65,6 @@ def ytsearch():
             "creator": "Astri",  # Ganti dengan nama creator kamu
             "error": "Service is unavailable. Please try again later."
         }), 503
+
+if __name__ == "__main__":
+    app.run(debug=True)
