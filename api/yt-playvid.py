@@ -30,27 +30,25 @@ def ytplayvid():
             }), response.status_code
 
         # Get data from the external API response
-        data = response.json()
+        data = response.json().get("data", {})
 
         # Format the response data as desired
-        results = []
-        for item in data.get("data", []):
-            results.append({
-                "title": item.get("title"),
-                "description": item.get("description"),
-                "url": item.get("url"),
-                "duration": item.get("duration"),
-                "views": item.get("views"),
-                "uploadedAt": item.get("uploadedAt"),
-                "author": item.get("author"),
-                "downloadUrl": item.get("downloadUrl")
-            })
-
-        return jsonify({
+        result = {
             "status": 200,
             "creator": "Astri",
-            "data": results
-        })
+            "data": {
+                "title": data.get("title"),
+                "description": data.get("description"),
+                "url": data.get("url"),
+                "duration": data.get("duration"),
+                "views": data.get("views"),
+                "uploadedAt": data.get("uploadedAt"),
+                "author": data.get("author"),
+                "downloadUrl": data.get("downloadUrl")
+            }
+        }
+
+        return jsonify(result)
 
     except requests.exceptions.RequestException as e:
         # Handle network or server errors
