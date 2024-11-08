@@ -18,7 +18,7 @@ def ytplayaud():
             }), 400
 
         # Call the external API
-        api_url = f"https://api.agatz.xyz/api/ytplayaud?message={message}"
+        api_url = f"https://api.agatz.xyz/api/ytplay?message={message}"
         response = requests.get(api_url)
 
         # Check if the external API request was successful
