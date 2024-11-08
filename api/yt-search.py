@@ -3,8 +3,8 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route('/api/pinterest', methods=['GET'])
-def pinterest():
+@app.route('/api/ytsearch', methods=['GET'])
+def ytsearch():
     message = request.args.get('message')
 
     # Validate the required parameter
@@ -16,7 +16,7 @@ def pinterest():
         }), 400
 
     # Call the external image search API
-    api_url = f"https://api.agatz.xyz/api/pinterest?message={message}"
+    api_url = f"https://api.agatz.xyz/api/ytsearch?message={message}"
     try:
         response = requests.get(api_url)
 
