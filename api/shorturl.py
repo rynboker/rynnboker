@@ -15,53 +15,48 @@ def generate_short_code(length=6):
 
 @app.route('/api/shorturl', methods=['POST'])
 def create_short_url():
-    try:
-        data = request.get_json()
-        original_url = data.get('originalUrl')
-        custom_name = data.get('customName')
+    data = request.get_json()
+    original_url = data.get('originalUrl')
+    custom_name = data.get('customName')
 
-        # Validate required parameter
-        if not original_url:
+    if not original_url:
+        return jsonify({
+            "status": 400,
+            "error": "Parameter 'originalUrl' is required."
+        }), 400
+
+    if custom_name:
+        short_code = custom_name
+        if short_code in url_mapping:
             return jsonify({
                 "status": 400,
-                "error": "Parameter 'originalUrl' is required."
+                "error": "Custom name already taken."
             }), 400
-
-        # Use custom name if provided and unique, otherwise generate a new one
-        if custom_name:
-            short_code = custom_name
-            if short_code in url_mapping:
-                return jsonify({
-                    "status": 400,
-                    "error": "Custom name already taken."
-                }), 400
-        else:
-            # Generate a unique short code
+    else:
+        short_code = generate_short_code()
+        while short_code in url_mapping:
             short_code = generate_short_code()
-            while short_code in url_mapping:
-                short_code = generate_short_code()
 
-        # Set expiration date for 1 month from now
-        expiration_date = datetime.now() + timedelta(days=30)
+    expiration_date = datetime.now() + timedelta(days=30)
 
-        # Store the original URL with the short code and expiration date
-        url_mapping[short_code] = {
+    url_mapping[short_code] = {
+        "originalUrl": original_url,
+        "expirationDate": expiration_date.isoformat()
+    }
+
+    print(f"Created short URL mapping: {short_code} -> {original_url}")  # Debug print
+
+    short_url = f"https://www.youga.my.id/{short_code}"
+
+    return jsonify({
+        "status": "success",
+        "data": {
             "originalUrl": original_url,
-            "expirationDate": expiration_date.isoformat()  # Save as ISO string
+            "shortUrl": short_url,
+            "customName": custom_name or short_code,
+            "expirationDate": expiration_date.isoformat()
         }
-
-        # Construct the short URL using your domain
-        short_url = f"https://www.youga.my.id/{short_code}"
-
-        return jsonify({
-            "status": "success",
-            "data": {
-                "originalUrl": original_url,
-                "shortUrl": short_url,
-                "customName": custom_name or short_code,
-                "expirationDate": expiration_date.isoformat()
-            }
-        })
+    })
 
     except Exception as e:
         # Log the error for debugging
@@ -73,6 +68,8 @@ def create_short_url():
 
 @app.route('/<short_code>', methods=['GET'])
 def redirect_to_original(short_code):
+    print(f"Current URL Mapping: {url_mapping}")  # Debug print
+
     try:
         # Retrieve the original URL and check if it exists
         url_data = url_mapping.get(short_code)
