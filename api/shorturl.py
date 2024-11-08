@@ -1,12 +1,12 @@
 import random
 import string
-import urllib.parse
 from datetime import datetime, timedelta
 from flask import Flask, jsonify, request, redirect
+import urllib.parse
 
 app = Flask(__name__)
 
-# In-memory URL mappings
+# In-memory storage for URL mappings
 url_mapping = {}
 
 def generate_short_code(length=6):
@@ -19,12 +19,16 @@ def create_short_url():
     original_url = data.get('originalUrl')
     custom_name = data.get('customName')
 
+    # Validate required parameter
     if not original_url:
         return jsonify({
             "status": 400,
             "creator": "Astri",
             "error": "Parameter 'originalUrl' is required."
         }), 400
+
+    # URL encode the original URL to handle special characters
+    encoded_url = urllib.parse.quote(original_url, safe='')
 
     # Use custom name if provided and unique, otherwise generate a new one
     if custom_name:
@@ -36,6 +40,7 @@ def create_short_url():
                 "error": "Custom name already taken."
             }), 400
     else:
+        # Generate a unique short code
         short_code = generate_short_code()
         while short_code in url_mapping:
             short_code = generate_short_code()
@@ -43,15 +48,14 @@ def create_short_url():
     # Set expiration date for 1 month from now
     expiration_date = datetime.now() + timedelta(days=30)
 
-    # Encode URL to handle special characters
-    encoded_url = urllib.parse.quote(original_url, safe='')
-
+    # Store the encoded URL with the short code and expiration date
     url_mapping[short_code] = {
         "originalUrl": encoded_url,
-        "expirationDate": expiration_date.isoformat()
+        "expirationDate": expiration_date.isoformat()  # Save as ISO string
     }
 
-    short_url = f"http://www.youga.my.id/{short_code}"
+    # Construct short URL (replace 'yourdomain.com' with actual domain)
+    short_url = f"http://youga.my.id/{short_code}"
 
     return jsonify({
         "status": "success",
@@ -67,6 +71,7 @@ def create_short_url():
 
 @app.route('/<short_code>', methods=['GET'])
 def redirect_to_original(short_code):
+    # Retrieve the URL data by short code
     url_data = url_mapping.get(short_code)
     
     if not url_data:
@@ -75,15 +80,17 @@ def redirect_to_original(short_code):
             "error": "Short URL not found."
         }), 404
 
+    # Check if the URL has expired
     expiration_date = datetime.fromisoformat(url_data["expirationDate"])
     if datetime.now() > expiration_date:
+        # Remove expired URL
         del url_mapping[short_code]
         return jsonify({
             "status": 410,
             "error": "This short URL has expired."
         }), 410
 
-    # Decode the URL back to its original form
+    # Decode URL before redirecting
     original_url = urllib.parse.unquote(url_data["originalUrl"])
     return redirect(original_url)
 
