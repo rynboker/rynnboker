@@ -13,11 +13,11 @@
   "routes": [
     {
       "src": "/api/gptlogic",
-      "dest": "/gptlogic.py"
+      "dest": "/api/gptlogic.py"
     },
     {
       "src": "/api/ytsearch",
-      "dest": "/yt-search.py"
+      "dest": "/api/yt-search.py"
     }
   ]
 }
