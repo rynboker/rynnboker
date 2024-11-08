@@ -62,14 +62,14 @@
     {
       "src": "/api/ytplayaud",
       "dest": "api/yt-playaud.py"
-    },    
+    },
     {
       "src": "/api/shorturl",
       "dest": "api/shorturl.py"
     },
     {
-    "src": "/<short_code>",
-    "dest": "/api/shorturl.py"
+      "src": "/(.*)",  // capture all dynamic URLs at the root level
+      "dest": "api/shorturl.py"
     }
   ]
 }
