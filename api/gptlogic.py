@@ -1,60 +1,57 @@
-from flask import Flask, jsonify, request
 import requests
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
 @app.route('/api/gptlogic', methods=['GET'])
-def my_api():
+def gptlogic():
     try:
-        # Ambil parameter dari request
+        # Get parameters from the request
         logic = request.args.get('logic')
         p = request.args.get('p')
 
-        # Validasi parameter
+        # Validate parameters
         if not logic or not p:
             return jsonify({
                 "status": 400,
                 "creator": "Astri",
-                "error": "Parameters 'logic' and 'p' are required."
+                "error": "Missing parameters 'logic' or 'p'."
             }), 400
 
-        # Panggil API eksternal
+        # Call the external API
         api_url = f"https://api.agatz.xyz/api/gptlogic?logic={logic}&p={p}"
         response = requests.get(api_url)
 
-        # Jika respons dari API eksternal tidak berhasil
+        # If external API request failed
         if response.status_code != 200:
             return jsonify({
                 "status": response.status_code,
                 "creator": "Astri",
-                "error": "Sorry, an error occurred with our external service. Please try again later."
+                "error": "External API failed."
             }), response.status_code
 
-        # Ambil data dari respons API eksternal
-        data = response.json()
+        # Return response data from the external API
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": data.get("data")
+            "data": response.json()
         })
 
     except requests.exceptions.RequestException as e:
-        # Tangani error jaringan atau server
-        print(f"Error occurred: {str(e)}")
+        # Handle network or server errors
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": "Service is unavailable. Please try again later."
+            "error": f"External API request failed: {e}"
         }), 503
 
     except Exception as e:
-        # Tangani error tak terduga lainnya
-        print(f"Unexpected error: {str(e)}")
+        # Handle other unexpected errors
         return jsonify({
             "status": 500,
             "creator": "Astri",
-            "error": "An error occurred on our server."
+            "error": f"An unexpected error occurred: {str(e)}"
         }), 500
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
