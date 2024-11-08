@@ -32,7 +32,7 @@ def gimage():
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": response.data.data
+            "data": data.get("data")
         })
 
     except requests.exceptions.RequestException as e:
