@@ -36,7 +36,7 @@ def pinterest():
                 "created_at": item.get("created_at"),
                 "id": item.get("id"),
                 "images_url": item.get("images_url"),
-                "grid_title": item.get("grid_title	")
+                "grid_title": item.get("grid_title")
             }
             for item in external_data
         ]
