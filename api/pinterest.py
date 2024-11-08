@@ -16,7 +16,7 @@ def pinterest():
         }), 400
 
     # Call the external image search API
-    api_url = f"https://api.agatz.xyz/api/pinterest?message={message}"
+    api_url = f"https://api.agatz.xyz/api/pinsearch?message={message}"
     try:
         response = requests.get(api_url)
 
