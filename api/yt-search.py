@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-@app.route('/api/yt-search', methods=['GET'])
+@app.route('/api/ytsearch', methods=['GET'])
 def ytsearch():
     # Ambil parameter message dari request
     message = request.args.get('message')
