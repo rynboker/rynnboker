@@ -2,22 +2,46 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/gptlogic.py",
+      "src": "gptlogic.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/yt-search.py",
+      "src": "yt-search.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "spotify.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "pinterest.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "gimage.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/api/gptlogic",
-      "dest": "api/gptlogic.py"
+      "dest": "/gptlogic.py"
     },
     {
       "src": "/api/ytsearch",
-      "dest": "api/yt-search.py"
+      "dest": "/yt-search.py"
+    },
+    {
+      "src": "/api/spotify",
+      "dest": "/spotify.py"
+    },
+    {
+      "src": "/api/pinterest",
+      "dest": "/pinterest.py"
+    },
+    {
+      "src": "/api/gimage",
+      "dest": "/gimage.py"
     }
   ]
 }

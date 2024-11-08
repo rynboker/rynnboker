@@ -3,8 +3,8 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route('/api/ytsearch', methods=['GET'])
-def ytsearch():
+@app.route('/api/pinterest', methods=['GET'])
+def pinterest():
     try:
         # Get the 'message' parameter for the YouTube search query
         message = request.args.get('message')
@@ -17,7 +17,7 @@ def ytsearch():
             }), 400
 
         # Call the external YouTube search API
-        api_url = f"https://api.agatz.xyz/api/ytsearch?message={message}"
+        api_url = f"https://api.agatz.xyz/api/pinterest?message={message}"
         response = requests.get(api_url)
 
         # If external API request failed
