@@ -1,12 +1,13 @@
-from flask import Flask, jsonify, request
 import requests
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route('/api/ytsearch', methods=['GET'])
-def ytsearch():
-    # Ambil parameter message dari request
-    message = request.args.get('message')
+@app.route('/api/ytplayvid', methods=['GET'])
+def ytplayvid():
+    try:
+        # Get parameters from the request
+        message = request.args.get('message')
 
     # Validasi parameter
     if not message:
@@ -16,9 +17,11 @@ def ytsearch():
             "error": "Parameter 'message' is required."
         }), 400
 
-    # Panggil API eksternal untuk mencari video di YouTube
-    api_url = f"https://api.agatz.xyz/api/ytsearch?message={message}"
-    try:
+        # Call the external API
+        api_url = f"https://api.agatz.xyz/api/ytplayvid??message={message}"
+
+        # If external API request failed
+try:
         response = requests.get(api_url)
         # Jika respons dari API eksternal tidak berhasil
         if response.status_code != 200:
@@ -35,21 +38,14 @@ def ytsearch():
         results = []
         for item in data.get("data", []):
             results.append({
-                "type": item.get("type"),
-                "videoId": item.get("videoId"),
-                "url": item.get("url"),
                 "title": item.get("title"),
                 "description": item.get("description"),
-                "image": item.get("image"),
-                "thumbnail": item.get("thumbnail"),
-                "seconds": item.get("seconds"),
-                "timestamp": item.get("timestamp"),
+                "url": item.get("url"),
                 "duration": item.get("duration"),
                 "views": item.get("views"),
-                "author": {
-                    "name": item.get("author", {}).get("name"),
-                    "url": item.get("author", {}).get("url")
-                }
+                "uploadedAt": item.get("uploadedAt"),
+                "author": item.get("author"),
+                "downloadUrl": item.get("downloadUrl")
             })
         
         return jsonify({
@@ -65,3 +61,6 @@ def ytsearch():
             "creator": "Astri",  # Ganti dengan nama creator kamu
             "error": "Service is unavailable. Please try again later."
         }), 503
+
+if __name__ == '__main__':
+    app.run(debug=True)

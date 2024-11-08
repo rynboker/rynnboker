@@ -20,6 +20,14 @@
     {
       "src": "api/gimage.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "api/yt-playvid.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/yt-playaud.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
@@ -42,6 +50,14 @@
     {
       "src": "/api/gimage",
       "dest": "api/gimage.py"
+    },
+    {
+      "src": "/api/yt-playvid",
+      "dest": "api/yt-playvid.py"
+    },
+    {
+      "src": "/api/yt-playaud",
+      "dest": "api/yt-playaud.py"
     }
   ]
 }
