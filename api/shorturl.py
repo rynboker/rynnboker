@@ -71,7 +71,7 @@ def create_short_url():
     save_url_mappings(url_mapping)
 
     # Construct short URL (replace 'yourdomain.com' with actual domain)
-    short_url = f"http://yourdomain.com/{short_code}"
+    short_url = f"http://www.youga.my.id/{short_code}"
 
     return jsonify({
         "status": "success",
