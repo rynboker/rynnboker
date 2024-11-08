@@ -18,7 +18,7 @@ def ytplayvid():
         }), 400
 
         # Call the external API
-        api_url = f"https://api.agatz.xyz/api/ytplayvid??message={message}"
+        api_url = f"https://api.agatz.xyz/api/ytplayvid?message={message}"
 
         # If external API request failed
 try:
