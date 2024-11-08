@@ -15,55 +15,57 @@ def generate_short_code(length=6):
 
 @app.route('/api/shorturl', methods=['POST'])
 def create_short_url():
-    data = request.get_json()
-    original_url = data.get('originalUrl')
-    custom_name = data.get('customName')
+    try:
+        data = request.get_json()
+        print(f"Received data: {data}")  # Log input data
 
-    if not original_url:
-        return jsonify({
-            "status": 400,
-            "error": "Parameter 'originalUrl' is required."
-        }), 400
+        original_url = data.get('originalUrl')
+        custom_name = data.get('customName')
 
-    if custom_name:
-        short_code = custom_name
-        if short_code in url_mapping:
+        if not original_url:
             return jsonify({
                 "status": 400,
-                "error": "Custom name already taken."
+                "error": "Parameter 'originalUrl' is required."
             }), 400
-    else:
-        short_code = generate_short_code()
-        while short_code in url_mapping:
+
+        if custom_name:
+            short_code = custom_name
+            if short_code in url_mapping:
+                return jsonify({
+                    "status": 400,
+                    "error": "Custom name already taken."
+                }), 400
+        else:
             short_code = generate_short_code()
+            while short_code in url_mapping:
+                short_code = generate_short_code()
 
-    expiration_date = datetime.now() + timedelta(days=30)
+        expiration_date = datetime.now() + timedelta(days=30)
 
-    url_mapping[short_code] = {
-        "originalUrl": original_url,
-        "expirationDate": expiration_date.isoformat()
-    }
-
-    print(f"Created short URL mapping: {short_code} -> {original_url}")  # Debug print
-
-    short_url = f"https://www.youga.my.id/{short_code}"
-
-    return jsonify({
-        "status": "success",
-        "data": {
+        url_mapping[short_code] = {
             "originalUrl": original_url,
-            "shortUrl": short_url,
-            "customName": custom_name or short_code,
             "expirationDate": expiration_date.isoformat()
         }
-    })
+
+        print(f"Created short URL mapping: {short_code} -> {original_url}")  # Log mapping creation
+
+        short_url = f"https://www.youga.my.id/{short_code}"
+
+        return jsonify({
+            "status": "success",
+            "data": {
+                "originalUrl": original_url,
+                "shortUrl": short_url,
+                "customName": custom_name or short_code,
+                "expirationDate": expiration_date.isoformat()
+            }
+        })
 
     except Exception as e:
-        # Log the error for debugging
-        print(f"Error creating short URL: {e}")
+        print(f"Error: {str(e)}")  # Log error
         return jsonify({
-            "status": 500,
-            "error": "An internal error occurred."
+            "status": "error",
+            "error": str(e)
         }), 500
 
 @app.route('/<short_code>', methods=['GET'])
