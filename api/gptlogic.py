@@ -31,10 +31,15 @@ def gptlogic():
             }), response.status_code
 
         # Return response data from the external API
+        data = response.json()
+        result = data.get("data", {}).get("result", "No result found.")
+
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": data.get("data")
+            "data": {
+                "result": result
+            }
         })
 
     except requests.exceptions.RequestException as e:
