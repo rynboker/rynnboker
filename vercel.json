@@ -52,11 +52,11 @@
       "dest": "api/gimage.py"
     },
     {
-      "src": "/api/yt-playvid",
+      "src": "/api/ytplayvid",
       "dest": "api/yt-playvid.py"
     },
     {
-      "src": "/api/yt-playaud",
+      "src": "/api/ytplayaud",
       "dest": "api/yt-playaud.py"
     }
   ]
