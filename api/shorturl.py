@@ -27,9 +27,6 @@ def create_short_url():
             "error": "Parameter 'originalUrl' is required."
         }), 400
 
-    # URL encode the original URL to handle special characters
-    encoded_url = urllib.parse.quote(original_url, safe='')
-
     # Use custom name if provided and unique, otherwise generate a new one
     if custom_name:
         short_code = custom_name
@@ -48,14 +45,17 @@ def create_short_url():
     # Set expiration date for 1 month from now
     expiration_date = datetime.now() + timedelta(days=30)
 
-    # Store the encoded URL with the short code and expiration date
+    # Store the original URL with the short code and expiration date
     url_mapping[short_code] = {
-        "originalUrl": encoded_url,
+        "originalUrl": original_url,
         "expirationDate": expiration_date.isoformat()  # Save as ISO string
     }
 
-    # Construct short URL (replace 'yourdomain.com' with actual domain)
-    short_url = f"http://youga.my.id/{short_code}"
+    # Save to JSON file (or in-memory dictionary)
+    save_url_mappings(url_mapping)
+
+    # Construct the short URL using your domain
+    short_url = f"https://www.youga.my.id/{short_code}"
 
     return jsonify({
         "status": "success",
@@ -71,7 +71,11 @@ def create_short_url():
 
 @app.route('/<short_code>', methods=['GET'])
 def redirect_to_original(short_code):
-    # Retrieve the URL data by short code
+    # Load the latest data from the JSON file (or memory)
+    global url_mapping
+    url_mapping = load_url_mappings()
+
+    # Retrieve the original URL and check if it exists
     url_data = url_mapping.get(short_code)
     
     if not url_data:
@@ -83,16 +87,16 @@ def redirect_to_original(short_code):
     # Check if the URL has expired
     expiration_date = datetime.fromisoformat(url_data["expirationDate"])
     if datetime.now() > expiration_date:
-        # Remove expired URL
+        # Remove the expired URL from storage
         del url_mapping[short_code]
+        save_url_mappings(url_mapping)
         return jsonify({
             "status": 410,
             "error": "This short URL has expired."
         }), 410
 
-    # Decode URL before redirecting
-    original_url = urllib.parse.unquote(url_data["originalUrl"])
-    return redirect(original_url)
+    # If the URL is still valid, redirect to the original URL
+    return redirect(url_data["originalUrl"])
 
 if __name__ == "__main__":
     app.run(debug=True)
