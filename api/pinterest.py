@@ -32,7 +32,7 @@ def pinterest():
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": response.json()
+            "data": response.data.data
         })
 
     except requests.exceptions.RequestException as e:
