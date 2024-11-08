@@ -28,6 +28,10 @@
     {
       "src": "api/yt-playaud.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "api/shorturl.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
@@ -58,6 +62,10 @@
     {
       "src": "/api/ytplayaud",
       "dest": "api/yt-playaud.py"
+    },    
+    {
+      "src": "/api/shorturl",
+      "dest": "api/shorturl.py"
     }
   ]
 }
