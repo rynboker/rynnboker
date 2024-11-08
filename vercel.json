@@ -68,7 +68,7 @@
       "dest": "api/shorturl.py"
     },
     {
-      "src": "/(.*)",  // capture all dynamic URLs at the root level
+      "src": "/(.*)",
       "dest": "api/shorturl.py"
     }
   ]
