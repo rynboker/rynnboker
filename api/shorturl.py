@@ -1,16 +1,32 @@
 import random
 import string
-import json
 from datetime import datetime, timedelta
+import json
 from flask import Flask, jsonify, request, redirect
+import os
 
 app = Flask(__name__)
 
-# In-memory URL mapping (for Vercel)
-url_mapping = {}
+# Define the path for persistent storage (e.g., in Vercel's file system)
+DATABASE_FILE = "/tmp/listurl.json"
 
+# Function to load URL mappings from the file
+def load_url_mappings():
+    if os.path.exists(DATABASE_FILE):
+        with open(DATABASE_FILE, 'r') as file:
+            try:
+                return json.load(file)
+            except json.JSONDecodeError:
+                return {}
+    return {}
+
+# Function to save URL mappings to the file
+def save_url_mappings(data):
+    with open(DATABASE_FILE, 'w') as file:
+        json.dump(data, file, indent=4)
+
+# Function to generate short URL codes
 def generate_short_code(length=6):
-    """Generate a random alphanumeric short code."""
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
 @app.route('/api/shorturl', methods=['POST'])
@@ -26,7 +42,8 @@ def create_short_url():
                 "error": "Parameter 'originalUrl' is required."
             }), 400
 
-        # Use custom name or generate a new short code
+        url_mapping = load_url_mappings()
+
         if custom_name:
             short_code = custom_name
             if short_code in url_mapping:
@@ -40,14 +57,12 @@ def create_short_url():
                 short_code = generate_short_code()
 
         expiration_date = datetime.now() + timedelta(days=30)
-
-        # Store the short code mapping
         url_mapping[short_code] = {
             "originalUrl": original_url,
             "expirationDate": expiration_date.isoformat()
         }
 
-        print(f"Short code {short_code} created for URL {original_url}")  # Debugging log
+        save_url_mappings(url_mapping)
 
         short_url = f"https://www.youga.my.id/{short_code}"
 
@@ -60,8 +75,9 @@ def create_short_url():
                 "expirationDate": expiration_date.isoformat()
             }
         })
+
     except Exception as e:
-        print(f"Error: {str(e)}")  # Log the error
+        print(f"Error occurred: {str(e)}")  # Log the error for debugging
         return jsonify({
             "status": "error",
             "error": str(e)
@@ -69,32 +85,32 @@ def create_short_url():
 
 @app.route('/<short_code>', methods=['GET'])
 def redirect_to_original(short_code):
-    # Check if the short_code exists in the mappings
-    url_data = url_mapping.get(short_code)
+    try:
+        url_mapping = load_url_mappings()
+        url_data = url_mapping.get(short_code)
 
-    if not url_data:
-        return jsonify({
-            "status": 404,
-            "error": "Short URL not found."
-        }), 404
+        if not url_data:
+            return jsonify({
+                "status": 404,
+                "error": "Short URL not found."
+            }), 404
 
-    expiration_date = datetime.fromisoformat(url_data["expirationDate"])
-    if datetime.now() > expiration_date:
-        # URL expired, remove from storage
-        del url_mapping[short_code]
-        return jsonify({
-            "status": 410,
-            "error": "This short URL has expired."
-        }), 410
+        expiration_date = datetime.fromisoformat(url_data["expirationDate"])
+        if datetime.now() > expiration_date:
+            del url_mapping[short_code]
+            save_url_mappings(url_mapping)
+            return jsonify({
+                "status": 410,
+                "error": "This short URL has expired."
+            }), 410
 
-    return redirect(url_data["originalUrl"])
+        return redirect(url_data["originalUrl"])
 
     except Exception as e:
-        # Log the error for debugging
-        print(f"Error in redirecting: {e}")
+        print(f"Error occurred: {str(e)}")  # Log the error for debugging
         return jsonify({
-            "status": 500,
-            "error": "An internal error occurred."
+            "status": "error",
+            "error": str(e)
         }), 500
 
 if __name__ == "__main__":
