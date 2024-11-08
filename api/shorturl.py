@@ -1,29 +1,12 @@
 import random
 import string
-import json
 from datetime import datetime, timedelta
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# Path to the JSON file for storing URL mappings
-DATABASE_FILE = "listurl.json"
-
-# Load URL mappings from JSON file
-def load_url_mappings():
-    try:
-        with open(DATABASE_FILE, 'r') as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {}  # Return empty dictionary if file doesn't exist or is corrupted
-
-# Save URL mappings to JSON file
-def save_url_mappings(data):
-    with open(DATABASE_FILE, 'w') as file:
-        json.dump(data, file, indent=4)
-
-# Initialize URL mappings from the JSON file
-url_mapping = load_url_mappings()
+# In-memory URL mapping dictionary
+url_mapping = {}
 
 # Generate a random short code
 def generate_short_code(length=6):
@@ -71,9 +54,6 @@ def create_short_url():
             "expirationDate": expiration_date.isoformat()  # ISO string format
         }
 
-        # Save to JSON file
-        save_url_mappings(url_mapping)
-
         # Construct short URL (replace 'yourdomain.com' with actual domain)
         short_url = f"http://www.youga.my.id/{short_code}"
 
@@ -98,9 +78,6 @@ def create_short_url():
 
 @app.route('/<short_code>', methods=['GET'])
 def redirect_to_original(short_code):
-    global url_mapping
-    url_mapping = load_url_mappings()
-
     # Retrieve URL data and check existence
     url_data = url_mapping.get(short_code)
     
@@ -115,7 +92,6 @@ def redirect_to_original(short_code):
     if datetime.now() > expiration_date:
         # Remove expired URL from storage
         del url_mapping[short_code]
-        save_url_mappings(url_mapping)
         return jsonify({
             "status": 410,
             "error": "This short URL has expired."
@@ -129,3 +105,4 @@ def redirect_to_original(short_code):
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
