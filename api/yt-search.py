@@ -44,8 +44,12 @@ def ytsearch():
                 "thumbnail": item.get("thumbnail"),
                 "seconds": item.get("seconds"),
                 "timestamp": item.get("timestamp"),
-                "duration": item.get("duration"),
+                "duration": {
+                    "second": item.get("duration", {}).get("second"),
+                    "timestamp": item.get("duration", {}).get("timestamp")
+                },
                 "views": item.get("views"),
+                "ago": item.get("ago"),
                 "author": {
                     "name": item.get("author", {}).get("name"),
                     "url": item.get("author", {}).get("url")
