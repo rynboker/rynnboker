@@ -3,8 +3,8 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route('/api/ytplay', methods=['GET'])
-def ytplay():
+@app.route('/api/ytplayaud', methods=['GET'])
+def ytplayaud():
     try:
         # Get parameters from the request
         message = request.args.get('message')
@@ -18,7 +18,7 @@ def ytplay():
             }), 400
 
         # Call the external API
-        api_url = f"https://api.agatz.xyz/api/ytplay?message={message}"
+        api_url = f"https://api.agatz.xyz/api/ytplayaud?message={message}"
         response = requests.get(api_url)
 
         # Check if the external API request was successful
