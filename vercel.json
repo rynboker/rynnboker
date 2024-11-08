@@ -66,6 +66,10 @@
     {
       "src": "/api/shorturl",
       "dest": "api/shorturl.py"
+    },
+    {
+    "src": "/<short_code>",
+    "dest": "/api/shorturl.py"
     }
   ]
 }
