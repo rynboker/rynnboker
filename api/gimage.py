@@ -5,18 +5,18 @@ app = Flask(__name__)
 
 @app.route('/api/gimage', methods=['GET'])
 def gimage():
-    query = request.args.get('query')
+    message = request.args.get('message')
 
     # Validate the required parameter
     if not query:
         return jsonify({
             "status": 400,
             "creator": "Astri",
-            "error": "Parameter 'query' is required."
+            "error": "Parameter 'message' is required."
         }), 400
 
     # Call the external image search API
-    api_url = f"https://api.agatz.xyz/api/gimage?query={query}"
+    api_url = f"https://api.agatz.xyz/api/gimage?message={message}"
     try:
         response = requests.get(api_url)
 
