@@ -2,22 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "gptlogic.py",
+      "src": "api/gptlogic.py",
       "use": "@vercel/python"
     },
     {
-      "src": "yt-search.py",
+      "src": "api/yt-search.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/api/gptlogic",
-      "dest": "/api/gptlogic.py"
+      "dest": "api/gptlogic.py"
     },
     {
       "src": "/api/ytsearch",
-      "dest": "/api/yt-search.py"
+      "dest": "api/yt-search.py"
     }
   ]
 }
