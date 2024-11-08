@@ -8,7 +8,7 @@ def gimage():
     message = request.args.get('message')
 
     # Validate the required parameter
-    if not query:
+    if not message:
         return jsonify({
             "status": 400,
             "creator": "Astri",
