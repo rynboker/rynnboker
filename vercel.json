@@ -92,8 +92,8 @@
       "dest": "api/shorturl.py"
     },
     {
-      "src": "/api/photo2anime2_image/(.*)",
-      "dest": "/api/photo2anime2_image/$1"
+  "src": "/api/photo2anime2_image/(.*)",
+  "dest": "/api/photo2anime2.py"
     },
     {
       "src": "/(.*)",
