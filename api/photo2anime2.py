@@ -31,7 +31,7 @@ def photo2anime2():
     try:
         # Make a request to the  API to get the image
         api_url = f"https://itzpire.com/tools/photo2anime2?url={image_url}&type=version%200.{type_version}"
-        response = requests.get(api_url, timeout=20)  # Adjust timeout as needed
+        response = requests.get(api_url)  # Adjust timeout as needed
         response.raise_for_status()  # Raise an error for any HTTP issues
 
         # Parse the response to extract the image URL and duration
