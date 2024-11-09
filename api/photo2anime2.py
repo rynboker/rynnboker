@@ -20,6 +20,10 @@ def photo2anime2():
     image_url = request.args.get('url')
     type_version = request.args.get('type', '0.2')  # Default to '0.2' if no type is specified
     
+    # Validate type_version to ensure it's one of the supported values
+    if type_version not in ['0.2', '0.3', '0.4']:
+        return jsonify({"creator": "Astri", "error": "Invalid type parameter. Valid values are 0.2, 0.3, 0.4.", "status": 400})
+
     if not image_url:
         return jsonify({"creator": "Astri", "error": "URL parameter is missing.", "status": 400})
 
@@ -67,7 +71,8 @@ def photo2anime2():
             "creator": "Astri",
             "status": 200,
             "image_url": served_img_url,
-            "duration": duration  # Include the duration in the response
+            "duration": duration,  # Include the duration in the response
+            "type_version": type_version  # Include the type/version used in the request
         })
 
     except Exception as e:
@@ -91,4 +96,4 @@ def serve_image(filename):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
+        
