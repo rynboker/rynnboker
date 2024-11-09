@@ -96,8 +96,8 @@
       "dest": "api/shorturl.py"
     },
     {
-      "src": "/images/(.*)",
-      "dest": "public/images/$1"
+      "src": "/tmp/(.*)",
+      "dest": "tmp/temp_images/$1"
     }
   ],
   "env": {
