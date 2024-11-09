@@ -4,12 +4,11 @@ from flask import Flask, request, jsonify
 from io import BytesIO
 from pathlib import Path
 from PIL import Image
-import tempfile
 
 app = Flask(__name__)
 
 # Use /tmp directory on Vercel for storing images (Writable directory)
-PUBLIC_IMAGE_DIR = '/tmp/temp_images'
+PUBLIC_IMAGE_DIR = '/tmp'
 
 # Ensure the temporary directory exists
 Path(PUBLIC_IMAGE_DIR).mkdir(parents=True, exist_ok=True)
@@ -41,6 +40,10 @@ def photo2anime2():
 
         # Construct the served image URL based on your domain
         served_img_url = f"https://www.youga.my.id/tmp/{img_name}"
+
+        # Check if the image was saved successfully
+        if not os.path.exists(img_path):
+            return jsonify({"creator": "Astri", "error": "Image was not saved.", "status": 500})
 
         # Return the image URL in the response
         return jsonify({
