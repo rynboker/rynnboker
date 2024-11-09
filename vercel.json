@@ -30,17 +30,17 @@
       "use": "@vercel/python"
     },
     {
-      "src": "api/aboutwebsite",
+      "src": "api/translate.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/translate",
+      "src": "api/photo2anime2.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/photo2anime2",
+      "src": "api/aboutwebsite.py",
       "use": "@vercel/python"
-    },
+    }
     {
       "src": "api/shorturl.py",
       "use": "@vercel/python"
