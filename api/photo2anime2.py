@@ -55,15 +55,21 @@ def photo2anime2():
     except Exception as e:
         return jsonify({"error": str(e), "status": 500})
 
-# Serve the image from the /tmp directory
-@app.route('/api/photo2anime2_image/<img_name>', methods=['GET'])
-def serve_image(img_name):
-    # Send the image from the /tmp directory as a response
+@app.route('/api/photo2anime2_image/<filename>', methods=['GET'])
+def serve_image(filename):
     try:
-        return send_from_directory(PUBLIC_IMAGE_DIR, img_name)
+        # Define the image path in the tmp directory
+        image_path = os.path.join(PUBLIC_IMAGE_DIR, filename)
+        
+        # Check if the file exists, and if it does, serve it
+        if os.path.exists(image_path):
+            return send_from_directory(PUBLIC_IMAGE_DIR, filename)
+        else:
+            return jsonify({"error": "File not found", "status": 404})
+
     except Exception as e:
-        return jsonify({"error": f"Image not found: {e}", "status": 404})
+        return jsonify({"error": str(e), "status": 500})
 
 if __name__ == '__main__':
     app.run(debug=True)
-        
+    
