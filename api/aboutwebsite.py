@@ -73,14 +73,14 @@ def aboutwebsite():
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"Service is unavailable: {str(e)}"
+            "error": f"Service is unavailable"
         }), 503
 
     except Exception as e:
         return jsonify({
             "status": 500,
             "creator": "Astri",
-            "error": f"An unexpected error occurred: {str(e)}"
+            "error": f"An unexpected error occurred"
         }), 500
 
 if __name__ == "__main__":
