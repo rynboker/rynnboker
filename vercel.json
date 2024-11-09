@@ -88,8 +88,8 @@
       "dest": "api/photo2anime2.py"
     },
     {
-      "src": "/tmp/(.*)",
-      "dest": "/tmp/$1"
+      "src": "/images/(.*)",
+      "dest": "tmp/temp_images/$1"
     },
     {
       "src": "/api/shorturl",
@@ -99,5 +99,8 @@
       "src": "/(.*)",
       "dest": "api/shorturl.py"
     }
-  ]
+  ],
+  "env": {
+    "FLASK_ENV": "production"
+  }
 }
