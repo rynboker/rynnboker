@@ -21,7 +21,7 @@ def photo2anime2():
     type_version = request.args.get('type', '0.2')  # Default to '0.2' if no type is specified
     
     # Validate type_version to ensure it's one of the supported values
-    if type_version not in ['0.2', '0.3', '0.4']:
+    if type_version not in ['2', '3', '4']:
         return jsonify({"creator": "Astri", "error": "Invalid type parameter. Valid values are 0.2, 0.3, 0.4.", "status": 400})
 
     if not image_url:
@@ -29,19 +29,27 @@ def photo2anime2():
 
     try:
         # Make a request to the external API to get the image
-        api_url = f"https://itzpire.com/tools/photo2anime2?url={image_url}&type=version%20{type_version}"
-        response = requests.get(api_url)
+        api_url = f"https://itzpire.com/tools/photo2anime2?url={image_url}&type=version%200.{type_version}"
+        response = requests.get(api_url, timeout=10)  # Adjust timeout as needed
+        response.raise_for_status()  # Raise an error for any HTTP issues
 
         if response.status_code != 200:
             return jsonify({"creator": "Astri", "error": "Failed to retrieve the image from external API.", "status": 500})
 
         # Parse the response to extract the image URL and duration
         data = response.json()
-        if data.get("code") == 200:
-            img_url = data['result']['img']
-            duration = data['result']['duration']  # Extract the duration from the response
-        else:
-            return jsonify({"creator": "Astri", "error": "Failed to retrieve a valid image from external API.", "status": 500})
+    if data.get("code") == 200 and "result" in data and "img" in data["result"]:
+        img_url = data['result']['img']
+        duration = data['result'].get('duration', 0)  # Default duration to 0 if missing
+    else:
+        return jsonify({"creator": "Astri", "error": "Invalid API response format.", "status": 500})
+
+except requests.exceptions.Timeout:
+    return jsonify({"creator": "Astri", "error": "External API timed out.", "status": 504})
+except requests.exceptions.RequestException as e:
+    return jsonify({"creator": "Astri", "error": f"API request failed: {str(e)}", "status": 500})
+except ValueError as e:
+    return jsonify({"creator": "Astri", "error": "Invalid JSON received from API.", "status": 500})
 
         # Fetch the image from the external URL
         img_response = requests.get(img_url)
