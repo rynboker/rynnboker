@@ -86,11 +86,7 @@
     {
       "src": "/api/photo2anime2",
       "dest": "api/photo2anime2.py"
-    },
-    
-      "src": "/images/(.*)",
-      "dest": "public/$1"
-    },
+    }
     {
       "src": "/api/shorturl",
       "dest": "api/shorturl.py"
@@ -98,6 +94,10 @@
     {
       "src": "/(.*)",
       "dest": "api/shorturl.py"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "public/$1"
     }
   ],
   "env": {
