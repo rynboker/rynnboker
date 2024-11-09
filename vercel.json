@@ -90,7 +90,7 @@
     {
       "src": "/tmp/(.*)",
       "dest": "/tmp/$1"
-    }
+    },
     {
       "src": "/api/shorturl",
       "dest": "api/shorturl.py"
