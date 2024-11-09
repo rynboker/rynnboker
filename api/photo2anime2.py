@@ -29,7 +29,7 @@ def photo2anime2():
         return jsonify({"creator": "Astri", "error": "URL parameter is missing.", "status": 400})
 
     try:
-        # Make a request to the external API to get the image
+        # Make a request to the  API to get the image
         api_url = f"https://itzpire.com/tools/photo2anime2?url={image_url}&type=version%200.{type_version}"
         response = requests.get(api_url, timeout=20)  # Adjust timeout as needed
         response.raise_for_status()  # Raise an error for any HTTP issues
@@ -42,7 +42,7 @@ def photo2anime2():
         else:
             return jsonify({"creator": "Astri", "error": "Invalid API response format.", "status": 500})
 
-        # Fetch the image from the external URL
+        # Fetch the image from the  URL
         img_response = requests.get(img_url)
         if img_response.status_code != 200:
             return jsonify({"creator": "Astri", "error": "Failed to fetch the generated image.", "status": 500})
@@ -75,11 +75,11 @@ def photo2anime2():
         })
 
     except requests.exceptions.Timeout:
-        return jsonify({"creator": "Astri", "error": "The external API request timed out. Please try again later.", "status": 504})
+        return jsonify({"creator": "Astri", "error": "The  API request timed out. Please try again later.", "status": 504})
     except requests.exceptions.RequestException as e:
-        return jsonify({"creator": "Astri", "error": f"Error with the external API request", "status": 500})
+        return jsonify({"creator": "Astri", "error": f"Error with the API request", "status": 500})
     except ValueError:
-        return jsonify({"creator": "Astri", "error": "Received invalid JSON from the external API.", "status": 500})
+        return jsonify({"creator": "Astri", "error": "Received invalid JSON from the API.", "status": 500})
     except Exception as e:
         return jsonify({"creator": "Astri", "error": "An unexpected error occurred. Please try again later.", "status": 500})
 
