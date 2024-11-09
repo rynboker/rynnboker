@@ -92,12 +92,12 @@
       "dest": "api/shorturl.py"
     },
     {
-      "src": "/(.*)",
-      "dest": "api/shorturl.py"
+      "src": "/api/photo2anime2_image/(.*)",
+      "dest": "/api/photo2anime2_image/$1"
     },
     {
-      "src": "/tmp/(.*)",
-      "dest": "/tmp/$1"
+      "src": "/(.*)",
+      "dest": "api/shorturl.py"
     }
   ],
   "env": {
