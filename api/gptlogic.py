@@ -47,7 +47,7 @@ def gptlogic():
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"External API request failed: {e}"
+            "error": f"External API request failed"
         }), 503
 
     except Exception as e:
@@ -55,7 +55,7 @@ def gptlogic():
         return jsonify({
             "status": 500,
             "creator": "Astri",
-            "error": f"An unexpected error occurred: {str(e)}"
+            "error": f"An unexpected error occurred"
         }), 500
 
 if __name__ == '__main__':
