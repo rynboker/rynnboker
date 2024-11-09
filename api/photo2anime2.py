@@ -18,7 +18,7 @@ Path(PUBLIC_IMAGE_DIR).mkdir(parents=True, exist_ok=True)
 def photo2anime2():
     # Get the image URL and type from the request
     image_url = request.args.get('url')
-    type_version = request.args.get('type', '0.2')  # Default to '0.2' if no type is specified
+    type_version = request.args.get('type', '2')  # Default to '0.2' if no type is specified
     
     # Validate type_version to ensure it's one of the supported values
     if type_version not in ['2', '3', '4']:
@@ -33,27 +33,16 @@ def photo2anime2():
         response = requests.get(api_url, timeout=10)  # Adjust timeout as needed
         response.raise_for_status()  # Raise an error for any HTTP issues
 
-        if response.status_code != 200:
-            return jsonify({"creator": "Astri", "error": "Failed to retrieve the image from external API.", "status": 500})
-
         # Parse the response to extract the image URL and duration
         data = response.json()
-    if data.get("code") == 200 and "result" in data and "img" in data["result"]:
-        img_url = data['result']['img']
-        duration = data['result'].get('duration', 0)  # Default duration to 0 if missing
-    else:
-        return jsonify({"creator": "Astri", "error": "Invalid API response format.", "status": 500})
-
-except requests.exceptions.Timeout:
-    return jsonify({"creator": "Astri", "error": "External API timed out.", "status": 504})
-except requests.exceptions.RequestException as e:
-    return jsonify({"creator": "Astri", "error": f"API request failed: {str(e)}", "status": 500})
-except ValueError as e:
-    return jsonify({"creator": "Astri", "error": "Invalid JSON received from API.", "status": 500})
+        if data.get("code") == 200 and "result" in data and "img" in data["result"]:
+            img_url = data['result']['img']
+            duration = data['result'].get('duration', 0)  # Default duration to 0 if missing
+        else:
+            return jsonify({"creator": "Astri", "error": "Invalid API response format.", "status": 500})
 
         # Fetch the image from the external URL
         img_response = requests.get(img_url)
-
         if img_response.status_code != 200:
             return jsonify({"creator": "Astri", "error": "Failed to fetch the generated image.", "status": 500})
 
@@ -83,6 +72,12 @@ except ValueError as e:
             "type_version": type_version  # Include the type/version used in the request
         })
 
+    except requests.exceptions.Timeout:
+        return jsonify({"creator": "Astri", "error": "External API timed out.", "status": 504})
+    except requests.exceptions.RequestException as e:
+        return jsonify({"creator": "Astri", "error": f"API request failed: {str(e)}", "status": 500})
+    except ValueError:
+        return jsonify({"creator": "Astri", "error": "Invalid JSON received from API.", "status": 500})
     except Exception as e:
         return jsonify({"error": str(e), "status": 500})
 
@@ -104,4 +99,3 @@ def serve_image(filename):
 
 if __name__ == '__main__':
     app.run(debug=True)
-        
