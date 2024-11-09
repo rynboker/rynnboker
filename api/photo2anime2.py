@@ -4,44 +4,44 @@ from flask import Flask, request, jsonify
 from io import BytesIO
 from pathlib import Path
 from PIL import Image
+import tempfile
 
 app = Flask(__name__)
 
-# Folder publik untuk menyimpan gambar
-PUBLIC_IMAGE_DIR = Path(__file__).parent / 'public'
+# Temporary directory for saving the images
+TEMP_IMAGE_DIR = '/tmp/temp_images'
 
-# Pastikan folder publik ada
-PUBLIC_IMAGE_DIR.mkdir(parents=True, exist_ok=True)
+# Ensure the temporary directory exists
+Path(TEMP_IMAGE_DIR).mkdir(parents=True, exist_ok=True)
 
 @app.route('/api/photo2anime2', methods=['GET'])
 def photo2anime2():
-    # Mendapatkan URL gambar dari parameter query
     image_url = request.args.get('url')
     
     if not image_url:
         return jsonify({"creator": "Astri", "error": "URL parameter is missing.", "status": 400})
 
     try:
-        # Mengambil gambar dari URL
+        # Fetch the image from the URL
         response = requests.get(image_url)
 
         if response.status_code != 200:
             return jsonify({"creator": "Astri", "error": "Failed to retrieve the image.", "status": 500})
 
-        # Membuka gambar dari konten respons
+        # Open the image from the response content
         img = Image.open(BytesIO(response.content))
 
-        # Tentukan path file gambar di folder publik
-        filename = os.path.basename(image_url)
-        file_path = PUBLIC_IMAGE_DIR / filename
+        # Define a temporary image file path in the writable /tmp directory
+        with tempfile.NamedTemporaryFile(delete=False, dir=TEMP_IMAGE_DIR, suffix=".png") as temp_img_file:
+            temp_img_path = temp_img_file.name
 
-        # Menyimpan gambar ke folder publik
-        img.save(file_path)
+        # Save the image to the temporary file
+        img.save(temp_img_path)
 
-        # URL gambar yang dapat diakses secara publik
-        served_img_url = f"https://www.youga.my.id/images/{filename}"
+        # Construct the served image URL based on your domain
+        served_img_url = f"https://www.youga.my.id/tmp/{os.path.basename(temp_img_path)}"
 
-        # Mengembalikan URL gambar dalam response
+        # Return the image URL in the response
         return jsonify({
             "creator": "Astri",
             "status": 200,
