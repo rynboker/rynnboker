@@ -97,7 +97,7 @@
     },
     {
       "src": "/images/(.*)",
-      "dest": "public/$1"
+      "dest": "public/images/$1"
     }
   ],
   "env": {
