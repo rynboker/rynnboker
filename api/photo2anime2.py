@@ -9,7 +9,7 @@ import tempfile
 app = Flask(__name__)
 
 # Public directory for serving images
-PUBLIC_IMAGE_DIR = './public/images'
+PUBLIC_IMAGE_DIR = './tmp/temp_images'
 
 # Ensure the public directory exists
 Path(PUBLIC_IMAGE_DIR).mkdir(parents=True, exist_ok=True)
@@ -40,7 +40,7 @@ def photo2anime2():
         img.save(img_path)
 
         # Construct the served image URL based on your domain
-        served_img_url = f"https://www.youga.my.id/images/{img_name}"
+        served_img_url = f"https://www.youga.my.id/tmp/{img_name}"
 
         # Return the image URL in the response
         return jsonify({
