@@ -75,11 +75,11 @@ def photo2anime2():
     except requests.exceptions.Timeout:
         return jsonify({"creator": "Astri", "error": "External API timed out.", "status": 504})
     except requests.exceptions.RequestException as e:
-        return jsonify({"creator": "Astri", "error": f"API request failed: {str(e)}", "status": 500})
+        return jsonify({"creator": "Astri", "error": f"API request failed: "500"", "status": 500})
     except ValueError:
         return jsonify({"creator": "Astri", "error": "Invalid JSON received from API.", "status": 500})
     except Exception as e:
-        return jsonify({"error": str(e), "status": 500})
+        return jsonify({"error": "500", "status": 500})
 
 # Endpoint to serve the image from the temporary directory
 @app.route('/api/photo2anime2_image/<filename>', methods=['GET'])
@@ -95,7 +95,7 @@ def serve_image(filename):
             return jsonify({"error": "File not found", "status": 404})
 
     except Exception as e:
-        return jsonify({"error": str(e), "status": 500})
+        return jsonify({"error": "500", "status": 500})
 
 if __name__ == '__main__':
     app.run(debug=True)
