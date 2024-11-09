@@ -8,14 +8,15 @@ import tempfile
 
 app = Flask(__name__)
 
-# Temporary directory for saving the images
-TEMP_IMAGE_DIR = '/tmp/temp_images'
+# Public directory for serving images
+PUBLIC_IMAGE_DIR = './public/images'
 
-# Ensure the temporary directory exists
-Path(TEMP_IMAGE_DIR).mkdir(parents=True, exist_ok=True)
+# Ensure the public directory exists
+Path(PUBLIC_IMAGE_DIR).mkdir(parents=True, exist_ok=True)
 
 @app.route('/api/photo2anime2', methods=['GET'])
 def photo2anime2():
+    # Get the image URL from the request
     image_url = request.args.get('url')
     
     if not image_url:
@@ -31,15 +32,15 @@ def photo2anime2():
         # Open the image from the response content
         img = Image.open(BytesIO(response.content))
 
-        # Define a temporary image file path in the writable /tmp directory
-        with tempfile.NamedTemporaryFile(delete=False, dir=TEMP_IMAGE_DIR, suffix=".png") as temp_img_file:
-            temp_img_path = temp_img_file.name
+        # Define a public image file path
+        img_name = os.path.basename(image_url)
+        img_path = os.path.join(PUBLIC_IMAGE_DIR, img_name)
 
-        # Save the image to the temporary file
-        img.save(temp_img_path)
+        # Save the image to the public directory
+        img.save(img_path)
 
         # Construct the served image URL based on your domain
-        served_img_url = f"https://www.youga.my.id/tmp/{os.path.basename(temp_img_path)}"
+        served_img_url = f"https://www.youga.my.id/images/{img_name}"
 
         # Return the image URL in the response
         return jsonify({
