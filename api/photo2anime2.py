@@ -22,7 +22,7 @@ def photo2anime2():
     
     # Validate type_version to ensure it's one of the supported values
     if type_version not in ['2', '3', '4']:
-        return jsonify({"creator": "Astri", "error": "Invalid type parameter. Valid values are 0.2, 0.3, 0.4.", "status": 400})
+        return jsonify({"creator": "Astri", "error": "Invalid type parameter. Valid values are 2, 3, 4.", "status": 400})
 
     if not image_url:
         return jsonify({"creator": "Astri", "error": "URL parameter is missing.", "status": 400})
