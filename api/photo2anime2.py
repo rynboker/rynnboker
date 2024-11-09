@@ -1,4 +1,5 @@
 import os
+import random
 import requests
 from flask import Flask, request, jsonify, send_from_directory
 from io import BytesIO
@@ -18,19 +19,19 @@ Path(PUBLIC_IMAGE_DIR).mkdir(parents=True, exist_ok=True)
 def photo2anime2():
     # Get the image URL and type from the request
     image_url = request.args.get('url')
-    type_version = request.args.get('type', '0.2')  # Default to '0.2' if no type is specified
+    type_version = request.args.get('type', '2')  # Default to '2' if no type is specified
     
     # Validate type_version to ensure it's one of the supported values
     if type_version not in ['2', '3', '4']:
-        return jsonify({"creator": "Astri", "error": "Invalid type parameter. Valid values are 0.2, 0.3, 0.4.", "status": 400})
+        return jsonify({"creator": "Astri", "error": "Invalid type parameter. Valid values are 2, 3, 4.", "status": 400})
 
     if not image_url:
         return jsonify({"creator": "Astri", "error": "URL parameter is missing.", "status": 400})
 
     try:
         # Make a request to the external API to get the image
-        api_url = f"https://itzpire.com/tools/photo2anime2?url={image_url}&type=version%20{type_version}"
-        response = requests.get(api_url, timeout=10)  # Adjust timeout as needed
+        api_url = f"https://itzpire.com/tools/photo2anime2?url={image_url}&type=version%200.{type_version}"
+        response = requests.get(api_url, timeout=20)  # Adjust timeout as needed
         response.raise_for_status()  # Raise an error for any HTTP issues
 
         # Parse the response to extract the image URL and duration
@@ -51,6 +52,7 @@ def photo2anime2():
 
         # Define a temporary image file path
         img_name = os.path.basename(img_url)
+        img_name = img_name.split('?')[0]  # Clean the filename in case the URL has query params
         img_path = os.path.join(PUBLIC_IMAGE_DIR, img_name)
 
         # Save the image to the temporary directory
@@ -73,13 +75,13 @@ def photo2anime2():
         })
 
     except requests.exceptions.Timeout:
-        return jsonify({"creator": "Astri", "error": "External API timed out.", "status": 504})
+        return jsonify({"creator": "Astri", "error": "The external API request timed out. Please try again later.", "status": 504})
     except requests.exceptions.RequestException as e:
-        return jsonify({"creator": "Astri", "error": f"API request failed}", "status": 500})
+        return jsonify({"creator": "Astri", "error": f"Error with the external API request", "status": 500})
     except ValueError:
-        return jsonify({"creator": "Astri", "error": "Invalid JSON received from API.", "status": 500})
+        return jsonify({"creator": "Astri", "error": "Received invalid JSON from the external API.", "status": 500})
     except Exception as e:
-        return jsonify({"error": str(e), "status": 500})
+        return jsonify({"creator": "Astri", "error": "An unexpected error occurred. Please try again later.", "status": 500})
 
 # Endpoint to serve the image from the temporary directory
 @app.route('/api/photo2anime2_image/<filename>', methods=['GET'])
@@ -95,7 +97,7 @@ def serve_image(filename):
             return jsonify({"error": "File not found", "status": 404})
 
     except Exception as e:
-        return jsonify({"error": "Error", "status": 500})
+        return jsonify({"error": f"500 - Something went wrong", "status": 500})
 
 if __name__ == '__main__':
     app.run(debug=True)
