@@ -80,7 +80,7 @@ def create_short_url():
         print(f"Error occurred: {str(e)}")  # Log the error for debugging
         return jsonify({
             "status": "error",
-            "error": str(e)
+            "error": "Error occurred"
         }), 500
 
 @app.route('/<short_code>', methods=['GET'])
@@ -106,11 +106,10 @@ def redirect_to_original(short_code):
 
         return redirect(url_data["originalUrl"])
 
-    except Exception as e:
-        print(f"Error occurred: {str(e)}")  # Log the error for debugging
+    except Exception as e: # Log the error for debugging
         return jsonify({
             "status": "error",
-            "error": str(e)
+            "error": "Error occurred"
         }), 500
 
 if __name__ == "__main__":
