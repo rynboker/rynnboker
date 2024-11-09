@@ -86,7 +86,7 @@
     {
       "src": "/api/photo2anime2",
       "dest": "api/photo2anime2.py"
-    }
+    },
     {
       "src": "/api/shorturl",
       "dest": "api/shorturl.py"
