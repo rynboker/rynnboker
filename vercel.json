@@ -88,10 +88,6 @@
       "dest": "api/photo2anime2.py"
     },
     {
-      "src": "/images/(.*)",
-      "dest": "tmp/temp_images/$1"
-    },
-    {
       "src": "/api/shorturl",
       "dest": "api/shorturl.py"
     },
