@@ -20,14 +20,14 @@ def photo2anime2():
     image_url = request.args.get('url')
     
     if not image_url:
-        return jsonify({"error": "URL parameter is missing.", "status": 400})
+        return jsonify({"creator": "Astri", "error": "URL parameter is missing.", "status": 400})
 
     try:
         # Fetch the image from the URL
         response = requests.get(image_url)
 
         if response.status_code != 200:
-            return jsonify({"error": "Failed to retrieve the image.", "status": 500})
+            return jsonify({"creator": "Astri", "error": "Failed to retrieve the image.", "status": 500})
 
         # Open the image from the response content
         img = Image.open(BytesIO(response.content))
@@ -46,6 +46,7 @@ def photo2anime2():
 
         # Return the image URL in the response
         return jsonify({
+            "creator": "Astri",
             "status": 200,
             "image_url": served_img_url
         })
