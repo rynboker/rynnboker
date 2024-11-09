@@ -13,26 +13,55 @@ PUBLIC_IMAGE_DIR = '/tmp'
 # Ensure the temporary directory exists
 Path(PUBLIC_IMAGE_DIR).mkdir(parents=True, exist_ok=True)
 
+# Helper function to call the external API
+def transform_image(image_url, version_type):
+    api_url = "https://itzpire.com/tools/photo2anime2"
+    params = {
+        "url": image_url,
+        "type": version_type
+    }
+    
+    response = requests.get(api_url, params=params)
+    
+    if response.status_code != 200:
+        return None
+    
+    result = response.json()
+    if "result" in result:
+        return result["result"]
+    else:
+        return None
+
 @app.route('/api/photo2anime2', methods=['GET'])
 def photo2anime2():
-    # Get the image URL from the request
+    # Get the image URL and type from the request
     image_url = request.args.get('url')
+    version_type = request.args.get('type', 'version 0.2')  # Default to version 0.2
     
     if not image_url:
         return jsonify({"creator": "Astri", "error": "URL parameter is missing.", "status": 400})
 
+    # Validate version type
+    if version_type not in ['version 0.2', 'version 0.3', 'version 0.4']:
+        return jsonify({"creator": "Astri", "error": "Invalid version type.", "status": 400})
+    
     try:
-        # Fetch the image from the URL
-        response = requests.get(image_url)
+        # Call the external API to transform the image
+        anime_image_url = transform_image(image_url, version_type)
 
+        if not anime_image_url:
+            return jsonify({"creator": "Astri", "error": "Failed to transform the image.", "status": 500})
+
+        # Save the transformed image to /tmp directory
+        response = requests.get(anime_image_url)
         if response.status_code != 200:
-            return jsonify({"creator": "Astri", "error": "Failed to retrieve the image.", "status": 500})
+            return jsonify({"creator": "Astri", "error": "Failed to retrieve transformed image.", "status": 500})
 
         # Open the image from the response content
         img = Image.open(BytesIO(response.content))
 
         # Define a temporary image file path
-        img_name = os.path.basename(image_url)
+        img_name = os.path.basename(anime_image_url)
         img_path = os.path.join(PUBLIC_IMAGE_DIR, img_name)
 
         # Save the image to the temporary directory
@@ -72,4 +101,4 @@ def serve_image(filename):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
+                        
