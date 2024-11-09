@@ -41,7 +41,7 @@
     {
       "src": "api/aboutwebsite.py",
       "use": "@vercel/python"
-    }
+    },
     {
       "src": "api/shorturl.py",
       "use": "@vercel/python"
