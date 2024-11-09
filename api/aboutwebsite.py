@@ -1,5 +1,6 @@
 import requests
 from flask import Flask, jsonify, request
+import time
 
 app = Flask(__name__)
 
@@ -18,7 +19,10 @@ def aboutwebsite():
     # Call the external website information API
     api_url = f"https://itzpire.com/tools/about-website?url={url}"
     try:
-        response = requests.get(api_url)
+        start_time = time.time()  # Mulai pengukuran waktu
+        response = requests.get(api_url, timeout=60)  # Timeout lebih panjang
+
+        elapsed_time = time.time() - start_time  # Hitung waktu yang dibutuhkan
 
         # Handle non-200 responses from the external API
         if response.status_code != 200:
@@ -27,6 +31,15 @@ def aboutwebsite():
                 "creator": "Astri",
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
+
+        # Informasikan jika proses memakan waktu lebih lama
+        if elapsed_time > 30:
+            return jsonify({
+                "status": 200,
+                "creator": "Astri",
+                "warning": "The external API took longer than usual to respond.",
+                "data": response.json().get("data", {})
+            })
 
         # Extract and format the data
         external_data = response.json().get("data", {})
