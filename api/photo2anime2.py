@@ -75,7 +75,7 @@ def photo2anime2():
     except requests.exceptions.Timeout:
         return jsonify({"creator": "Astri", "error": "External API timed out.", "status": 504})
     except requests.exceptions.RequestException as e:
-        return jsonify({"creator": "Astri", "error": f"API request failed: "500"", "status": 500})
+        return jsonify({"creator": "Astri", "error": f"API request failed: 500", "status": 500})
     except ValueError:
         return jsonify({"creator": "Astri", "error": "Invalid JSON received from API.", "status": 500})
     except Exception as e:
