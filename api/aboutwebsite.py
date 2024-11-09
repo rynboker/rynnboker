@@ -18,7 +18,7 @@ def aboutwebsite():
     # Call the external website information API
     api_url = f"https://itzpire.com/tools/about-website?url={url}"
     try:
-        response = requests.get(api_url)
+        response = requests.get(api_url, timeout=10)
 
         # Handle non-200 responses from the external API
         if response.status_code != 200:
