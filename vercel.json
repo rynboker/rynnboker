@@ -97,11 +97,10 @@
     },
     {
       "src": "/tmp/(.*)",
-      "dest": "tmp/temp_images/$1"
+      "dest": "/tmp/$1"
     }
   ],
   "env": {
-    "FLASK_DEBUG": "true",
-    "FLASK_ENV": "production"
+    "FLASK_DEBUG": "true"
   }
 }
