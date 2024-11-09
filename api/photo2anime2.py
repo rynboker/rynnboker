@@ -20,8 +20,8 @@ def photo2anime2():
     api_url = f"https://itzpire.com/tools/photo2anime2?url={image_url}&type={version}"
     
     try:
-        # Kirim request ke API eksternal
-        response = requests.get(api_url)
+        # Kirim request ke API eksternal dengan timeout 10 detik
+        response = requests.get(api_url, timeout=10)
 
         # Cek status code respons
         if response.status_code != 200:
@@ -46,8 +46,11 @@ def photo2anime2():
         # Jika tidak ada 'img', kirimkan pesan error
         return jsonify({"status": 500, "error": "Image URL not found in response."}), 500
 
+    except requests.exceptions.Timeout:
+        # Tangani timeout error
+        return jsonify({"status": 504, "error": "Gateway timeout: External service did not respond in time."}), 504
     except requests.exceptions.RequestException as e:
-        # Tangani error jika request gagal
+        # Tangani error lain-lain
         return jsonify({"status": 503, "error": f"Service unavailable: {str(e)}"}), 503
     except Exception as e:
         # Tangani error lain-lain
