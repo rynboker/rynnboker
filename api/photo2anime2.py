@@ -1,79 +1,29 @@
 import os
 import requests
-import json
 from flask import Flask, jsonify, request, send_from_directory
 from datetime import datetime, timedelta
-from pathlib import Path
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from google.auth.transport.requests import Request
 
 app = Flask(__name__)
 
-# Google Drive API setup
-SCOPES = ['https://www.googleapis.com/auth/drive.file']
-
-# Directory to store temporary images
-TEMP_IMAGE_DIR = Path("temp_images")
-TEMP_IMAGE_DIR.mkdir(exist_ok=True)
-
-# Path to your credentials and token files
-CREDENTIALS_PATH = 'credentials.json'
-TOKEN_PATH = 'token.json'
-
-
-def get_credentials():
-    """Handles authentication and returns the Google Drive credentials."""
-    creds = None
-    # The file token.json stores the user's access and refresh tokens
-    # and is created automatically when the authorization flow completes for the first time.
-    if os.path.exists(TOKEN_PATH):
-        creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
-    
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_PATH, SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open(TOKEN_PATH, 'w') as token:
-            token.write(creds.to_json())
-    return creds
-
-
-def upload_to_drive(file_path, filename):
-    """Uploads a file to Google Drive and returns the file URL."""
-    creds = get_credentials()
-    service = build('drive', 'v3', credentials=creds)
-
-    # Upload image to Google Drive
-    file_metadata = {'name': filename}
-    media = MediaFileUpload(file_path, mimetype='image/png')
-    file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-
-    # Get the file URL
-    file_url = f'https://drive.google.com/uc?id={file["id"]}'
-    return file_url
-
+# Directory to store temporary images (use /tmp for serverless environments like Vercel)
+TEMP_IMAGE_DIR = '/tmp/temp_images'
+if not os.path.exists(TEMP_IMAGE_DIR):
+    os.makedirs(TEMP_IMAGE_DIR)
 
 # Endpoint to serve images
-@app.route('/images/<path:filename>', methods=['GET'])
+@app.route('/tmp/<filename>', methods=['GET'])
 def serve_image(filename):
     return send_from_directory(TEMP_IMAGE_DIR, filename)
-
 
 # Helper function to clean up images older than 30 days
 def clean_up_old_images():
     cutoff_date = datetime.now() - timedelta(days=30)
-    for image_file in TEMP_IMAGE_DIR.iterdir():
-        if image_file.is_file():
-            file_creation_date = datetime.fromtimestamp(image_file.stat().st_mtime)
+    for image_file in os.listdir(TEMP_IMAGE_DIR):
+        image_path = os.path.join(TEMP_IMAGE_DIR, image_file)
+        if os.path.isfile(image_path):
+            file_creation_date = datetime.fromtimestamp(os.path.getmtime(image_path))
             if file_creation_date < cutoff_date:
-                image_file.unlink()  # Delete the old image
-
+                os.remove(image_path)  # Delete the old image
 
 @app.route('/api/photo2anime2', methods=['GET'])
 def photo2anime2():
@@ -101,19 +51,19 @@ def photo2anime2():
         if image_response.status_code == 200:
             # Generate a unique filename
             filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}.png"
-            file_path = TEMP_IMAGE_DIR / filename
+            file_path = os.path.join(TEMP_IMAGE_DIR, filename)
             with open(file_path, 'wb') as file:
                 file.write(image_response.content)
-
-            # Upload to Google Drive
-            drive_url = upload_to_drive(file_path, filename)
 
             # Clean up old images
             clean_up_old_images()
 
+            # Serve the image via your domain
+            served_img_url = f"https://www.youga.my.id/tmp/{filename}"
+
             return jsonify({
                 "result": {
-                    "img": drive_url,
+                    "img": served_img_url,
                     "duration": duration
                 }
             })
@@ -124,7 +74,6 @@ def photo2anime2():
         return jsonify({"status": 503, "error": f"Service unavailable: {str(e)}"}), 503
     except Exception as e:
         return jsonify({"status": 500, "error": f"Unexpected error: {str(e)}"}), 500
-
 
 if __name__ == "__main__":
     app.run(debug=True)
