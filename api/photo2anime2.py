@@ -10,12 +10,7 @@ app = Flask(__name__)
 TEMP_IMAGE_DIR = Path("temp_images")
 TEMP_IMAGE_DIR.mkdir(exist_ok=True)
 
-# Endpoint to serve images
-@app.route('/images/<path:filename>', methods=['GET'])
-def serve_image(filename):
-    return send_from_directory(TEMP_IMAGE_DIR, filename)
-
-# Helper function to clean up images older than 30 days
+# Function to clean up images older than 30 days
 def clean_up_old_images():
     cutoff_date = datetime.now() - timedelta(days=30)
     for image_file in TEMP_IMAGE_DIR.iterdir():
@@ -23,6 +18,11 @@ def clean_up_old_images():
             file_creation_date = datetime.fromtimestamp(image_file.stat().st_mtime)
             if file_creation_date < cutoff_date:
                 image_file.unlink()  # Delete the old image
+
+# Endpoint to serve images
+@app.route('/images/<path:filename>', methods=['GET'])
+def serve_image(filename):
+    return send_from_directory(TEMP_IMAGE_DIR, filename)
 
 @app.route('/api/photo2anime2', methods=['GET'])
 def photo2anime2():
@@ -45,19 +45,24 @@ def photo2anime2():
         external_img_url = external_data.get("img")
         duration = external_data.get("duration")
 
+        if not external_img_url:
+            return jsonify({"status": 500, "error": "Image URL not found in the response."}), 500
+
         # Download the image
-        image_response = requests.get(external_img_url, stream=True)
+        image_response = requests.get(external_img_url)
         if image_response.status_code == 200:
             # Generate a unique filename
             filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}.png"
             file_path = TEMP_IMAGE_DIR / filename
+
+            # Save the image locally
             with open(file_path, 'wb') as file:
                 file.write(image_response.content)
 
             # Clean up old images
             clean_up_old_images()
 
-            # Serve the image via your domain
+            # Serve the image via your domain (temporary link)
             served_img_url = f"https://www.youga.my.id/images/{filename}"
 
             return jsonify({
@@ -66,8 +71,8 @@ def photo2anime2():
                     "duration": duration
                 }
             })
-
-        return jsonify({"status": 500, "error": "Failed to download image."}), 500
+        else:
+            return jsonify({"status": 500, "error": "Failed to download image."}), 500
 
     except requests.exceptions.RequestException as e:
         return jsonify({"status": 503, "error": f"Service unavailable: {str(e)}"}), 503
