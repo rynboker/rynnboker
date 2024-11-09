@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from io import BytesIO
 from pathlib import Path
 from PIL import Image
@@ -39,7 +39,7 @@ def photo2anime2():
         img.save(img_path)
 
         # Construct the served image URL based on your domain
-        served_img_url = f"https://www.youga.my.id/tmp/{img_name}"
+        served_img_url = f"https://www.youga.my.id/api/photo2anime2_image/{img_name}"
 
         # Check if the image was saved successfully
         if not os.path.exists(img_path):
@@ -55,6 +55,15 @@ def photo2anime2():
     except Exception as e:
         return jsonify({"error": str(e), "status": 500})
 
+# Serve the image from the /tmp directory
+@app.route('/api/photo2anime2_image/<img_name>', methods=['GET'])
+def serve_image(img_name):
+    # Send the image from the /tmp directory as a response
+    try:
+        return send_from_directory(PUBLIC_IMAGE_DIR, img_name)
+    except Exception as e:
+        return jsonify({"error": f"Image not found: {e}", "status": 404})
+
 if __name__ == '__main__':
     app.run(debug=True)
-    
+        
