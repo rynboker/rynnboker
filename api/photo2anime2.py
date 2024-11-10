@@ -112,7 +112,7 @@ def photo2anime2():
     except Exception as e:
         return jsonify({
             "creator": "Astri", 
-            "error": f"Unexpected error occurred: {str(e)}", 
+            "error": f"Unexpected error occurred", 
             "status": 500
         })
 
