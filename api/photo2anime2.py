@@ -18,9 +18,16 @@ def photo2anime2():
         return jsonify({"creator": "Astri", "error": "URL parameter is missing.", "status": 400})
 
     try:
-        # Unggah gambar ke imgbb dari URL awal
+        # Unduh gambar dari URL input
+        img_response = requests.get(image_url)
+        if img_response.status_code != 200:
+            return jsonify({"creator": "Astri", "error": "Failed to download image from the provided URL.", "status": 500})
+
+        # Siapkan URL dan parameter untuk upload ke imgbb
         imgbb_url = f"https://api.imgbb.com/1/upload?expiration=300&key={IMGBB_API_KEY}"
-        imgbb_response = requests.post(imgbb_url, files={"image": (None, image_url)})
+        
+        # Unggah gambar ke imgbb sebagai binary
+        imgbb_response = requests.post(imgbb_url, files={"image": img_response.content})
         
         if imgbb_response.status_code != 200:
             return jsonify({
