@@ -1,22 +1,16 @@
 import os
 import requests
 from flask import Flask, request, jsonify
-from io import BytesIO
-from pathlib import Path
-from PIL import Image
 
 app = Flask(__name__)
 
-IMGBB_API_KEY = '366a731c8d1387832871de9b04a6a0f4'  # API Key untuk imgbb
+IMGBB_API_KEY = '366a731c8d1387832871de9b04a6a0f4'  # Pastikan API Key ini benar
 
-# Endpoint untuk menerima URL dan mengonversi gambar
 @app.route('/api/photo2anime2', methods=['GET'])
 def photo2anime2():
-    # Mendapatkan URL gambar dari request dan tipe konversi
     image_url = request.args.get('url')
     type_version = request.args.get('type', '2')  # Default ke '2' jika tidak ditentukan
     
-    # Validasi tipe versi untuk memastikan hanya nilai tertentu yang diterima
     if type_version not in ['2', '3', '4']:
         return jsonify({"creator": "Astri", "error": "Invalid type parameter. Valid values are 2, 3, 4.", "status": 400})
 
@@ -26,10 +20,14 @@ def photo2anime2():
     try:
         # Unggah gambar ke imgbb dari URL awal
         imgbb_url = f"https://api.imgbb.com/1/upload?expiration=300&key={IMGBB_API_KEY}"
-        imgbb_response = requests.post(imgbb_url, data={"image": image_url})
+        imgbb_response = requests.post(imgbb_url, files={"image": (None, image_url)})
         
         if imgbb_response.status_code != 200:
-            return jsonify({"creator": "Astri", "error": "Failed to upload the image to imgbb.", "status": 500})
+            return jsonify({
+                "creator": "Astri", 
+                "error": f"Failed to upload the image to imgbb. Response: {imgbb_response.json()}", 
+                "status": 500
+            })
 
         imgbb_data = imgbb_response.json()
         if "data" in imgbb_data and "url" in imgbb_data["data"]:
@@ -42,7 +40,6 @@ def photo2anime2():
         response = requests.get(api_url)
         response.raise_for_status()
 
-        # Parse respons untuk mendapatkan URL gambar yang dihasilkan
         data = response.json()
         if data.get("code") == 200 and "result" in data and "img" in data["result"]:
             anime_img_url = data['result']['img']
@@ -50,14 +47,13 @@ def photo2anime2():
         else:
             return jsonify({"creator": "Astri", "error": "Invalid API response format.", "status": 500})
 
-        # Kembalikan URL gambar hasil dari photo2anime2
         return jsonify({
             "creator": "Astri",
             "status": 200,
-            "original_image_url": imgbb_img_url,  # URL gambar di imgbb
-            "anime_image_url": anime_img_url,  # URL gambar hasil konversi
-            "duration": duration,  # Sertakan durasi di respons
-            "type_version": type_version  # Sertakan tipe versi yang digunakan
+            "original_image_url": imgbb_img_url,
+            "anime_image_url": anime_img_url,
+            "duration": duration,
+            "type_version": type_version
         })
 
     except requests.exceptions.Timeout:
@@ -69,7 +65,7 @@ def photo2anime2():
     except requests.exceptions.RequestException as e:
         return jsonify({
             "creator": "Astri", 
-            "error": f"Error with the API request", 
+            "error": "Error with the API request.", 
             "status": 500
         })
     except ValueError:
@@ -81,7 +77,7 @@ def photo2anime2():
     except Exception as e:
         return jsonify({
             "creator": "Astri", 
-            "error": f"Unexpected error occurred", 
+            "error": f"Unexpected error occurred: {str(e)}", 
             "status": 500
         })
 
