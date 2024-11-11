@@ -2,158 +2,158 @@
   "version": 2,
   "builds": [
     {
-      "src": "gptlogic.py",
+      "src": "api/gptlogic.py",
       "use": "@vercel/python"
     },
     {
-      "src": "yt-search.py",
+      "src": "api/yt-search.py",
       "use": "@vercel/python"
     },
     {
-      "src": "spotify.py",
+      "src": "api/spotify.py",
       "use": "@vercel/python"
     },
     {
-      "src": "pinterest.py",
+      "src": "api/pinterest.py",
       "use": "@vercel/python"
     },
     {
-      "src": "gimage.py",
+      "src": "api/gimage.py",
       "use": "@vercel/python"
     },
     {
-      "src": "yt-playvid.py",
+      "src": "api/yt-playvid.py",
       "use": "@vercel/python"
     },
     {
-      "src": "yt-playaud.py",
+      "src": "api/yt-playaud.py",
       "use": "@vercel/python"
     },
     {
-      "src": "translate.py",
+      "src": "api/translate.py",
       "use": "@vercel/python"
     },
     {
-      "src": "otakudesu.py",
+      "src": "api/otakudesu.py",
       "use": "@vercel/python"
     },
     {
-      "src": "otakudesulatest.py",
+      "src": "api/otakudesulatest.py",
       "use": "@vercel/python"
     },
     {
-      "src": "soundcloud.py",
+      "src": "api/soundcloud.py",
       "use": "@vercel/python"
     },
     {
-      "src": "soundclouddl.py",
+      "src": "api/soundclouddl.py",
       "use": "@vercel/python"
     },
     {
-      "src": "ttstalk.py",
+      "src": "api/ttstalk.py",
       "use": "@vercel/python"
     },
     {
-      "src": "twitter.py",
+      "src": "api/twitter.py",
       "use": "@vercel/python"
     },
     {
-      "src": "twitterstalk.py",
+      "src": "api/twitterstalk.py",
       "use": "@vercel/python"
     },
     {
-      "src": "threads.py",
+      "src": "api/threads.py",
       "use": "@vercel/python"
     },
     {
-      "src": "gempa.py",
+      "src": "api/gempa.py",
       "use": "@vercel/python"
     },
     {
-      "src": "photo2anime2.py",
+      "src": "api/photo2anime2.py",
       "use": "@vercel/python"
     },
     {
-      "src": "shorturl.py",
+      "src": "api/shorturl.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/gptlogic",
-      "dest": "gptlogic.py"
+      "src": "/api/gptlogic",
+      "dest": "api/gptlogic.py"
     },
     {
-      "src": "/ytsearch",
-      "dest": "yt-search.py"
+      "src": "/api/ytsearch",
+      "dest": "api/yt-search.py"
     },
     {
-      "src": "/spotify",
-      "dest": "spotify.py"
+      "src": "/api/spotify",
+      "dest": "api/spotify.py"
     },
     {
-      "src": "/pinterest",
-      "dest": "pinterest.py"
+      "src": "/api/pinterest",
+      "dest": "api/pinterest.py"
     },
     {
-      "src": "/gimage",
-      "dest": "gimage.py"
+      "src": "/api/gimage",
+      "dest": "api/gimage.py"
     },
     {
-      "src": "/ytplayvid",
-      "dest": "yt-playvid.py"
+      "src": "/api/ytplayvid",
+      "dest": "api/yt-playvid.py"
     },
     {
-      "src": "/ytplayaud",
-      "dest": "yt-playaud.py"
+      "src": "/api/ytplayaud",
+      "dest": "api/yt-playaud.py"
     },
     {
-      "src": "/translate",
-      "dest": "translate.py"
+      "src": "/api/translate",
+      "dest": "api/translate.py"
     },
     {
-      "src": "/otakudesu",
-      "dest": "otakudesu.py"
+      "src": "/api/otakudesu",
+      "dest": "api/otakudesu.py"
     },
     {
-      "src": "/otakudesulatest",
-      "dest": "otakudesulatest.py"
+      "src": "/api/otakudesulatest",
+      "dest": "api/otakudesulatest.py"
     },
     {
-      "src": "/soundcloud",
-      "dest": "soundcloud.py"
+      "src": "/api/soundcloud",
+      "dest": "api/soundcloud.py"
     },
     {
-      "src": "/soundclouddl",
-      "dest": "soundclouddl.py"
+      "src": "/api/soundclouddl",
+      "dest": "api/soundclouddl.py"
     },
     {
-      "src": "/ttstalk",
-      "dest": "ttstalk.py"
+      "src": "/api/ttstalk",
+      "dest": "api/ttstalk.py"
     },
     {
-      "src": "/twitter",
-      "dest": "twitter.py"
+      "src": "/api/twitter",
+      "dest": "api/twitter.py"
     },
     {
-      "src": "/twitterstalk",
-      "dest": "twitterstalk.py"
+      "src": "/api/twitterstalk",
+      "dest": "api/twitterstalk.py"
     },
     {
-      "src": "/threads",
-      "dest": "threads.py"
+      "src": "/api/threads",
+      "dest": "api/threads.py"
     },
     {
-      "src": "/gempa",
-      "dest": "gempa.py"
+      "src": "/api/gempa",
+      "dest": "api/gempa.py"
     },
     {
-      "src": "/photo2anime2",
-      "dest": "photo2anime2.py"
+      "src": "/api/photo2anime2",
+      "dest": "api/photo2anime2.py"
     },
     {
-      "src": "/shorturl",
-      "dest": "shorturl.py"
+      "src": "/api/shorturl",
+      "dest": "api/shorturl.py"
     },
     {
   "src": "/photo2anime2_image/(.*)",
