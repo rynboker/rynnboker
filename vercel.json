@@ -34,6 +34,42 @@
       "use": "@vercel/python"
     },
     {
+      "src": "api/otakudesu.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/otakudesulatest.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/soundcloud.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/soundclouddl.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/ttstalk.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/twitter.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/twitterstalk.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/threads.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "api/gempa.py",
+      "use": "@vercel/python"
+    },
+    {
       "src": "api/photo2anime2.py",
       "use": "@vercel/python"
     },
@@ -82,6 +118,42 @@
     {
       "src": "/api/translate",
       "dest": "api/translate.py"
+    },
+    {
+      "src": "/api/otakudesu",
+      "dest": "api/otakudesu.py"
+    },
+    {
+      "src": "/api/otakudesulatest",
+      "dest": "api/otakudesulatest.py"
+    },
+    {
+      "src": "/api/soundcloud",
+      "dest": "api/soundcloud.py"
+    },
+    {
+      "src": "/api/soundclouddl",
+      "dest": "api/soundclouddl.py"
+    },
+    {
+      "src": "/api/ttstalk",
+      "dest": "api/ttstalk.py"
+    },
+    {
+      "src": "/api/twitter",
+      "dest": "api/twitter.py"
+    },
+    {
+      "src": "/api/twitterstalk",
+      "dest": "api/twitterstalk.py"
+    },
+    {
+      "src": "/api/threads",
+      "dest": "api/threads.py"
+    },
+    {
+      "src": "/api/gempa",
+      "dest": "api/gempa.py"
     },
     {
       "src": "/api/photo2anime2",
