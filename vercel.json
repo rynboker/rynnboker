@@ -74,10 +74,6 @@
       "use": "@vercel/python"
     },
     {
-      "src": "api/aboutwebsite.py",
-      "use": "@vercel/python"
-    },
-    {
       "src": "api/shorturl.py",
       "use": "@vercel/python"
     }
@@ -110,10 +106,6 @@
     {
       "src": "/api/ytplayaud",
       "dest": "api/yt-playaud.py"
-    },
-    {
-      "src": "/api/aboutwebsite",
-      "dest": "api/aboutwebsite.py"
     },
     {
       "src": "/api/translate",
