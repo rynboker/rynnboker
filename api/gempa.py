@@ -7,23 +7,33 @@ app = Flask(__name__)
 def gempa():
 
     # Call the external earthquake data API
-    api_url = f"https://api.agatz.xyz/api/gempa"
+    api_url1 = f"https://api.agatz.xyz/api/gempa"
+    api_url2 = f"https://itzpire.com/information/gempaWarning"
     try:
-        response = requests.get(api_url)
+        response1 = requests1.get(api_url1)
+        response2 = requests1.get(api_url2)
 
         # Handle any non-200 responses from the external API
-        if response.status_code != 200:
+        if response1.status_code != 200:
             return jsonify({
-                "status": response.status_code,
+                "status": response1.status_code,
                 "creator": "Astri",
                 "error": "Sorry, an error occurred with our external service. Please try again later."
-            }), response.status_code
+            }), response1.status_code
+            
+            if response2.status_code != 200:
+            return jsonify({
+                "status": response2.status_code,
+                "creator": "Astri",
+                "error": "Sorry, an error occurred with our external service. Please try again later."
+            }), response2.status_code
 
         # Extract and format the data from the external API response
-        external_data = response.json().get("data", {})
+        external_data1 = response1.json().get("data", {})
+        external_data2 = response2.json().get("data", {})
 
         # Check if external data is present
-        if not external_data:
+        if not external_data1:
             return jsonify({
                 "status": 404,
                 "creator": "Astri",
@@ -31,26 +41,27 @@ def gempa():
             }), 404
 
         # Format the data as needed
-        formatted_data = {
-            "date": external_data.get("tanggal"),
-            "time": external_data.get("waktu"),
-            "potential": external_data.get("potensi"),
-            "magnitude": external_data.get("magnitude"),
-            "depth": external_data.get("kedalaman"),
-            "region": external_data.get("wilayah"),
-            "latitude": external_data.get("lintang"),
-            "longitude": external_data.get("bujur"),
-            "coordinates": external_data.get("koordinat"),
-            "felt": external_data.get("dirasakan")
+        formatted_data1 = {
+            "date": external_data1.get("tanggal"),
+            "time": external_data1.get("waktu"),
+            "potential": external_data1.get("potensi"),
+            "magnitude": external_data1.get("magnitude"),
+            "depth": external_data1.get("kedalaman"),
+            "region": external_data1.get("wilayah"),
+            "latitude": external_data1.get("lintang"),
+            "longitude": external_data1.get("bujur"),
+            "coordinates": external_data1.get("koordinat"),
+            "felt": external_data1.get("dirasakan")
         }
 
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": formatted_data
+            "data1": formatted_data1
+            "data2": formatted_data2
         })
 
-    except requests.exceptions.RequestException as e:
+    except requests1.exceptions.RequestException as e:
         return jsonify({
             "status": 503,
             "creator": "Astri",
