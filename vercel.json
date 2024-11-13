@@ -38,6 +38,7 @@
     { "src": "/api/soundclouddl", "dest": "api/astri4.py" },
     { "src": "/api/twitter", "dest": "api/astri4.py" },
     { "src": "/api/twitterstalk", "dest": "api/astri4.py" },
+    { "src": "/api/spotifydl", "dest": "api/astri4.py" },
     { "src": "/photo2anime2_image/(.*)", "dest": "api/astri1.py" },
     { "src": "/(.*)", "dest": "api/astri2.py" }
   ],
