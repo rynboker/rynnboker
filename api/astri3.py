@@ -180,8 +180,10 @@ def ytplayaud():
 # API /api/otakudesu
 @app.route('/api/otakudesu', methods=['GET'])
 def otakudesu():
+    # Ambil parameter message dari request
     message = request.args.get('message')
 
+    # Validasi parameter
     if not message:
         return jsonify({
             "status": 400,
@@ -189,43 +191,38 @@ def otakudesu():
             "error": "Parameter 'message' is required."
         }), 400
 
+    # Panggil API eksternal untuk mencari video di YouTube
     api_url = f"https://api.agatz.xyz/api/otakudesu?message={message}"
     try:
         response = requests.get(api_url)
+        # Jika respons dari API eksternal tidak berhasil
         if response.status_code != 200:
             return jsonify({
                 "status": response.status_code,
                 "creator": "Astri",
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
-
+        
+        # Ambil data dari respons API eksternal
         data = response.json()
 
-        # Log the structure of the response to see if 'data' is correct
-        app.logger.debug(f"Received data: {json.dumps(data, indent=4)}")
-
-        results = []
+        # Buat respons sesuai dengan format yang diinginkan
+        results = []  # Corrected indentation
         for item in data.get("data", []):
-            app.logger.debug(f"Processing item: {item}")  # Log the item for debugging
-            
+            # Ambil genre yang bisa lebih dari satu
             genre_list = item.get("genre_list", [])
             
-            # Check if genre_list is actually a list of dictionaries
-            if isinstance(genre_list, list):
-                genres = []
-                for genre in genre_list:
-                    # Ensure each genre is a dictionary
-                    if isinstance(genre, dict):
-                        genres.append({
-                            "genre_title": genre.get("genre_title"),
-                            "genre_link": genre.get("genre_link"),
-                            "genre_id": genre.get("genre_id")
-                        })
-                    else:
-                        # Log that genre is not a dictionary
-                        app.logger.warning(f"Expected a dictionary for genre, got {type(genre)}")
-                genres = genres or None
-            else:
+            # Jika genre_list ada dan bukan kosong, buat list of genres
+            genres = []
+            for genre in genre_list:
+                genres.append({
+                    "genre_title": genre.get("genre_title"),
+                    "genre_link": genre.get("genre_link"),
+                    "genre_id": genre.get("genre_id")
+                })
+            
+            # Jika genre tidak ditemukan, kirim nilai default kosong
+            if not genres:
                 genres = None
 
             results.append({
@@ -235,30 +232,23 @@ def otakudesu():
                 "id": item.get("id"),
                 "status": item.get("status"),
                 "score": item.get("score"),
-                "genre": genres
+                "genre": genres  # Memasukkan daftar genre
             })
 
         return jsonify({
             "status": 200,
-            "creator": "Astri",
+            "creator": "Astri",  # Ganti dengan nama creator kamu
             "data": results
         })
-
     except requests.exceptions.RequestException as e:
+        # Tangani error jaringan atau server
+        print(f"Error occurred: {e}")
         return jsonify({
             "status": 503,
-            "creator": "Astri",
+            "creator": "Astri",  # Ganti dengan nama creator kamu
             "error": "Service is unavailable. Please try again later."
         }), 503
 
-    except Exception as e:
-        # Log the full error for debugging purposes
-        app.logger.error(f"Unexpected error: {str(e)}")
-        return jsonify({
-            "status": 500,
-            "creator": "Astri",
-            "error": f"An unexpected error occurred: {str(e)}"
-        }), 500
 
 # API /api/otakulatest
 @app.route('/api/otakudesulatest', methods=['GET'])
