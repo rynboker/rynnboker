@@ -65,17 +65,25 @@ def soundclouddl():
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
         
-        external_data = response.json().get("data", [])
-        formatted_data = [
-            {
-                "title": item.get("title"),
-                "duration": item.get("duration"),
-                "quality": item.get("quality"),
-                "thumbnail": item.get("thumbnail"),
-                "download": item.get("download")
-            }
-            for item in external_data
-        ]
+        # Get the response data (the 'data' field is an object, not a list)
+        external_data = response.json().get("data", {})
+
+        # Ensure that 'data' is a valid object with the expected keys
+        if not isinstance(external_data, dict) or not all(key in external_data for key in ["title", "duration", "quality", "thumbnail", "download"]):
+            return jsonify({
+                "status": 500,
+                "creator": "Astri",
+                "error": "Unexpected response format from external API."
+            }), 500
+
+        # Extract and format the data
+        formatted_data = {
+            "title": external_data.get("title"),
+            "duration": external_data.get("duration"),
+            "quality": external_data.get("quality"),
+            "thumbnail": external_data.get("thumbnail"),
+            "download": external_data.get("download")
+        }
 
         return jsonify({
             "status": 200,
@@ -83,10 +91,12 @@ def soundclouddl():
             "data": formatted_data
         })
     except requests.exceptions.RequestException as e:
+        # Log the error for debugging purposes
+        print(f"Error occurred: {e}")
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"Service is unavailable"
+            "error": "Service is unavailable. Please try again later."
         }), 503
 
 # API for twitter
