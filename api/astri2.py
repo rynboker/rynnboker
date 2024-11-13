@@ -328,7 +328,7 @@ def ttstalk():
         return jsonify({
             "status": 500,
             "creator": "Astri",
-            "error": "An unexpected error occurred"
+            "error": "An unexpected error occurred: {str(e)}"
         }), 500
 
 if __name__ == "__main__":
