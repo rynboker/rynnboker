@@ -206,8 +206,8 @@ def otakudesu():
         # Ambil data dari respons API eksternal
         data = response.json()
 
-        # Debug: Check the structure of the data
-        print(f"API Response: {data}")
+        # Debug: Log the raw response
+        print(f"Raw API Response: {response.text}")
 
         # Pastikan bahwa data.get("data") adalah list
         data_items = data.get("data", [])
@@ -264,6 +264,7 @@ def otakudesu():
             "creator": "Astri",  # Ganti dengan nama creator kamu
             "error": "Service is unavailable. Please try again later."
         }), 503
+
 
 # API /api/otakulatest
 @app.route('/api/otakudesulatest', methods=['GET'])
