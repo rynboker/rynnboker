@@ -67,12 +67,10 @@ def ytsearch():
 
 
 # API /api/ytplayvid
-@app.route('/api/otakudesu', methods=['GET'])
-def otakudesu():
-    # Ambil parameter message dari request
+@app.route('/api/ytplayvid', methods=['GET'])
+def ytplayvid():
     message = request.args.get('message')
 
-    # Validasi parameter
     if not message:
         return jsonify({
             "status": 400,
@@ -80,76 +78,39 @@ def otakudesu():
             "error": "Parameter 'message' is required."
         }), 400
 
-    # Panggil API eksternal untuk mencari video di YouTube
-    api_url = f"https://api.agatz.xyz/api/otakudesu?message={message}"
+    api_url = f"https://api.agatz.xyz/api/ytplayvid?message={message}"
     try:
         response = requests.get(api_url)
-        
-        # Jika respons dari API eksternal tidak berhasil
         if response.status_code != 200:
             return jsonify({
                 "status": response.status_code,
                 "creator": "Astri",
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
-        
-        # Ambil data dari respons API eksternal
-        data = response.json()
 
-        # Debug: Log the raw response
-        print(f"Raw API Response: {response.text}")
+        data = response.json().get("data", {})
 
-        # Pastikan bahwa data.get("data") adalah list
-        data_items = data.get("data", [])
-        if not isinstance(data_items, list):
-            return jsonify({
-                "status": 500,
-                "creator": "Astri",
-                "error": "Unexpected response format from external API."
-            }), 500
-
-        # Buat respons sesuai dengan format yang diinginkan
-        results = []
-        for item in data_items:
-            # Pastikan item adalah dictionary sebelum mencoba menggunakan .get()
-            if not isinstance(item, dict):
-                continue
-
-            # Ambil genre yang bisa lebih dari satu
-            genre_list = item.get("genre_list", [])
-
-            # Jika genre_list ada dan bukan kosong, buat list of genres
-            genres = [{
-                "genre_title": genre.get("genre_title"),
-                "genre_link": genre.get("genre_link"),
-                "genre_id": genre.get("genre_id")
-            } for genre in genre_list if isinstance(genre, dict)]
-            
-            # Jika genre tidak ditemukan, kirim daftar kosong
-            if not genres:
-                genres = []
-
-            results.append({
-                "thumb": item.get("thumb"),
-                "title": item.get("title"),
-                "link": item.get("link"),
-                "id": item.get("id"),
-                "status": item.get("status"),
-                "score": item.get("score"),
-                "genre": genres  # Memasukkan daftar genre
-            })
-
-        return jsonify({
+        result = {
             "status": 200,
-            "creator": "Astri",  # Ganti dengan nama creator kamu
-            "data": results
-        })
-    except requests.exceptions.RequestException as e:
-        # Tangani error jaringan atau server
-        print(f"Error occurred: {e}")
+            "creator": "Astri",
+            "data": {
+                "title": data.get("title"),
+                "description": data.get("description"),
+                "url": data.get("url"),
+                "duration": data.get("duration"),
+                "views": data.get("views"),
+                "uploadedAt": data.get("uploadedAt"),
+                "author": data.get("author"),
+                "downloadUrl": data.get("downloadUrl")
+            }
+        }
+
+        return jsonify(result)
+
+    except requests.exceptions.RequestException:
         return jsonify({
             "status": 503,
-            "creator": "Astri",  # Ganti dengan nama creator kamu
+            "creator": "Astri",
             "error": "Service is unavailable. Please try again later."
         }), 503
 
@@ -233,6 +194,7 @@ def otakudesu():
     api_url = f"https://api.agatz.xyz/api/otakudesu?message={message}"
     try:
         response = requests.get(api_url)
+        
         # Jika respons dari API eksternal tidak berhasil
         if response.status_code != 200:
             return jsonify({
@@ -265,35 +227,39 @@ def otakudesu():
 
             # Ambil genre yang bisa lebih dari satu
             genre_list = item.get("genre_list", [])
-            
+
             # Jika genre_list ada dan bukan kosong, buat list of genres
             genres = []
             for genre in genre_list:
+                # Ambil informasi genre, jika ada
                 genres.append({
-                    "genre_title": genre.get("genre_title"),
-                    "genre_link": genre.get("genre_link"),
-                    "genre_id": genre.get("genre_id")
+                    "genre_title": genre.get("genre_title", ""),
+                    "genre_link": genre.get("genre_link", ""),
+                    "genre_id": genre.get("genre_id", "")
                 })
             
-            # Jika genre tidak ditemukan, kirim nilai default kosong
+            # Jika genre tidak ditemukan, kirim nilai None
             if not genres:
                 genres = None
 
+            # Buat dictionary untuk item
             results.append({
-                "thumb": item.get("thumb"),
-                "title": item.get("title"),
-                "link": item.get("link"),
-                "id": item.get("id"),
-                "status": item.get("status"),
-                "score": item.get("score"),
+                "thumb": item.get("thumb", ""),
+                "title": item.get("title", ""),
+                "link": item.get("link", ""),
+                "id": item.get("id", ""),
+                "status": item.get("status", ""),
+                "score": item.get("score", ""),
                 "genre": genres  # Memasukkan daftar genre
             })
 
+        # Kembalikan response JSON yang diinginkan
         return jsonify({
             "status": 200,
             "creator": "Astri",  # Ganti dengan nama creator kamu
             "data": results
         })
+    
     except requests.exceptions.RequestException as e:
         # Tangani error jaringan atau server
         print(f"Error occurred: {e}")
@@ -302,7 +268,6 @@ def otakudesu():
             "creator": "Astri",  # Ganti dengan nama creator kamu
             "error": "Service is unavailable. Please try again later."
         }), 503
-
 
 # API /api/otakulatest
 @app.route('/api/otakudesulatest', methods=['GET'])
