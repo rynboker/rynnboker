@@ -178,7 +178,7 @@ def ytplayaud():
 
 
 # API /api/otakudesu
-@app.route('/api/otakudesu', methods=['GET'])
+@app.route('/idk/otakudesu', methods=['GET'])
 def otakudesu():
     # Ambil parameter message dari request
     message = request.args.get('message')
@@ -207,37 +207,40 @@ def otakudesu():
         data = response.json()
 
         # Buat respons sesuai dengan format yang diinginkan
-        results = []  # Corrected indentation
+        results = []  
         for item in data.get("data", []):
-            # Ambil genre yang bisa lebih dari satu
-            genre_list = item.get("genre_list", [])
-            
-            # Jika genre_list ada dan bukan kosong, buat list of genres
-            genres = []
-            for genre in genre_list:
-                genres.append({
-                    "genre_title": genre.get("genre_title"),
-                    "genre_link": genre.get("genre_link"),
-                    "genre_id": genre.get("genre_id")
-                })
-            
-            # Jika genre tidak ditemukan, kirim nilai default kosong
-            if not genres:
-                genres = None
+            if isinstance(item, dict):  # Check if item is a dictionary
+                # Ambil genre yang bisa lebih dari satu
+                genre_list = item.get("genre_list", [])
+                
+                # Jika genre_list ada dan bukan kosong, buat list of genres
+                genres = []
+                for genre in genre_list:
+                    genres.append({
+                        "genre_title": genre.get("genre_title"),
+                        "genre_link": genre.get("genre_link"),
+                        "genre_id": genre.get("genre_id")
+                    })
+                
+                # Jika genre tidak ditemukan, kirim nilai default kosong
+                if not genres:
+                    genres = None
 
-            results.append({
-                "thumb": item.get("thumb"),
-                "title": item.get("title"),
-                "link": item.get("link"),
-                "id": item.get("id"),
-                "status": item.get("status"),
-                "score": item.get("score"),
-                "genre": genres  # Memasukkan daftar genre
-            })
+                results.append({
+                    "thumb": item.get("thumb"),
+                    "title": item.get("title"),
+                    "link": item.get("link"),
+                    "id": item.get("id"),
+                    "status": item.get("status"),
+                    "score": item.get("score"),
+                    "genre": genres  # Memasukkan daftar genre
+                })
+            else:
+                print(f"Unexpected item format: {item}")
 
         return jsonify({
             "status": 200,
-            "creator": "Astri",  # Ganti dengan nama creator kamu
+            "creator": "Astri",
             "data": results
         })
     except requests.exceptions.RequestException as e:
@@ -245,9 +248,10 @@ def otakudesu():
         print(f"Error occurred: {e}")
         return jsonify({
             "status": 503,
-            "creator": "Astri",  # Ganti dengan nama creator kamu
+            "creator": "Astri",
             "error": "Service is unavailable. Please try again later."
         }), 503
+
 
 
 # API /api/otakulatest
