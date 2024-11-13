@@ -139,52 +139,86 @@ def serve_image(filename):
 # /api/gempa Endpoint
 @app.route('/api/gempa', methods=['GET'])
 def gempa():
-    api_url = f"https://api.agatz.xyz/api/gempa"
-    try:
-        response = requests.get(api_url)
+    # Call the external earthquake data API
+    api_url1 = f"https://api.agatz.xyz/api/gempa"
+    api_url2 = f"https://itzpire.com/information/gempaWarning"
 
-        if response.status_code != 200:
+    try:
+        # Make the API requests
+        response1 = requests.get(api_url1)
+        response2 = requests.get(api_url2)
+
+        # Handle any non-200 responses from the external API
+        if response1.status_code != 200:
             return jsonify({
-                "status": response.status_code,
+                "status": response1.status_code,
                 "creator": "Astri",
                 "error": "Sorry, an error occurred with our external service. Please try again later."
-            }), response.status_code
+            }), response1.status_code
 
-        external_data = response.json().get("data", [])
-        formatted_data = [
-            {
-                "date": item.get("tanggal"),
-                "time": item.get("waktu"),
-                "potential": item.get("potensi"),
-                "magnitude": item.get("magnitude"),
-                "depth": item.get("kedalaman"),
-                "region": item.get("wilayah"),
-                "latitude": item.get("lintang"),
-                "oblong": item.get("bujur"),
-                "coordinate": item.get("koordinat"),
-                "felt": item.get("dirasakan")
-            }
-            for item in external_data
-        ]
+        if response2.status_code != 200:
+            return jsonify({
+                "status": response2.status_code,
+                "creator": "Astri",
+                "error": "Sorry, an error occurred with our external service. Please try again later."
+            }), response2.status_code
+
+        # Extract and format the data from the external API response
+        external_data1 = response1.json().get("data", {})
+        external_data2 = response2.json().get("data", {})
+
+        # Check if external data is present
+        if not external_data1:
+            return jsonify({
+                "status": 404,
+                "creator": "Astri",
+                "error": "No earthquake data found."
+            }), 404
+
+        if not external_data2:
+            return jsonify({
+                "status": 404,
+                "creator": "Astri",
+                "error": "No earthquake data found."
+            }), 404
+
+        # Format the data as needed
+        formatted_data1 = {
+            "date": external_data1.get("tanggal"),
+            "time": external_data1.get("waktu"),
+            "potential": external_data1.get("potensi"),
+            "magnitude": external_data1.get("magnitude"),
+            "depth": external_data1.get("kedalaman"),
+            "region": external_data1.get("wilayah"),
+            "latitude": external_data1.get("lintang"),
+            "longitude": external_data1.get("bujur"),
+            "coordinates": external_data1.get("koordinat"),
+            "felt": external_data1.get("dirasakan")
+        }
+
+        formatted_data2 = {
+            "peta": external_data2.get("linkPeta")
+        }
 
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": formatted_data
+            "data1": formatted_data1,
+            "data2": formatted_data2
         })
 
     except requests.exceptions.RequestException as e:
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"Service is unavailable"
+            "error": "Service is unavailable"
         }), 503
 
     except Exception as e:
         return jsonify({
             "status": 500,
             "creator": "Astri",
-            "error": f"An unexpected error occurred"
+            "error": "An unexpected error occurred"
         }), 500
 
 # /api/gimage Endpoint
