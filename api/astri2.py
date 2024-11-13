@@ -286,14 +286,26 @@ def ttstalk():
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
 
-        external_data = response.json().get("data", [])
-        
-        if not external_data:
+        try:
+            external_data = response.json()
+            
+            # Check if the response is a dictionary and contains "data"
+            if isinstance(external_data, dict) and "data" in external_data:
+                external_data = external_data["data"]
+            else:
+                return jsonify({
+                    "status": 404,
+                    "creator": "Astri",
+                    "error": "No valid data found for the specified name."
+                }), 404
+
+        except ValueError as e:
+            app.logger.error(f"Error parsing JSON: {e}")
             return jsonify({
-                "status": 404,
+                "status": 500,
                 "creator": "Astri",
-                "error": "No data found for the specified name."
-            }), 404
+                "error": "Failed to parse the response from the external service."
+            }), 500
 
         formatted_data = [
             {
@@ -328,9 +340,8 @@ def ttstalk():
         return jsonify({
             "status": 500,
             "creator": "Astri",
-            "error": f"An unexpected error occurred: {str(e)}"  # Improved to include exception details
+            "error": f"An unexpected error occurred: {str(e)}"
         }), 500
-
 
 if __name__ == "__main__":
     app.run(debug=True)
