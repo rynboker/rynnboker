@@ -194,7 +194,6 @@ def otakudesu():
     api_url = f"https://api.agatz.xyz/api/otakudesu?message={message}"
     try:
         response = requests.get(api_url)
-        
         # Jika respons dari API eksternal tidak berhasil
         if response.status_code != 200:
             return jsonify({
@@ -209,9 +208,12 @@ def otakudesu():
         # Debug: Log the raw response
         print(f"Raw API Response: {response.text}")
 
-        # Pastikan bahwa data.get("data") adalah list
-        data_items = data.get("data", [])
-        if not isinstance(data_items, list):
+        # Pastikan bahwa data.get("data") adalah dictionary dan memiliki "search_results"
+        data_content = data.get("data", {})
+        search_results = data_content.get("search_results", [])
+
+        # Jika search_results bukan list, berikan response error
+        if not isinstance(search_results, list):
             return jsonify({
                 "status": 500,
                 "creator": "Astri",
@@ -220,46 +222,42 @@ def otakudesu():
 
         # Buat respons sesuai dengan format yang diinginkan
         results = []
-        for item in data_items:
+        for item in search_results:
             # Pastikan item adalah dictionary sebelum mencoba menggunakan .get()
             if not isinstance(item, dict):
                 continue
 
             # Ambil genre yang bisa lebih dari satu
             genre_list = item.get("genre_list", [])
-
+            
             # Jika genre_list ada dan bukan kosong, buat list of genres
             genres = []
             for genre in genre_list:
-                # Ambil informasi genre, jika ada
                 genres.append({
-                    "genre_title": genre.get("genre_title", ""),
-                    "genre_link": genre.get("genre_link", ""),
-                    "genre_id": genre.get("genre_id", "")
+                    "genre_title": genre.get("genre_title"),
+                    "genre_link": genre.get("genre_link"),
+                    "genre_id": genre.get("genre_id")
                 })
             
-            # Jika genre tidak ditemukan, kirim nilai None
+            # Jika genre tidak ditemukan, kirim nilai default kosong
             if not genres:
                 genres = None
 
-            # Buat dictionary untuk item
             results.append({
-                "thumb": item.get("thumb", ""),
-                "title": item.get("title", ""),
-                "link": item.get("link", ""),
-                "id": item.get("id", ""),
-                "status": item.get("status", ""),
-                "score": item.get("score", ""),
+                "thumb": item.get("thumb"),
+                "title": item.get("title"),
+                "link": item.get("link"),
+                "id": item.get("id"),
+                "status": item.get("status"),
+                "score": item.get("score"),
                 "genre": genres  # Memasukkan daftar genre
             })
 
-        # Kembalikan response JSON yang diinginkan
         return jsonify({
             "status": 200,
             "creator": "Astri",  # Ganti dengan nama creator kamu
             "data": results
         })
-    
     except requests.exceptions.RequestException as e:
         # Tangani error jaringan atau server
         print(f"Error occurred: {e}")
