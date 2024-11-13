@@ -206,9 +206,25 @@ def otakudesu():
         # Ambil data dari respons API eksternal
         data = response.json()
 
+        # Debug: Check the structure of the data
+        print(f"API Response: {data}")
+
+        # Pastikan bahwa data.get("data") adalah list
+        data_items = data.get("data", [])
+        if not isinstance(data_items, list):
+            return jsonify({
+                "status": 500,
+                "creator": "Astri",
+                "error": "Unexpected response format from external API."
+            }), 500
+
         # Buat respons sesuai dengan format yang diinginkan
         results = []
-        for item in data.get("data", []):
+        for item in data_items:
+            # Pastikan item adalah dictionary sebelum mencoba menggunakan .get()
+            if not isinstance(item, dict):
+                continue
+
             # Ambil genre yang bisa lebih dari satu
             genre_list = item.get("genre_list", [])
             
@@ -248,7 +264,6 @@ def otakudesu():
             "creator": "Astri",  # Ganti dengan nama creator kamu
             "error": "Service is unavailable. Please try again later."
         }), 503
-
 
 # API /api/otakulatest
 @app.route('/api/otakudesulatest', methods=['GET'])
