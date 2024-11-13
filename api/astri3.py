@@ -178,7 +178,7 @@ def ytplayaud():
 
 
 # API /api/otakudesu
-@app.route('/idk/otakudesu', methods=['GET'])
+@app.route('/api/otakudesu', methods=['GET'])
 def otakudesu():
     # Enable logging
     logging.basicConfig(level=logging.DEBUG)
