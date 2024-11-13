@@ -287,6 +287,14 @@ def ttstalk():
             }), response.status_code
 
         external_data = response.json().get("data", [])
+        
+        if not external_data:
+            return jsonify({
+                "status": 404,
+                "creator": "Astri",
+                "error": "No data found for the specified name."
+            }), 404
+
         formatted_data = [
             {
                 "photo": item.get("photo"),
@@ -308,17 +316,19 @@ def ttstalk():
         })
 
     except requests.exceptions.RequestException as e:
+        app.logger.error(f"RequestException: {e}")
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"Service is unavailable"
+            "error": "Service is unavailable"
         }), 503
 
     except Exception as e:
+        app.logger.error(f"Unexpected error: {e}")
         return jsonify({
             "status": 500,
             "creator": "Astri",
-            "error": f"An unexpected error occurred"
+            "error": "An unexpected error occurred"
         }), 500
 
 if __name__ == "__main__":
