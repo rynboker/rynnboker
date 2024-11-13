@@ -202,9 +202,13 @@ def otakudesu():
         results = []
         for item in data.get("data", []):
             genre_list = item.get("genre_list", [])
-            genres = [{"genre_title": genre.get("genre_title"),
-                       "genre_link": genre.get("genre_link"),
-                       "genre_id": genre.get("genre_id")} for genre in genre_list] or None
+            # Ensure genre_list is a list of dictionaries
+            if isinstance(genre_list, list):
+                genres = [{"genre_title": genre.get("genre_title"),
+                           "genre_link": genre.get("genre_link"),
+                           "genre_id": genre.get("genre_id")} for genre in genre_list if isinstance(genre, dict)] or None
+            else:
+                genres = None
 
             results.append({
                 "thumb": item.get("thumb"),
@@ -228,6 +232,13 @@ def otakudesu():
             "creator": "Astri",
             "error": "Service is unavailable. Please try again later."
         }), 503
+
+    except Exception as e:
+        return jsonify({
+            "status": 500,
+            "creator": "Astri",
+            "error": f"An unexpected error occurred: {str(e)}"
+        }), 500
 
 
 # API /api/otakulatest
