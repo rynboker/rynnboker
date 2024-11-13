@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 import requests
-import json
+import logging
 
 app = Flask(__name__)
 
@@ -178,13 +178,18 @@ def ytplayaud():
 
 
 # API /api/otakudesu
-@app.route('/api/otakudesu', methods=['GET'])
+@app.route('/idk/otakudesu', methods=['GET'])
 def otakudesu():
+    # Enable logging
+    logging.basicConfig(level=logging.DEBUG)
+    
     # Ambil parameter message dari request
     message = request.args.get('message')
+    logging.debug(f"Received message: {message}")
 
     # Validasi parameter
     if not message:
+        logging.error("Message parameter is missing.")
         return jsonify({
             "status": 400,
             "creator": "Astri",
@@ -195,12 +200,11 @@ def otakudesu():
     api_url = f"https://api.agatz.xyz/api/otakudesu?message={message}"
     try:
         response = requests.get(api_url)
-        # Debug: Cek status code dan response content
-        print(f"Response status code: {response.status_code}")
-        print(f"Response content: {response.text}")
+        logging.debug(f"API response status code: {response.status_code}")
+        logging.debug(f"API response content: {response.text}")
 
-        # Jika respons dari API eksternal tidak berhasil
         if response.status_code != 200:
+            logging.error(f"External API error: {response.status_code}")
             return jsonify({
                 "status": response.status_code,
                 "creator": "Astri",
@@ -209,9 +213,11 @@ def otakudesu():
         
         # Ambil data dari respons API eksternal
         data = response.json()
-        
+        logging.debug(f"Response JSON: {data}")
+
         # Cek apakah data ada dan memiliki field 'data'
         if not data.get("data"):
+            logging.warning("No data found for the provided message.")
             return jsonify({
                 "status": 404,
                 "creator": "Astri",
@@ -220,22 +226,16 @@ def otakudesu():
 
         results = []
         for item in data.get("data", []):
-            # Ambil genre yang bisa lebih dari satu
-            genre_list = item.get("genre_list", [])
-            
-            # Jika genre_list ada dan bukan kosong, buat list of genres
-            genres = []
-            for genre in genre_list:
-                genres.append({
-                    "genre_title": genre.get("genre_title"),
-                    "genre_link": genre.get("genre_link"),
-                    "genre_id": genre.get("genre_id")
-                })
-            
-            # Jika genre tidak ditemukan, kirim nilai default kosong
-            if not genres:
-                genres = None
+            if not isinstance(item, dict):
+                logging.warning(f"Unexpected data format: {item}")
+                continue  # Skip if item is not a dictionary
 
+            genre_list = item.get("genre_list", [])
+            if not isinstance(genre_list, list):
+                logging.warning(f"Unexpected genre_list format: {genre_list}")
+                genre_list = []
+
+            genres = [{"genre_title": genre.get("genre_title"), "genre_link": genre.get("genre_link"), "genre_id": genre.get("genre_id")} for genre in genre_list] if genre_list else None
             results.append({
                 "thumb": item.get("thumb"),
                 "title": item.get("title"),
@@ -243,23 +243,30 @@ def otakudesu():
                 "id": item.get("id"),
                 "status": item.get("status"),
                 "score": item.get("score"),
-                "genre": genres  # Memasukkan daftar genre
+                "genre": genres
             })
 
         return jsonify({
             "status": 200,
-            "creator": "Astri",  # Ganti dengan nama creator kamu
+            "creator": "Astri",
             "data": results
         })
+    
     except requests.exceptions.RequestException as e:
-        # Tangani error jaringan atau server
-        print(f"Error occurred: {e}")
+        logging.error(f"Request exception: {e}")
         return jsonify({
             "status": 503,
-            "creator": "Astri",  # Ganti dengan nama creator kamu
+            "creator": "Astri",
             "error": "Service is unavailable. Please try again later."
         }), 503
 
+    except Exception as e:
+        logging.error(f"Unexpected error: {e}")
+        return jsonify({
+            "status": 500,
+            "creator": "Astri",
+            "error": "Internal server error. Please try again later."
+        }), 500
 
 # API /api/otakulatest
 @app.route('/api/otakudesulatest', methods=['GET'])
