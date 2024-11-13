@@ -218,6 +218,66 @@ def twitterstalk():
             "creator": "Astri",
             "error": "Service is unavailable. Please try again later."
         }), 503
+        
+# API for spotifydl
+@app.route('/api/spotifydl', methods=['GET'])
+def spotifydl():
+    url = request.args.get('url')
+    if not url:
+        return jsonify({
+            "status": 400,
+            "creator": "Astri",
+            "error": "Parameter 'url' is required."
+        }), 400
+
+    api_url = f"https://api.agatz.xyz/api/spotifydl?url={url}"
+    
+    try:
+        response = requests.get(api_url)
+        
+        if response.status_code != 200:
+            return jsonify({
+                "status": response.status_code,
+                "creator": "Astri",
+                "error": "Sorry, an error occurred with our external service. Please try again later."
+            }), response.status_code
+
+        # Mengambil data 'data' yang berisi string JSON
+        external_data_str = response.json().get("data", "")
+        
+        # Jika ada data, kita parse string JSON tersebut
+        if external_data_str:
+            external_data = json.loads(external_data_str)
+
+            # Mengambil data yang dibutuhkan
+            formatted_data = {
+                "channel_name": external_data.get("nama_channel", None),
+                "title": external_data.get("judul", None),
+                "duration": external_data.get("durasi", None),
+                "thumbnail": external_data.get("gambar_kecil", [])[0].get("url", None) if external_data.get("gambar_kecil") else None,
+                "download_url": external_data.get("url_audio_v1", None)
+            }
+
+            return jsonify({
+                "status": 200,
+                "creator": "Astri",
+                "data": formatted_data
+            })
+        
+        return jsonify({
+            "status": 404,
+            "creator": "Astri",
+            "error": "Data not found in external service response."
+        }), 404
+
+    except requests.exceptions.RequestException as e:
+        # Log the error for debugging purposes
+        print(f"Error occurred: {e}")
+        return jsonify({
+            "status": 503,
+            "creator": "Astri",
+            "error": "Service is unavailable. Please try again later."
+        }), 503
 
 if __name__ == "__main__":
     app.run(debug=True)
