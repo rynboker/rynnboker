@@ -180,16 +180,11 @@ def ytplayaud():
 # API /api/otakudesu
 @app.route('/api/otakudesu', methods=['GET'])
 def otakudesu():
-    # Enable logging
-    logging.basicConfig(level=logging.DEBUG)
-    
     # Ambil parameter message dari request
     message = request.args.get('message')
-    logging.debug(f"Received message: {message}")
 
     # Validasi parameter
     if not message:
-        logging.error("Message parameter is missing.")
         return jsonify({
             "status": 400,
             "creator": "Astri",
@@ -200,11 +195,8 @@ def otakudesu():
     api_url = f"https://api.agatz.xyz/api/otakudesu?message={message}"
     try:
         response = requests.get(api_url)
-        logging.debug(f"API response status code: {response.status_code}")
-        logging.debug(f"API response content: {response.text}")
-
+        # Jika respons dari API eksternal tidak berhasil
         if response.status_code != 200:
-            logging.error(f"External API error: {response.status_code}")
             return jsonify({
                 "status": response.status_code,
                 "creator": "Astri",
@@ -213,29 +205,26 @@ def otakudesu():
         
         # Ambil data dari respons API eksternal
         data = response.json()
-        logging.debug(f"Response JSON: {data}")
 
-        # Cek apakah data ada dan memiliki field 'data'
-        if not data.get("data"):
-            logging.warning("No data found for the provided message.")
-            return jsonify({
-                "status": 404,
-                "creator": "Astri",
-                "error": "No data found for the provided message."
-            }), 404
-
-        results = []
+        # Buat respons sesuai dengan format yang diinginkan
+       results = []
         for item in data.get("data", []):
-            if not isinstance(item, dict):
-                logging.warning(f"Unexpected data format: {item}")
-                continue  # Skip if item is not a dictionary
-
+            # Ambil genre yang bisa lebih dari satu
             genre_list = item.get("genre_list", [])
-            if not isinstance(genre_list, list):
-                logging.warning(f"Unexpected genre_list format: {genre_list}")
-                genre_list = []
+            
+            # Jika genre_list ada dan bukan kosong, buat list of genres
+            genres = []
+            for genre in genre_list:
+                genres.append({
+                    "genre_title": genre.get("genre_title"),
+                    "genre_link": genre.get("genre_link"),
+                    "genre_id": genre.get("genre_id")
+                })
+            
+            # Jika genre tidak ditemukan, kirim nilai default kosong
+            if not genres:
+                genres = None
 
-            genres = [{"genre_title": genre.get("genre_title"), "genre_link": genre.get("genre_link"), "genre_id": genre.get("genre_id")} for genre in genre_list] if genre_list else None
             results.append({
                 "thumb": item.get("thumb"),
                 "title": item.get("title"),
@@ -243,30 +232,23 @@ def otakudesu():
                 "id": item.get("id"),
                 "status": item.get("status"),
                 "score": item.get("score"),
-                "genre": genres
+                "genre": genres  # Memasukkan daftar genre
             })
 
         return jsonify({
             "status": 200,
-            "creator": "Astri",
+            "creator": "Astri",  # Ganti dengan nama creator kamu
             "data": results
         })
-    
     except requests.exceptions.RequestException as e:
-        logging.error(f"Request exception: {e}")
+        # Tangani error jaringan atau server
+        print(f"Error occurred")
         return jsonify({
             "status": 503,
-            "creator": "Astri",
+            "creator": "Astri",  # Ganti dengan nama creator kamu
             "error": "Service is unavailable. Please try again later."
         }), 503
 
-    except Exception as e:
-        logging.error(f"Unexpected error: {e}")
-        return jsonify({
-            "status": 500,
-            "creator": "Astri",
-            "error": "Internal server error. Please try again later."
-        }), 500
 
 # API /api/otakulatest
 @app.route('/api/otakudesulatest', methods=['GET'])
