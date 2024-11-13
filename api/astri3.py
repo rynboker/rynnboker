@@ -207,7 +207,7 @@ def otakudesu():
         data = response.json()
 
         # Buat respons sesuai dengan format yang diinginkan
-       results = []
+        results = []
         for item in data.get("data", []):
             # Ambil genre yang bisa lebih dari satu
             genre_list = item.get("genre_list", [])
@@ -242,7 +242,7 @@ def otakudesu():
         })
     except requests.exceptions.RequestException as e:
         # Tangani error jaringan atau server
-        print(f"Error occurred")
+        print(f"Error occurred: {e}")
         return jsonify({
             "status": 503,
             "creator": "Astri",  # Ganti dengan nama creator kamu
