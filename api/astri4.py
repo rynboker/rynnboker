@@ -68,21 +68,13 @@ def soundclouddl():
         # Get the response data (the 'data' field is an object, not a list)
         external_data = response.json().get("data", {})
 
-        # Ensure that 'data' is a valid object with the expected keys
-        if not isinstance(external_data, dict) or not all(key in external_data for key in ["title", "duration", "quality", "thumbnail", "download"]):
-            return jsonify({
-                "status": 500,
-                "creator": "Astri",
-                "error": "Unexpected response format from external API."
-            }), 500
-
-        # Extract and format the data
+        # Extract and format the data, defaulting to None for missing keys
         formatted_data = {
-            "title": external_data.get("title"),
-            "duration": external_data.get("duration"),
-            "quality": external_data.get("quality"),
-            "thumbnail": external_data.get("thumbnail"),
-            "download": external_data.get("download")
+            "title": external_data.get("title", None),
+            "duration": external_data.get("duration", None),
+            "quality": external_data.get("quality", None),
+            "thumbnail": external_data.get("thumbnail", None),
+            "download": external_data.get("download", None)
         }
 
         return jsonify({
@@ -123,21 +115,13 @@ def twitter():
         # Get the response data (the 'data' field is an object, not a list)
         external_data = response.json().get("data", {})
 
-        # Ensure that 'data' is a valid object with the expected keys
-        if not isinstance(external_data, dict) or not all(key in external_data for key in ["title", "duration", "quality", "thumbnail", "download"]):
-            return jsonify({
-                "status": 500,
-                "creator": "Astri",
-                "error": "Unexpected response format from external API."
-            }), 500
-
-        # Extract and format the data
+        # Extract and format the data, defaulting to None for missing keys
         formatted_data = {
-            "audio": external_data.get("audio"),
-            "video_hd": external_data.get("video_hd"),
-            "video_sd": external_data.get("video_sd"),
-            "thumb": external_data.get("thumb"),
-            "desc": external_data.get("desc")
+            "desc": external_data.get("desc", None),
+            "thumb": external_data.get("thumb", None),
+            "video_sd": external_data.get("video_sd", None),
+            "video_hd": external_data.get("video_hd", None),
+            "audio": external_data.get("audio", None)
         }
 
         return jsonify({
