@@ -2,167 +2,44 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/gptlogic.py",
+      "src": "api/astri1.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/yt-search.py",
+      "src": "api/astri2.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/spotify.py",
+      "src": "api/astri3.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/pinterest.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/gimage.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/yt-playvid.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/yt-playaud.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/translate.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "idk/otakudesu.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "idk/otakudesulatest.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "idk/soundcloud.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "idk/soundclouddl.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "idk/ttstalk.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "idk/twitter.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "idk/twitterstalk.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/threads.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/gempa.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/photo2anime2.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/shorturl.py",
+      "src": "api/astri4.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
-    {
-      "src": "/api/gptlogic",
-      "dest": "api/gptlogic.py"
-    },
-    {
-      "src": "/api/ytsearch",
-      "dest": "api/yt-search.py"
-    },
-    {
-      "src": "/api/spotify",
-      "dest": "api/spotify.py"
-    },
-    {
-      "src": "/api/pinterest",
-      "dest": "api/pinterest.py"
-    },
-    {
-      "src": "/api/gimage",
-      "dest": "api/gimage.py"
-    },
-    {
-      "src": "/api/ytplayvid",
-      "dest": "api/yt-playvid.py"
-    },
-    {
-      "src": "/api/ytplayaud",
-      "dest": "api/yt-playaud.py"
-    },
-    {
-      "src": "/api/translate",
-      "dest": "api/translate.py"
-    },
-    {
-      "src": "/idk/otakudesu",
-      "dest": "idk/otakudesu.py"
-    },
-    {
-      "src": "/idk/otakudesulatest",
-      "dest": "idk/otakudesulatest.py"
-    },
-    {
-      "src": "/idk/soundcloud",
-      "dest": "idk/soundcloud.py"
-    },
-    {
-      "src": "/idk/soundclouddl",
-      "dest": "idk/soundclouddl.py"
-    },
-    {
-      "src": "/idk/ttstalk",
-      "dest": "idk/ttstalk.py"
-    },
-    {
-      "src": "/idk/twitter",
-      "dest": "idk/twitter.py"
-    },
-    {
-      "src": "/idk/twitterstalk",
-      "dest": "idk/twitterstalk.py"
-    },
-    {
-      "src": "/api/threads",
-      "dest": "api/threads.py"
-    },
-    {
-      "src": "/api/gempa",
-      "dest": "api/gempa.py"
-    },
-    {
-      "src": "/api/photo2anime2",
-      "dest": "api/photo2anime2.py"
-    },
-    {
-      "src": "/api/shorturl",
-      "dest": "api/shorturl.py"
-    },
-    {
-  "src": "/photo2anime2_image/(.*)",
-  "dest": "/photo2anime2.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "shorturl.py"
-    }
+    { "src": "/api/photo2anime2", "dest": "api/astri1.py" },
+    { "src": "/api/gempa", "dest": "api/astri1.py" },
+    { "src": "/api/gimage", "dest": "api/astri1.py" },
+    { "src": "/api/pinterest", "dest": "api/astri1.py" },
+    { "src": "/api/gptlogic", "dest": "api/astri1.py" },
+    { "src": "/api/shorturl", "dest": "api/astri2.py" },
+    { "src": "/api/spotify", "dest": "api/astri2.py" },
+    { "src": "/api/threads", "dest": "api/astri2.py" },
+    { "src": "/api/translate", "dest": "api/astri2.py" },
+    { "src": "/api/ttsstalk", "dest": "api/astri2.py" },
+    { "src": "/api/ytsearch", "dest": "api/astri3.py" },
+    { "src": "/api/ytplayvid", "dest": "api/astri3.py" },
+    { "src": "/api/ytplayaud", "dest": "api/astri3.py" },
+    { "src": "/api/otakudesu", "dest": "api/astri3.py" },
+    { "src": "/api/otakudesulatest", "dest": "api/astri3.py" },
+    { "src": "/api/soundcloud", "dest": "api/astri4.py" },
+    { "src": "/api/soundclouddl", "dest": "api/astri4.py" },
+    { "src": "/api/twitter", "dest": "api/astri4.py" },
+    { "src": "/api/twitterstalk", "dest": "api/astri4.py" },
+    { "src": "/photo2anime2_image/(.*)", "dest": "api/astri1.py" },
+    { "src": "/(.*)", "dest": "api/astri2.py" }
   ],
   "env": {
     "FLASK_DEBUG": "true"
