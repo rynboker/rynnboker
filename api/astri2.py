@@ -289,7 +289,7 @@ def ttstalk():
         try:
             external_data = response.json()
             
-            # Check if the response is a dictionary and contains "data"
+            # Check if the response is a dictionary and contains the "data" field
             if isinstance(external_data, dict) and "data" in external_data:
                 external_data = external_data["data"]
             else:
@@ -307,19 +307,17 @@ def ttstalk():
                 "error": "Failed to parse the response from the external service."
             }), 500
 
-        formatted_data = [
-            {
-                "photo": item.get("photo"),
-                "username": item.get("username"),
-                "name": item.get("name"),
-                "bio": item.get("bio"),
-                "followers": item.get("followers"),
-                "following": item.get("following"),
-                "likes": item.get("likes"),
-                "posts": item.get("posts")
-            }
-            for item in external_data
-        ]
+        # Format data as expected
+        formatted_data = {
+            "photo": external_data.get("photo"),
+            "username": external_data.get("username"),
+            "name": external_data.get("name"),
+            "bio": external_data.get("bio"),
+            "followers": external_data.get("followers"),
+            "following": external_data.get("following"),
+            "likes": external_data.get("likes"),
+            "posts": external_data.get("posts")
+        }
 
         return jsonify({
             "status": 200,
@@ -342,6 +340,6 @@ def ttstalk():
             "creator": "Astri",
             "error": f"An unexpected error occurred: {str(e)}"
         }), 500
-
+        
 if __name__ == "__main__":
     app.run(debug=True)
