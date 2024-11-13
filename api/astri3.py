@@ -199,14 +199,31 @@ def otakudesu():
             }), response.status_code
 
         data = response.json()
+
+        # Log the structure of the response to see if 'data' is correct
+        app.logger.debug(f"Received data: {json.dumps(data, indent=4)}")
+
         results = []
         for item in data.get("data", []):
+            app.logger.debug(f"Processing item: {item}")  # Log the item for debugging
+            
             genre_list = item.get("genre_list", [])
-            # Ensure genre_list is a list of dictionaries
+            
+            # Check if genre_list is actually a list of dictionaries
             if isinstance(genre_list, list):
-                genres = [{"genre_title": genre.get("genre_title"),
-                           "genre_link": genre.get("genre_link"),
-                           "genre_id": genre.get("genre_id")} for genre in genre_list if isinstance(genre, dict)] or None
+                genres = []
+                for genre in genre_list:
+                    # Ensure each genre is a dictionary
+                    if isinstance(genre, dict):
+                        genres.append({
+                            "genre_title": genre.get("genre_title"),
+                            "genre_link": genre.get("genre_link"),
+                            "genre_id": genre.get("genre_id")
+                        })
+                    else:
+                        # Log that genre is not a dictionary
+                        app.logger.warning(f"Expected a dictionary for genre, got {type(genre)}")
+                genres = genres or None
             else:
                 genres = None
 
@@ -226,7 +243,7 @@ def otakudesu():
             "data": results
         })
 
-    except requests.exceptions.RequestException:
+    except requests.exceptions.RequestException as e:
         return jsonify({
             "status": 503,
             "creator": "Astri",
@@ -234,12 +251,13 @@ def otakudesu():
         }), 503
 
     except Exception as e:
+        # Log the full error for debugging purposes
+        app.logger.error(f"Unexpected error: {str(e)}")
         return jsonify({
             "status": 500,
             "creator": "Astri",
             "error": f"An unexpected error occurred: {str(e)}"
         }), 500
-
 
 # API /api/otakulatest
 @app.route('/api/otakudesulatest', methods=['GET'])
