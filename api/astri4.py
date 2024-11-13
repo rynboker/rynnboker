@@ -169,27 +169,25 @@ def twitterstalk():
                 "error": "No data found for this user."
             }), 404
 
-        # Construct the response data
-        results = {
-            "profile": {
-                "username": data.get("username"),
-                "nickname": data.get("nickname"),
-                "background": data.get("background"),
-                "profile_pic": data.get("profile"),
-                "description": data.get("desc_text"),
-                "join_at": data.get("join_at"),
-                "map": data.get("map"),
-                "tweets_count": data.get("tweets_count"),
-                "followers": data.get("followers"),
-                "following": data.get("following"),
-                "media_count": data.get("media_count")
-            },
-            "media": []
+        # Construct the profile data
+        profile_data = {
+            "username": data.get("username"),
+            "nickname": data.get("nickname"),
+            "background": data.get("background"),
+            "profile_pic": data.get("profile"),
+            "description": data.get("desc_text"),
+            "join_at": data.get("join_at"),
+            "map": data.get("map"),
+            "tweets_count": data.get("tweets_count"),
+            "followers": data.get("followers"),
+            "following": data.get("following"),
+            "media_count": data.get("media_count")
         }
 
-        # Add media posts to the response
+        # Construct the media data
+        media_data = []
         for item in data.get("media", []):
-            results["media"].append({
+            media_data.append({
                 "author": {
                     "username": item.get("author", {}).get("username"),
                     "nickname": item.get("author", {}).get("nickname"),
@@ -201,6 +199,12 @@ def twitterstalk():
                 "retweets": item.get("retweet"),
                 "likes": item.get("likes")
             })
+
+        # Combine profile and media data into final result
+        results = {
+            "profile": profile_data,
+            "media": media_data
+        }
 
         return jsonify({
             "status": 200,
