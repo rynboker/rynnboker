@@ -34,31 +34,31 @@
       "use": "@vercel/python"
     },
     {
-      "src": "api/otakudesu.py",
+      "src": "idk/otakudesu.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/otakudesulatest.py",
+      "src": "idk/otakudesulatest.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/soundcloud.py",
+      "src": "idk/soundcloud.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/soundclouddl.py",
+      "src": "idk/soundclouddl.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/ttstalk.py",
+      "src": "idk/ttstalk.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/twitter.py",
+      "src": "idk/twitter.py",
       "use": "@vercel/python"
     },
     {
-      "src": "api/twitterstalk.py",
+      "src": "idk/twitterstalk.py",
       "use": "@vercel/python"
     },
     {
@@ -112,32 +112,32 @@
       "dest": "api/translate.py"
     },
     {
-      "src": "/api/otakudesu",
-      "dest": "api/otakudesu.py"
+      "src": "/idk/otakudesu",
+      "dest": "idk/otakudesu.py"
     },
     {
-      "src": "/api/otakudesulatest",
-      "dest": "api/otakudesulatest.py"
+      "src": "/idk/otakudesulatest",
+      "dest": "idk/otakudesulatest.py"
     },
     {
-      "src": "/api/soundcloud",
-      "dest": "api/soundcloud.py"
+      "src": "/idk/soundcloud",
+      "dest": "idk/soundcloud.py"
     },
     {
-      "src": "/api/soundclouddl",
-      "dest": "api/soundclouddl.py"
+      "src": "/idk/soundclouddl",
+      "dest": "idk/soundclouddl.py"
     },
     {
-      "src": "/api/ttstalk",
-      "dest": "api/ttstalk.py"
+      "src": "/idk/ttstalk",
+      "dest": "idk/ttstalk.py"
     },
     {
-      "src": "/api/twitter",
-      "dest": "api/twitter.py"
+      "src": "/idk/twitter",
+      "dest": "idk/twitter.py"
     },
     {
-      "src": "/api/twitterstalk",
-      "dest": "api/twitterstalk.py"
+      "src": "/idk/twitterstalk",
+      "dest": "idk/twitterstalk.py"
     },
     {
       "src": "/api/threads",

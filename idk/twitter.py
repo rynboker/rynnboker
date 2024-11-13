@@ -3,11 +3,20 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route('/api/gempa', methods=['GET'])
-def gempa():
+@app.route('/idk/twitter', methods=['GET'])
+def twitter():
+    url = request.args.get('url')
+
+    # Validate the required parameter
+    if not url:
+        return jsonify({
+            "status": 400,
+            "creator": "Astri",
+            "error": "Parameter 'url' is required."
+        }), 400
 
     # Call the external image search API
-    api_url = f"https://api.agatz.xyz/api/gempa"
+    api_url = f"https://api.agatz.xyz/api/twitter?url={url}"
     try:
         response = requests.get(api_url)
 
@@ -23,16 +32,11 @@ def gempa():
         external_data = response.json().get("data", [])
         formatted_data = [
             {
-                "date": item.get("tanggal"),
-                "time": item.get("waktu"),
-                "potential": item.get("potensi"),
-                "magnitude": item.get("magnitude"),
-                "depth": item.get("kedalaman"),
-                "region": item.get("wilayah"),
-                "latitude": item.get("lintang"),
-                "oblong": item.get("bujur"),
-                "coordinate": item.get("koordinat"),
-                "felt": item.get("dirasakan")
+                "desc": item.get("desc"),
+                "thumb": item.get("thumb"),
+                "video_sd": item.get("video_sd"),
+                "video_hd": item.get("video_hd"),
+                "audio": item.get("audio")
             }
             for item in external_data
         ]

@@ -3,11 +3,20 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route('/api/gempa', methods=['GET'])
-def gempa():
+@app.route('/idk/ttstalk', methods=['GET'])
+def ttstalk():
+    name = request.args.get('name')
+
+    # Validate the required parameter
+    if not name:
+        return jsonify({
+            "status": 400,
+            "creator": "Astri",
+            "error": "Parameter 'name' is required."
+        }), 400
 
     # Call the external image search API
-    api_url = f"https://api.agatz.xyz/api/gempa"
+    api_url = f"https://api.agatz.xyz/api/ttstalk?name={name}"
     try:
         response = requests.get(api_url)
 
@@ -23,16 +32,14 @@ def gempa():
         external_data = response.json().get("data", [])
         formatted_data = [
             {
-                "date": item.get("tanggal"),
-                "time": item.get("waktu"),
-                "potential": item.get("potensi"),
-                "magnitude": item.get("magnitude"),
-                "depth": item.get("kedalaman"),
-                "region": item.get("wilayah"),
-                "latitude": item.get("lintang"),
-                "oblong": item.get("bujur"),
-                "coordinate": item.get("koordinat"),
-                "felt": item.get("dirasakan")
+                "photo": item.get("photo"),
+                "username": item.get("username"),
+                "name": item.get("name"),
+                "bio": item.get("bio"),
+                "followers": item.get("followers"),
+                "following": item.get("following"),
+                "likes": item.get("likes"),
+                "posts": item.get("posts")
             }
             for item in external_data
         ]
