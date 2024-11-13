@@ -159,14 +159,17 @@ def twitterstalk():
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
         
-        data = response.json()
-        if not data.get("media"):
+        data = response.json().get("data", {})
+
+        # Check if the user profile exists
+        if not data:
             return jsonify({
                 "status": 404,
                 "creator": "Astri",
-                "error": "No media found for this user."
+                "error": "No data found for this user."
             }), 404
 
+        # Construct the response data
         results = {
             "profile": {
                 "username": data.get("username"),
@@ -184,13 +187,14 @@ def twitterstalk():
             "media": []
         }
 
+        # Add media posts to the response
         for item in data.get("media", []):
             results["media"].append({
                 "author": {
-                    "username": item["author"].get("username"),
-                    "nickname": item["author"].get("nickname"),
-                    "profile_pic": item["author"].get("profile_pic"),
-                    "upload_at": item["author"].get("upload_at")
+                    "username": item.get("author", {}).get("username"),
+                    "nickname": item.get("author", {}).get("nickname"),
+                    "profile_pic": item.get("author", {}).get("profile_pic"),
+                    "upload_at": item.get("author", {}).get("upload_at")
                 },
                 "title": item.get("title"),
                 "media": item.get("media"),
@@ -203,6 +207,7 @@ def twitterstalk():
             "creator": "Astri",
             "data": results
         })
+    
     except requests.exceptions.RequestException as e:
         return jsonify({
             "status": 503,
