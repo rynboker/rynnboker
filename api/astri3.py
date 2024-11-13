@@ -231,7 +231,7 @@ def otakudesu():
 
 
 # API /api/otakulatest
-@app.route('/api/otakulatest', methods=['GET'])
+@app.route('/api/otakudesulatest', methods=['GET'])
 def otakulatest():
     api_url = f"https://api.agatz.xyz/api/otakulatest"
     try:
