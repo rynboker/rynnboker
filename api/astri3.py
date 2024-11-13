@@ -178,7 +178,7 @@ def ytplayaud():
 
 
 # API /api/otakudesu
-@app.route('/api/otakudesu', methods=['GET'])
+@app.route('/idk/otakudesu', methods=['GET'])
 def otakudesu():
     # Ambil parameter message dari request
     message = request.args.get('message')
@@ -195,6 +195,10 @@ def otakudesu():
     api_url = f"https://api.agatz.xyz/api/otakudesu?message={message}"
     try:
         response = requests.get(api_url)
+        # Debug: Cek status code dan response content
+        print(f"Response status code: {response.status_code}")
+        print(f"Response content: {response.text}")
+
         # Jika respons dari API eksternal tidak berhasil
         if response.status_code != 200:
             return jsonify({
@@ -205,42 +209,46 @@ def otakudesu():
         
         # Ambil data dari respons API eksternal
         data = response.json()
+        
+        # Cek apakah data ada dan memiliki field 'data'
+        if not data.get("data"):
+            return jsonify({
+                "status": 404,
+                "creator": "Astri",
+                "error": "No data found for the provided message."
+            }), 404
 
-        # Buat respons sesuai dengan format yang diinginkan
-        results = []  
+        results = []
         for item in data.get("data", []):
-            if isinstance(item, dict):  # Check if item is a dictionary
-                # Ambil genre yang bisa lebih dari satu
-                genre_list = item.get("genre_list", [])
-                
-                # Jika genre_list ada dan bukan kosong, buat list of genres
-                genres = []
-                for genre in genre_list:
-                    genres.append({
-                        "genre_title": genre.get("genre_title"),
-                        "genre_link": genre.get("genre_link"),
-                        "genre_id": genre.get("genre_id")
-                    })
-                
-                # Jika genre tidak ditemukan, kirim nilai default kosong
-                if not genres:
-                    genres = None
-
-                results.append({
-                    "thumb": item.get("thumb"),
-                    "title": item.get("title"),
-                    "link": item.get("link"),
-                    "id": item.get("id"),
-                    "status": item.get("status"),
-                    "score": item.get("score"),
-                    "genre": genres  # Memasukkan daftar genre
+            # Ambil genre yang bisa lebih dari satu
+            genre_list = item.get("genre_list", [])
+            
+            # Jika genre_list ada dan bukan kosong, buat list of genres
+            genres = []
+            for genre in genre_list:
+                genres.append({
+                    "genre_title": genre.get("genre_title"),
+                    "genre_link": genre.get("genre_link"),
+                    "genre_id": genre.get("genre_id")
                 })
-            else:
-                print(f"Unexpected item format: {item}")
+            
+            # Jika genre tidak ditemukan, kirim nilai default kosong
+            if not genres:
+                genres = None
+
+            results.append({
+                "thumb": item.get("thumb"),
+                "title": item.get("title"),
+                "link": item.get("link"),
+                "id": item.get("id"),
+                "status": item.get("status"),
+                "score": item.get("score"),
+                "genre": genres  # Memasukkan daftar genre
+            })
 
         return jsonify({
             "status": 200,
-            "creator": "Astri",
+            "creator": "Astri",  # Ganti dengan nama creator kamu
             "data": results
         })
     except requests.exceptions.RequestException as e:
@@ -248,10 +256,9 @@ def otakudesu():
         print(f"Error occurred: {e}")
         return jsonify({
             "status": 503,
-            "creator": "Astri",
+            "creator": "Astri",  # Ganti dengan nama creator kamu
             "error": "Service is unavailable. Please try again later."
         }), 503
-
 
 
 # API /api/otakulatest
