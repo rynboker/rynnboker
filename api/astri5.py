@@ -1,13 +1,14 @@
 from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 import requests
-import openai
+from gensim.summarization import summarize
 
 app = Flask(__name__)
 
-openai.api_key = 'API_KEY_ANDA'
+# Load OpenAI API key securely from environment variable
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
-# Konfigurasi API Weather
+# API Weather
 @app.route('/api/weather', methods=['GET'])
 def weather():
     message = request.args.get('message')
@@ -24,9 +25,8 @@ def weather():
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
         response.raise_for_status()
-        external_data = response.json()  # Data dari API agatz
+        external_data = response.json()
 
-        # Validasi apakah respons berisi data yang diharapkan
         if "data" not in external_data or not external_data["data"]:
             return jsonify({
                 "status": 502,
@@ -34,22 +34,20 @@ def weather():
                 "error": "Invalid response from external API."
             }), 502
 
-        # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": external_data["data"]  # Gunakan langsung data dari API eksternal
+            "data": external_data["data"]
         })
     
-    except requests.exceptions.RequestException as e:
-        # Tangani error dari API eksternal
+    except requests.exceptions.RequestException:
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"Service is unavailable"
+            "error": "Service is unavailable"
         }), 503
 
-# Konfigurasi API OpenAI
+# API untuk mengambil ringkasan website
 @app.route('/api/aboutwebsite', methods=['GET'])
 def aboutwebsite():
     # Ambil URL dari parameter
@@ -67,25 +65,22 @@ def aboutwebsite():
         soup = BeautifulSoup(html_content, 'html.parser')
         text_content = soup.get_text()
 
-        # Analisis menggunakan AI (dalam bahasa Inggris)
-        prompt = f"Summarize the following text into a brief summary in English:\n\n{text_content}"
-        completion = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=prompt,
-            max_tokens=500
-        )
-        ai_response = completion.choices[0].text.strip()
+        # Gunakan Gensim untuk membuat ringkasan
+        try:
+            summary = summarize(text_content, word_count=2000)  # Ringkasan hingga 100 kata
+        except ValueError:
+            summary = "Unable to generate a summary. The text may be too short."
 
-        # Format respons untuk Discord
-        discord_formatted_summary = f"**Summary of [{url}]({url}):**\n```\n{ai_response}\n```"
+        # Format untuk Discord
+        discord_formatted_summary = f"**Summary of [{url}]({url}):**\n```\n{summary}\n```"
 
         # Kembalikan hasil
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "discord_formatted": discord_formatted_summary,  # Format untuk Discord
             "url": url,
-            "summary": ai_response
+            "summary": summary,
+            "discord_formatted": discord_formatted_summary
         })
 
     except requests.exceptions.RequestException as e:
