@@ -78,7 +78,7 @@ def create_short_url():
         })
 
     except Exception as e:
-        print(f"Error occurred: {str(e)}")
+        print(f"Error occurred")
         return jsonify({
             "status": "error",
             "error": "Error occurred"
@@ -254,14 +254,14 @@ def translate_text():
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"Service is unavailable: {str(e)}"
+            "error": f"Service is unavailable"
         }), 503
 
     except Exception as e:
         return jsonify({
             "status": 500,
             "creator": "Astri",
-            "error": f"An unexpected error occurred: {str(e)}"
+            "error": f"An unexpected error occurred"
         }), 500
 
 @app.route('/api/ttstalk', methods=['GET'])
@@ -300,7 +300,7 @@ def ttstalk():
                 }), 404
 
         except ValueError as e:
-            app.logger.error(f"Error parsing JSON: {e}")
+            app.logger.error(f"Error parsing JSON")
             return jsonify({
                 "status": 500,
                 "creator": "Astri",
@@ -326,7 +326,7 @@ def ttstalk():
         })
 
     except requests.exceptions.RequestException as e:
-        app.logger.error(f"RequestException: {e}")
+        app.logger.error(f"RequestException")
         return jsonify({
             "status": 503,
             "creator": "Astri",
@@ -334,11 +334,11 @@ def ttstalk():
         }), 503
 
     except Exception as e:
-        app.logger.error(f"Unexpected error: {e}")
+        app.logger.error(f"Unexpected error")
         return jsonify({
             "status": 500,
             "creator": "Astri",
-            "error": f"An unexpected error occurred: {str(e)}"
+            "error": f"An unexpected error occurred"
         }), 500
         
 if __name__ == "__main__":
