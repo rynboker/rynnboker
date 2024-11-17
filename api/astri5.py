@@ -50,12 +50,12 @@ def weather():
         }), 503
 
 # Konfigurasi API OpenAI
-@app.route('/api/extract-info', methods=['GET'])
-def extract_info():
+@app.route('/api/aboutwebsite', methods=['GET'])
+def aboutwebsite():
     # Ambil URL dari parameter
     url = request.args.get('url')
     if not url:
-        return jsonify({"error": "Parameter 'url' diperlukan"}), 400
+        return jsonify({"error": "Parameter 'url' is required"}), 400
 
     try:
         # Ambil konten website
@@ -67,8 +67,8 @@ def extract_info():
         soup = BeautifulSoup(html_content, 'html.parser')
         text_content = soup.get_text()
 
-        # Analisis menggunakan AI (misalnya OpenAI GPT)
-        prompt = f"Berikan ringkasan informasi dari teks berikut:\n\n{text_content}"
+        # Analisis menggunakan AI (dalam bahasa Inggris)
+        prompt = f"Summarize the following text into a brief summary in English:\n\n{text_content}"
         completion = openai.Completion.create(
             engine="text-davinci-003",
             prompt=prompt,
@@ -76,21 +76,33 @@ def extract_info():
         )
         ai_response = completion.choices[0].text.strip()
 
+        # Format respons untuk Discord
+        discord_formatted_summary = f"**Summary of [{url}]({url}):**\n```\n{ai_response}\n```"
+
         # Kembalikan hasil
         return jsonify({
             "status": 200,
             "creator": "Astri",
+            "discord_formatted": discord_formatted_summary,  # Format untuk Discord
             "url": url,
             "summary": ai_response
         })
 
-except requests.exceptions.RequestException as e:
-        # Tangani error dari API eksternal
+    except requests.exceptions.RequestException as e:
+        # Tangani error dari permintaan website
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"Service is unavailable"
+            "error": "Service is unavailable."
         }), 503
+
+    except Exception as e:
+        # Tangani error umum lainnya
+        return jsonify({
+            "status": 500,
+            "creator": "Astri",
+            "error": f"An error occurred"
+        }), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
