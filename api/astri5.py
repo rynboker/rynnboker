@@ -1,9 +1,14 @@
+import nltk
 from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 import requests
-from sumy.parsers.plaintext import PlaintextParser
-from sumy.summarizers.lsa import LsaSummarizer
-from sumy.nlp.tokenizers import Tokenizer
+from gensim.summarization import summarize
+
+# Download NLTK resources only once, you can wrap this part to prevent repeated downloads
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
 
 app = Flask(__name__)
 
@@ -64,25 +69,21 @@ def aboutwebsite():
         soup = BeautifulSoup(html_content, 'html.parser')
         text_content = soup.get_text()
 
-        # Gunakan sumy untuk membuat ringkasan
+        # Gunakan Gensim untuk membuat ringkasan
         try:
-            # Parsing teks dan menggunakan LSA Summarizer
-            parser = PlaintextParser.from_string(text_content, Tokenizer('english'))
-            summarizer = LsaSummarizer()
-            summary = summarizer(parser.document, 5)  # Ringkasan dalam 5 kalimat
-            summary_text = " ".join(str(sentence) for sentence in summary)
+            summary = summarize(text_content, word_count=2000)  # Ringkasan hingga 2000 kata
         except ValueError:
-            summary_text = "Unable to generate a summary. The text may be too short."
+            summary = "Unable to generate a summary. The text may be too short."
 
         # Format untuk Discord
-        discord_formatted_summary = f"**Summary of [{url}]({url}):**\n```\n{summary_text}\n```"
+        discord_formatted_summary = f"**Summary of [{url}]({url}):**\n```\n{summary}\n```"
 
         # Kembalikan hasil
         return jsonify({
             "status": 200,
             "creator": "Astri",
             "url": url,
-            "summary": summary_text,
+            "summary": summary,
             "discord_formatted": discord_formatted_summary
         })
 
