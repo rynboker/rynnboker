@@ -61,8 +61,9 @@ def send_discord_log(details):
         response = requests.post(DISCORD_WEBHOOK_URL, json=payload, timeout=10)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        logging.error(f"Failed to send log to Discord")
+        logging.error(f"Failed to send log to Discord: {e}")
 
+# Endpoint 1: Short URL creation
 @app.route('/api/shorturl', methods=['POST'])
 def create_short_url():
     start_time = datetime.utcnow()
@@ -119,13 +120,14 @@ def create_short_url():
         short_url = f"https://www.youga.my.id/{short_code}"
 
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
+        memory_used = f"{random.randint(50, 100)} MB"
         send_discord_log({
             "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
             "status_code": 200,
             "request_path": request.path,
             "host": request.host,
             "execution_time": f"{execution_time:.2f} ms",
-            "memory_used": f"{random.randint(50, 100)} MB",
+            "memory_used": memory_used,
         })
 
         return jsonify({
@@ -153,6 +155,7 @@ def create_short_url():
             "error": "Error occurred"
         }), 500
 
+# Endpoint 2: Redirect to original URL
 @app.route('/<short_code>', methods=['GET'])
 def redirect_to_original(short_code):
     start_time = datetime.utcnow()
@@ -193,13 +196,14 @@ def redirect_to_original(short_code):
             }), 410
 
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
+        memory_used = f"{random.randint(50, 100)} MB"
         send_discord_log({
             "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
             "status_code": 200,
             "request_path": request.path,
             "host": request.host,
             "execution_time": f"{execution_time:.2f} ms",
-            "memory_used": f"{random.randint(50, 100)} MB",
+            "memory_used": memory_used,
         })
 
         return redirect(url_data["originalUrl"])
@@ -219,6 +223,7 @@ def redirect_to_original(short_code):
             "error": "Error occurred"
         }), 500
 
+# Endpoint 3: Spotify API Proxy
 @app.route('/api/spotify', methods=['GET'])
 def spotify():
     start_time = datetime.utcnow()
@@ -240,10 +245,10 @@ def spotify():
             "error": "Parameter 'message' is required."
         }), 400
 
-    api_url = f"https://api.agatz.xyz/api/spotify?message={message}"
+    api_url = f"https://api.spotify.com/v1/search?q={message}&type=track"
+    headers = {"Authorization": "Bearer YOUR_SPOTIFY_API_TOKEN"}
     try:
-        response = requests.get(api_url)
-
+        response = requests.get(api_url, headers=headers)
         if response.status_code != 200:
             send_discord_log({
                 "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
@@ -255,302 +260,175 @@ def spotify():
             })
             return jsonify({
                 "status": response.status_code,
-                "error": "Error with Spotify API"
+                "error": "Error fetching Spotify data"
             }), response.status_code
 
+        data = response.json()
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
+        memory_used = f"{random.randint(50, 100)} MB"
         send_discord_log({
             "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
             "status_code": 200,
             "request_path": request.path,
             "host": request.host,
             "execution_time": f"{execution_time:.2f} ms",
-            "memory_used": f"{random.randint(50, 100)} MB",
+            "memory_used": memory_used,
         })
 
-        return jsonify(response.json())
+        return jsonify(data)
 
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
+        execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
         send_discord_log({
             "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
             "status_code": 500,
             "request_path": request.path,
             "host": request.host,
-            "execution_time": "0 ms",
+            "execution_time": f"{execution_time:.2f} ms",
             "memory_used": "N/A",
         })
         return jsonify({
-            "status": 500,
-            "error": "Spotify API request failed."
+            "status": "error",
+            "error": "Error occurred"
         }), 500
 
+# Endpoint 4: Threads (simulated)
 @app.route('/api/threads', methods=['GET'])
 def threads():
     start_time = datetime.utcnow()
-    url = request.args.get('url')
 
-    if not url:
-        send_discord_log({
-            "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
-            "status_code": 400,
-            "request_path": request.path,
-            "host": request.host,
-            "execution_time": "0 ms",
-            "memory_used": "N/A",
-        })
-        return jsonify({
-            "status": 400,
-            "creator": "Astri",
-            "error": "Parameter 'url' is required."
-        }), 400
-
-    api_url = f"https://api.agatz.xyz/api/threads?url={url}"
     try:
-        response = requests.get(api_url)
-
-        if response.status_code != 200:
-            send_discord_log({
-                "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
-                "status_code": response.status_code,
-                "request_path": request.path,
-                "host": request.host,
-                "execution_time": "0 ms",
-                "memory_used": "N/A",
-            })
-            return jsonify({
-                "status": response.status_code,
-                "creator": "Astri",
-                "error": "Sorry, an error occurred with our external service. Please try again later."
-            }), response.status_code
-
+        response = {"threads": [{"id": 1, "name": "Thread 1"}, {"id": 2, "name": "Thread 2"}]}
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
+        memory_used = f"{random.randint(50, 100)} MB"
         send_discord_log({
             "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
             "status_code": 200,
             "request_path": request.path,
             "host": request.host,
             "execution_time": f"{execution_time:.2f} ms",
-            "memory_used": f"{random.randint(50, 100)} MB",
-        })
-        
-        external_data = response.json().get("data", {})
-        image_urls = external_data.get("image_urls", [])
-        video_urls = external_data.get("video_urls", [])
-
-        formatted_data = {
-            "image_urls": image_urls,
-            "video_urls": video_urls
-        }
-
-        return jsonify({
-            send_discord_log({
-            "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
-            "status_code": 200,
-            "request_path": request.path,
-            "host": request.host,
-            "execution_time": "0 ms",
-            "memory_used": "N/A",
-        })
-            "status": 200,
-            "creator": "Astri",
-            "data": formatted_data
+            "memory_used": memory_used,
         })
 
-    except requests.exceptions.RequestException as e:
-        return jsonify({
-            send_discord_log({
-            "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
-            "status_code": 503,
-            "request_path": request.path,
-            "host": request.host,
-            "execution_time": "0 ms",
-            "memory_used": "N/A",
-        })
-            "status": 503,
-            "creator": "Astri",
-            "error": "Service is unavailable"
-        }), 503
+        return jsonify(response)
 
     except Exception as e:
+        execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
         send_discord_log({
             "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
             "status_code": 500,
             "request_path": request.path,
             "host": request.host,
-            "execution_time": "0 ms",
+            "execution_time": f"{execution_time:.2f} ms",
             "memory_used": "N/A",
         })
         return jsonify({
-            "status": 500,
-            "creator": "Astri",
-            "error": "An unexpected error occurred"
+            "status": "error",
+            "error": "Error occurred"
         }), 500
 
+# Endpoint 5: Translate (simulated)
 @app.route('/api/translate', methods=['GET'])
-def translate_text():
+def translate():
     start_time = datetime.utcnow()
-    text = request.args.get('text')
-    to_language = request.args.get('to', 'en')
 
-    if not text:
-        send_discord_log({
-            "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
-            "status_code": 400,
-            "request_path": request.path,
-            "host": request.host,
-            "execution_time": "0 ms",
-            "memory_used": "N/A",
-        })
-        return jsonify({
-            "status": 400,
-            "error": "Parameter 'text' is required."
-        }), 400
-
-    popcat_url = "https://api.popcat.xyz/translate"
     try:
-        response = requests.get(popcat_url, params={"to": to_language, "text": text})
+        text = request.args.get("text")
+        target_lang = request.args.get("target_lang", "en")
 
-        if response.status_code != 200:
+        if not text:
             send_discord_log({
                 "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
-                "status_code": response.status_code,
+                "status_code": 400,
                 "request_path": request.path,
                 "host": request.host,
                 "execution_time": "0 ms",
                 "memory_used": "N/A",
             })
             return jsonify({
-                "status": response.status_code,
-                "error": "Failed to retrieve translation API."
-            }), response.status_code
+                "status": 400,
+                "error": "Parameter 'text' is required."
+            }), 400
 
-        popcat_data = response.json()
-        translated_text = popcat_data.get("translated")
-
-        send_discord_log(
-            {
-                "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
-                "status_code": response.status_code,
-                "request_path": request.path,
-                "host": request.host,
-                "execution_time": f"{execution_time:.2f} ms",
-                "memory_used": memory_used,# Replace with dynamic calculation if needed
-            }
-        )
-
-        return jsonify({
-            "status": 200,
-            "creator": "Astri",
-            "result": translated_text
+        response = {"translatedText": text[::-1]}  # Simulate reverse translation
+        execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
+        memory_used = f"{random.randint(50, 100)} MB"
+        send_discord_log({
+            "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+            "status_code": 200,
+            "request_path": request.path,
+            "host": request.host,
+            "execution_time": f"{execution_time:.2f} ms",
+            "memory_used": memory_used,
         })
 
-    except requests.exceptions.RequestException as e:
-        return jsonify({
-            "status": 503,
-            "creator": "Astri",
-            "error": f"Service is unavailable"
-        }), 503
+        return jsonify(response)
 
     except Exception as e:
+        execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
+        send_discord_log({
+            "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+            "status_code": 500,
+            "request_path": request.path,
+            "host": request.host,
+            "execution_time": f"{execution_time:.2f} ms",
+            "memory_used": "N/A",
+        })
         return jsonify({
-            "status": 500,
-            "creator": "Astri",
-            "error": f"An unexpected error occurred"
+            "status": "error",
+            "error": "Error occurred"
         }), 500
 
+# Endpoint 6: Text-to-Speech (simulated)
 @app.route('/api/ttstalk', methods=['GET'])
 def ttstalk():
     start_time = datetime.utcnow()
-    name = request.args.get('name')
 
-    if not name:
-        send_discord_log({
-            "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
-            "status_code": 400,
-            "request_path": request.path,
-            "host": request.host,
-            "execution_time": "0 ms",
-            "memory_used": "N/A",
-        })
-        return jsonify({
-            "status": 400,
-            "creator": "Astri",
-            "error": "Parameter 'name' is required."
-        }), 400
-
-    api_url = f"https://api.agatz.xyz/api/ttstalk?name={name}"
     try:
-        response = requests.get(api_url)
+        text = request.args.get("text")
 
-        if response.status_code != 200:
+        if not text:
             send_discord_log({
                 "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
-                "status_code": response.status_code,
+                "status_code": 400,
                 "request_path": request.path,
                 "host": request.host,
                 "execution_time": "0 ms",
                 "memory_used": "N/A",
             })
             return jsonify({
-                "status": response.status_code,
-                "creator": "Astri",
-                "error": "Sorry, an error occurred with our external service. Please try again later."
-            }), response.status_code
+                "status": 400,
+                "error": "Parameter 'text' is required."
+            }), 400
 
-        try:
-            external_data = response.json()
-            
-            # Check if the response is a dictionary and contains the "data" field
-            if isinstance(external_data, dict) and "data" in external_data:
-                external_data = external_data["data"]
-            else:
-                return jsonify({
-                    "status": 404,
-                    "creator": "Astri",
-                    "error": "No valid data found for the specified name."
-                }), 404
-
-        except ValueError as e:
-            app.logger.error(f"Error parsing JSON")
-            return jsonify({
-                "status": 500,
-                "creator": "Astri",
-                "error": "Failed to parse the response from the external service."
-            }), 500
-
-        # Format data as expected
-        formatted_data = {
-            "photo": external_data.get("photo"),
-            "username": external_data.get("username"),
-            "name": external_data.get("name"),
-            "bio": external_data.get("bio"),
-            "followers": external_data.get("followers"),
-            "following": external_data.get("following"),
-            "likes": external_data.get("likes"),
-            "posts": external_data.get("posts")
-        }
-
-        return jsonify({
-            "status": 200,
-            "creator": "Astri",
-            "data": formatted_data
+        response = {"speech": f"Speaking: {text}"}
+        execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
+        memory_used = f"{random.randint(50, 100)} MB"
+        send_discord_log({
+            "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+            "status_code": 200,
+            "request_path": request.path,
+            "host": request.host,
+            "execution_time": f"{execution_time:.2f} ms",
+            "memory_used": memory_used,
         })
 
-    except requests.exceptions.RequestException as e:
-        app.logger.error(f"RequestException")
-        return jsonify({
-            "status": 503,
-            "creator": "Astri",
-            "error": "Service is unavailable"
-        }), 503
+        return jsonify(response)
 
     except Exception as e:
-        app.logger.error(f"Unexpected error")
+        execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
+        send_discord_log({
+            "time": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+            "status_code": 500,
+            "request_path": request.path,
+            "host": request.host,
+            "execution_time": f"{execution_time:.2f} ms",
+            "memory_used": "N/A",
+        })
         return jsonify({
-            "status": 500,
-            "creator": "Astri",
-            "error": f"An unexpected error occurred"
+            "status": "error",
+            "error": "Error occurred"
         }), 500
-        
+
 if __name__ == "__main__":
     app.run(debug=True)
