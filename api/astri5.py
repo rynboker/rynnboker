@@ -17,74 +17,60 @@ def cuaca():
     try:
         response = requests.get(api_url, timeout=10)
         response.raise_for_status()
+        external_data = response.json()
 
-        # Assume the external API returns JSON data
-        data = response.json()
-
-        # Map the data to match the desired structure
+        # Map external data to desired structure
         mapped_response = {
+            "status": 200,
+            "creator": "Astri",
             "data": {
                 "location": {
-                    "name": data.get("location", {}).get("name", ""),
-                    "region": data.get("location", {}).get("region", ""),
-                    "country": data.get("location", {}).get("country", ""),
-                    "lat": data.get("location", {}).get("lat", 0.0),
-                    "lon": data.get("location", {}).get("lon", 0.0),
-                    "tz_id": data.get("location", {}).get("tz_id", ""),
-                    "localtime_epoch": data.get("location", {}).get("localtime_epoch", 0),
-                    "localtime": data.get("location", {}).get("localtime", "")
+                    "name": external_data.get("location", {}).get("name", ""),
+                    "region": external_data.get("location", {}).get("region", ""),
+                    "country": external_data.get("location", {}).get("country", ""),
+                    "lat": external_data.get("location", {}).get("lat", 0.0),
+                    "lon": external_data.get("location", {}).get("lon", 0.0),
+                    "tz_id": external_data.get("location", {}).get("tz_id", ""),
+                    "localtime_epoch": external_data.get("location", {}).get("localtime_epoch", 0),
+                    "localtime": external_data.get("location", {}).get("localtime", "")
                 },
                 "current": {
-                    "last_updated_epoch": data.get("current", {}).get("last_updated_epoch", 0),
-                    "last_updated": data.get("current", {}).get("last_updated", ""),
-                    "temp_c": data.get("current", {}).get("temp_c", 0.0),
-                    "temp_f": data.get("current", {}).get("temp_f", 0.0),
-                    "is_day": data.get("current", {}).get("is_day", 0),
+                    "last_updated_epoch": external_data.get("current", {}).get("last_updated_epoch", 0),
+                    "last_updated": external_data.get("current", {}).get("last_updated", ""),
+                    "temp_c": external_data.get("current", {}).get("temp_c", 0.0),
+                    "temp_f": external_data.get("current", {}).get("temp_f", 0.0),
+                    "is_day": external_data.get("current", {}).get("is_day", 1),
                     "condition": {
-                        "text": data.get("current", {}).get("condition", {}).get("text", ""),
-                        "icon": data.get("current", {}).get("condition", {}).get("icon", ""),
-                        "code": data.get("current", {}).get("condition", {}).get("code", 0)
+                        "text": external_data.get("current", {}).get("condition", {}).get("text", ""),
+                        "icon": external_data.get("current", {}).get("condition", {}).get("icon", ""),
+                        "code": external_data.get("current", {}).get("condition", {}).get("code", 0)
                     },
-                    "wind_mph": data.get("current", {}).get("wind_mph", 0.0),
-                    "wind_kph": data.get("current", {}).get("wind_kph", 0.0),
-                    "wind_degree": data.get("current", {}).get("wind_degree", 0),
-                    "wind_dir": data.get("current", {}).get("wind_dir", ""),
-                    "pressure_mb": data.get("current", {}).get("pressure_mb", 0),
-                    "pressure_in": data.get("current", {}).get("pressure_in", 0.0),
-                    "precip_mm": data.get("current", {}).get("precip_mm", 0.0),
-                    "precip_in": data.get("current", {}).get("precip_in", 0.0),
-                    "humidity": data.get("current", {}).get("humidity", 0),
-                    "cloud": data.get("current", {}).get("cloud", 0),
-                    "feelslike_c": data.get("current", {}).get("feelslike_c", 0.0),
-                    "feelslike_f": data.get("current", {}).get("feelslike_f", 0.0),
-                    "windchill_c": data.get("current", {}).get("windchill_c", 0.0),
-                    "windchill_f": data.get("current", {}).get("windchill_f", 0.0),
-                    "heatindex_c": data.get("current", {}).get("heatindex_c", 0.0),
-                    "heatindex_f": data.get("current", {}).get("heatindex_f", 0.0),
-                    "dewpoint_c": data.get("current", {}).get("dewpoint_c", 0.0),
-                    "dewpoint_f": data.get("current", {}).get("dewpoint_f", 0.0),
-                    "vis_km": data.get("current", {}).get("vis_km", 0.0),
-                    "vis_miles": data.get("current", {}).get("vis_miles", 0.0),
-                    "uv": data.get("current", {}).get("uv", 0.0),
-                    "gust_mph": data.get("current", {}).get("gust_mph", 0.0),
-                    "gust_kph": data.get("current", {}).get("gust_kph", 0.0)
+                    "wind_mph": external_data.get("current", {}).get("wind_mph", 0.0),
+                    "wind_kph": external_data.get("current", {}).get("wind_kph", 0.0),
+                    "wind_degree": external_data.get("current", {}).get("wind_degree", 0),
+                    "wind_dir": external_data.get("current", {}).get("wind_dir", ""),
+                    "pressure_mb": external_data.get("current", {}).get("pressure_mb", 0),
+                    "pressure_in": external_data.get("current", {}).get("pressure_in", 0.0),
+                    "precip_mm": external_data.get("current", {}).get("precip_mm", 0.0),
+                    "precip_in": external_data.get("current", {}).get("precip_in", 0.0),
+                    "humidity": external_data.get("current", {}).get("humidity", 0),
+                    "cloud": external_data.get("current", {}).get("cloud", 0),
+                    "feelslike_c": external_data.get("current", {}).get("feelslike_c", 0.0),
+                    "feelslike_f": external_data.get("current", {}).get("feelslike_f", 0.0),
+                    "uv": external_data.get("current", {}).get("uv", 0.0),
+                    "gust_mph": external_data.get("current", {}).get("gust_mph", 0.0),
+                    "gust_kph": external_data.get("current", {}).get("gust_kph", 0.0)
                 }
             }
         }
 
         return jsonify(mapped_response), 200
 
-    except requests.exceptions.Timeout:
-        return jsonify({
-            "status": 504,
-            "creator": "Astri",
-            "error": "The request to the external service timed out. Please try again later."
-        }), 504
     except requests.exceptions.RequestException as e:
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"Service is unavailable"
+            "error": f"Service is unavailable: {str(e)}"
         }), 503
 
 if __name__ == "__main__":
