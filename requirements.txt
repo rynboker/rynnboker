@@ -4,4 +4,4 @@ Pillow==9.4.0
 beautifulsoup4==4.11.1
 sumy==0.8.1
 nltk==3.7
-gensim==4.3.0  # Add this to your requirements
+gensim==4.3.0
