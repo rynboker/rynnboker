@@ -36,7 +36,7 @@ def send_discord_log(details):
         response = requests.post(DISCORD_WEBHOOK_URL, json=payload, timeout=10)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        logging.error(f"Failed to send log to Discord: {e}")
+        logging.error(f"Failed to send log to Discord")
 
 
 # API /api/ytsearch
