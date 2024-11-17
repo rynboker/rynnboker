@@ -1,10 +1,14 @@
 import nltk
-nltk.download('punkt')
-
 from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 import requests
 from gensim.summarization import summarize
+
+# Download NLTK resources only once, you can wrap this part to prevent repeated downloads
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt')
 
 app = Flask(__name__)
 
