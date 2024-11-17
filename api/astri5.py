@@ -49,15 +49,14 @@ def weather():
 # API untuk mengambil ringkasan website
 @app.route('/api/aboutwebsite', methods=['GET'])
 def aboutwebsite():
-    # Ambil URL dari parameter
     url = request.args.get('url')
     if not url:
         return jsonify({"error": "Parameter 'url' is required"}), 400
 
     try:
-        # Ambil konten website
-        response = requests.get(url)
-        response.raise_for_status()
+        # Ambil konten website dengan timeout dan exception handling
+        response = requests.get(url, timeout=10)  # Set a timeout to avoid long waits
+        response.raise_for_status()  # Raise an error for any bad status codes (4xx or 5xx)
         html_content = response.text
 
         # Parsing HTML menggunakan BeautifulSoup
@@ -86,16 +85,21 @@ def aboutwebsite():
             "discord_formatted": discord_formatted_summary
         })
 
+    except requests.exceptions.Timeout:
+        return jsonify({
+            "status": 504,
+            "creator": "Astri",
+            "error": "The request timed out."
+        }), 504
+
     except requests.exceptions.RequestException as e:
-        # Tangani error dari permintaan website
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": "Service is unavailable."
+            "error": f"Service is unavailable. Error: {str(e)}"
         }), 503
 
     except Exception as e:
-        # Tangani error umum lainnya
         return jsonify({
             "status": 500,
             "creator": "Astri",
