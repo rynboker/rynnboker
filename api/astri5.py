@@ -1,8 +1,13 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request, jsonify
+from bs4 import BeautifulSoup
 import requests
+import openai
 
 app = Flask(__name__)
 
+openai.api_key = 'API_KEY_ANDA'
+
+# Konfigurasi API Weather
 @app.route('/api/weather', methods=['GET'])
 def weather():
     message = request.args.get('message')
@@ -41,9 +46,51 @@ def weather():
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"Service is unavailable: {str(e)}"
+            "error": f"Service is unavailable"
         }), 503
 
+# Konfigurasi API OpenAI
+@app.route('/api/extract-info', methods=['GET'])
+def extract_info():
+    # Ambil URL dari parameter
+    url = request.args.get('url')
+    if not url:
+        return jsonify({"error": "Parameter 'url' diperlukan"}), 400
+
+    try:
+        # Ambil konten website
+        response = requests.get(url)
+        response.raise_for_status()
+        html_content = response.text
+
+        # Parsing HTML menggunakan BeautifulSoup
+        soup = BeautifulSoup(html_content, 'html.parser')
+        text_content = soup.get_text()
+
+        # Analisis menggunakan AI (misalnya OpenAI GPT)
+        prompt = f"Berikan ringkasan informasi dari teks berikut:\n\n{text_content}"
+        completion = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt,
+            max_tokens=500
+        )
+        ai_response = completion.choices[0].text.strip()
+
+        # Kembalikan hasil
+        return jsonify({
+            "status": 200,
+            "creator": "Astri",
+            "url": url,
+            "summary": ai_response
+        })
+
+except requests.exceptions.RequestException as e:
+        # Tangani error dari API eksternal
+        return jsonify({
+            "status": 503,
+            "creator": "Astri",
+            "error": f"Service is unavailable"
+        }), 503
 
 if __name__ == "__main__":
     app.run(debug=True)
