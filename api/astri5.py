@@ -3,8 +3,8 @@ import requests
 
 app = Flask(__name__)
 
-@app.route('/api/cuaca', methods=['GET'])
-def cuaca():
+@app.route('/api/weather', methods=['GET'])
+def weather():
     message = request.args.get('message')
     if not message:
         return jsonify({
