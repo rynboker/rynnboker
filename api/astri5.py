@@ -5,9 +5,6 @@ from gensim.summarization import summarize
 
 app = Flask(__name__)
 
-# Load OpenAI API key securely from environment variable
-openai.api_key = os.getenv('OPENAI_API_KEY')
-
 # API Weather
 @app.route('/api/weather', methods=['GET'])
 def weather():
