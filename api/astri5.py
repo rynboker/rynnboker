@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 import requests
-import json
 from gensim.summarization import summarize
 
 app = Flask(__name__)
