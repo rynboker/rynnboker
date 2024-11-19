@@ -6,8 +6,6 @@ import requests
 from flask import Flask, jsonify, request, redirect
 import os
 import time
-import psutil
-import threading
 
 app = Flask(__name__)
 
@@ -15,12 +13,12 @@ app = Flask(__name__)
 DATABASE_FILE = "/tmp/listurl.json"
 
 # Discord webhook URL for logging
-WEBHOOK_URL = "YOUR_DISCORD_WEBHOOK_URL"
+WEBHOOK_URL = "https://discord.com/api/webhooks/1307833033214263371/LwKikJE1Xd_tUMqjmPlXXPEovhWdnanCazOurkqmddrUgCqbYRAoDZTCWIncY-2P2z6O"
 
 # Function to send logs to Discord webhook
-def send_log_to_discord(status_code, execution_time, memory_usage, path):
+def send_log_to_discord(status_code, execution_time, path):
     log_message = {
-        "content": f"Request to {path} | Status Code: {status_code} | Execution Time: {execution_time:.2f}s | Memory Usage: {memory_usage}MB"
+        "content": f"Request to {path} | Status Code: {status_code} | Execution Time: {execution_time:.2f}s"
     }
     try:
         requests.post(WEBHOOK_URL, json=log_message)
@@ -50,23 +48,20 @@ def generate_short_code(length=6):
 def log_request(func):
     def wrapper(*args, **kwargs):
         start_time = time.time()
-        memory_before = psutil.Process(os.getpid()).memory_info().rss / (1024 * 1024)  # in MB
         path = request.path
 
         # Execute the request function
         response = func(*args, **kwargs)
 
         execution_time = time.time() - start_time
-        memory_after = psutil.Process(os.getpid()).memory_info().rss / (1024 * 1024)  # in MB
-        memory_usage = memory_after - memory_before  # Memory used during request processing
 
         # Log the details
-        send_log_to_discord(response.status_code, execution_time, memory_usage, path)
+        send_log_to_discord(response.status_code, execution_time, path)
 
         return response
 
     return wrapper
-
+    
 @app.route('/api/shorturl', methods=['POST'])
 @log_request
 def create_short_url():
