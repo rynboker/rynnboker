@@ -5,7 +5,6 @@ import json
 import requests
 from flask import Flask, jsonify, request, redirect
 import os
-import random
 import logging
 
 app = Flask(__name__)
