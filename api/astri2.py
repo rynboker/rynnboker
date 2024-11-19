@@ -1,3 +1,4 @@
+import functools
 import random
 import string
 from datetime import datetime, timedelta
@@ -46,6 +47,7 @@ def generate_short_code(length=6):
 
 # Log before and after processing each request
 def log_request(func):
+    @functools.wraps(func)  # Ensures the decorated function maintains its original name and properties
     def wrapper(*args, **kwargs):
         start_time = time.time()
         path = request.path
