@@ -355,33 +355,7 @@ def otakudesu():
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
 
-        results = []
-        for item in data.get("data", []):
-            # Ambil genre yang bisa lebih dari satu
-            genre_list = item.get("genre_list", [])
-            
-            # Jika genre_list ada dan bukan kosong, buat list of genres
-            genres = []
-            for genre in genre_list:
-                genres.append({
-                    "genre_title": genre.get("genre_title"),
-                    "genre_link": genre.get("genre_link"),
-                    "genre_id": genre.get("genre_id")
-                })
-            
-            # Jika genre tidak ditemukan, kirim nilai default kosong
-            if not genres:
-                genres = None
-
-            results.append({
-                "thumb": item.get("thumb"),
-                "title": item.get("title"),
-                "link": item.get("link"),
-                "id": item.get("id"),
-                "status": item.get("status"),
-                "score": item.get("score"),
-                "genre": genres  # Memasukkan daftar genre
-            })
+        external_data = response.json().get("data", {})
 
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
         send_discord_log({
@@ -396,7 +370,7 @@ def otakudesu():
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": results
+            "data": external_data
         })
     except requests.exceptions.RequestException:
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
@@ -438,35 +412,7 @@ def otakulatest():
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
 
-        data = response.json()
-
-        # Menangani kategori on_going dan complete
-        results_on_going = []
-        results_complete = []
-        
-        # Proses kategori on_going
-        for item in data.get("data", {}).get("home", {}).get("on_going", []):
-            results_on_going.append({
-                "thumb": item.get("thumb"),
-                "title": item.get("title"),
-                "id": item.get("id"),
-                "episode": item.get("episode"),
-                "uploaded_on": item.get("uploaded_on"),
-                "day_updated": item.get("day_updated"),
-                "link": item.get("link")
-            })
-
-        # Proses kategori complete
-        for item in data.get("data", {}).get("home", {}).get("complete", []):
-            results_complete.append({
-                "thumb": item.get("thumb"),
-                "title": item.get("title"),
-                "id": item.get("id"),
-                "episode": item.get("episode"),
-                "uploaded_on": item.get("uploaded_on"),
-                "score": item.get("score"),
-                "link": item.get("link")
-            })
+        external_data = response.json().get("data", {})
 
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
         send_discord_log({
@@ -481,8 +427,7 @@ def otakulatest():
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "on_going": results_on_going,
-            "complete": results_complete
+            "data": external_data
         })
     except requests.exceptions.RequestException:
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
