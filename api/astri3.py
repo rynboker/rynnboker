@@ -355,9 +355,24 @@ def otakudesu():
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
 
-        data = response.json()
         results = []
-        for item in data.get("data", {}).get("search_results", []):
+        for item in data.get("data", []):
+            # Ambil genre yang bisa lebih dari satu
+            genre_list = item.get("genre_list", [])
+            
+            # Jika genre_list ada dan bukan kosong, buat list of genres
+            genres = []
+            for genre in genre_list:
+                genres.append({
+                    "genre_title": genre.get("genre_title"),
+                    "genre_link": genre.get("genre_link"),
+                    "genre_id": genre.get("genre_id")
+                })
+            
+            # Jika genre tidak ditemukan, kirim nilai default kosong
+            if not genres:
+                genres = None
+
             results.append({
                 "thumb": item.get("thumb"),
                 "title": item.get("title"),
@@ -365,7 +380,7 @@ def otakudesu():
                 "id": item.get("id"),
                 "status": item.get("status"),
                 "score": item.get("score"),
-                "genre": item.get("genre_list")
+                "genre": genres  # Memasukkan daftar genre
             })
 
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
@@ -424,9 +439,12 @@ def otakulatest():
             }), response.status_code
 
         data = response.json()
+
+        # Menangani kategori on_going dan complete
         results_on_going = []
         results_complete = []
-
+        
+        # Proses kategori on_going
         for item in data.get("data", {}).get("home", {}).get("on_going", []):
             results_on_going.append({
                 "thumb": item.get("thumb"),
@@ -438,6 +456,7 @@ def otakulatest():
                 "link": item.get("link")
             })
 
+        # Proses kategori complete
         for item in data.get("data", {}).get("home", {}).get("complete", []):
             results_complete.append({
                 "thumb": item.get("thumb"),
