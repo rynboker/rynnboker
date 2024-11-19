@@ -342,7 +342,7 @@ def twitterstalk():
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
         
-        data = response.json()
+        external_data = response.json().get("data", {})
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
         send_discord_log(
             {
@@ -357,7 +357,7 @@ def twitterstalk():
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": data
+            "data": external_data
         })
     except requests.exceptions.RequestException as e:
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
@@ -421,7 +421,7 @@ def spotifydl():
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
         
-        data = response.json()
+        external_data = response.json().get("data", {})
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
         send_discord_log(
             {
@@ -436,7 +436,7 @@ def spotifydl():
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": data
+            "data": external_data
         })
     except requests.exceptions.RequestException as e:
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
