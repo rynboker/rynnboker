@@ -5,11 +5,27 @@ import json
 import requests
 from flask import Flask, jsonify, request, redirect
 import os
+import time
+import psutil
+import threading
 
 app = Flask(__name__)
 
 # Define the path for persistent storage (e.g., in Vercel's file system)
 DATABASE_FILE = "/tmp/listurl.json"
+
+# Discord webhook URL for logging
+WEBHOOK_URL = "YOUR_DISCORD_WEBHOOK_URL"
+
+# Function to send logs to Discord webhook
+def send_log_to_discord(status_code, execution_time, memory_usage, path):
+    log_message = {
+        "content": f"Request to {path} | Status Code: {status_code} | Execution Time: {execution_time:.2f}s | Memory Usage: {memory_usage}MB"
+    }
+    try:
+        requests.post(WEBHOOK_URL, json=log_message)
+    except requests.exceptions.RequestException as e:
+        print("Error sending log to Discord:", e)
 
 # Function to load URL mappings from the file
 def load_url_mappings():
@@ -30,7 +46,29 @@ def save_url_mappings(data):
 def generate_short_code(length=6):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
+# Log before and after processing each request
+def log_request(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        memory_before = psutil.Process(os.getpid()).memory_info().rss / (1024 * 1024)  # in MB
+        path = request.path
+
+        # Execute the request function
+        response = func(*args, **kwargs)
+
+        execution_time = time.time() - start_time
+        memory_after = psutil.Process(os.getpid()).memory_info().rss / (1024 * 1024)  # in MB
+        memory_usage = memory_after - memory_before  # Memory used during request processing
+
+        # Log the details
+        send_log_to_discord(response.status_code, execution_time, memory_usage, path)
+
+        return response
+
+    return wrapper
+
 @app.route('/api/shorturl', methods=['POST'])
+@log_request
 def create_short_url():
     try:
         data = request.get_json()
@@ -85,6 +123,7 @@ def create_short_url():
         }), 500
 
 @app.route('/<short_code>', methods=['GET'])
+@log_request
 def redirect_to_original(short_code):
     try:
         url_mapping = load_url_mappings()
@@ -114,6 +153,7 @@ def redirect_to_original(short_code):
         }), 500
 
 @app.route('/api/spotify', methods=['GET'])
+@log_request
 def spotify():
     message = request.args.get('message')
 
@@ -170,6 +210,7 @@ def spotify():
         }), 500
 
 @app.route('/api/threads', methods=['GET'])
+@log_request
 def threads():
     url = request.args.get('url')
 
@@ -221,6 +262,7 @@ def threads():
         }), 500
 
 @app.route('/api/translate', methods=['GET'])
+@log_request
 def translate_text():
     text = request.args.get('text')
     to_language = request.args.get('to', 'en')
@@ -265,6 +307,7 @@ def translate_text():
         }), 500
 
 @app.route('/api/ttstalk', methods=['GET'])
+@log_request
 def ttstalk():
     name = request.args.get('name')
 
