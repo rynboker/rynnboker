@@ -256,7 +256,14 @@ def twitter():
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
 
-        data = response.json()
+        external_data = response.json().get("data", {})
+        formatted_data = {
+            "title": external_data.get("title", None),
+            "duration": external_data.get("duration", None),
+            "quality": external_data.get("quality", None),
+            "thumbnail": external_data.get("thumbnail", None),
+            "download": external_data.get("download", None)
+        }
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
         send_discord_log(
             {
@@ -271,7 +278,7 @@ def twitter():
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": data
+            "data": formatted_data
         })
     except requests.exceptions.RequestException as e:
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
@@ -314,7 +321,7 @@ def twitterstalk():
             "error": "Parameter 'username' is required."
         }), 400
 
-    api_url = f"https://api.agatz.xyz/api/twitterstalk?username={username}"
+    api_url = f"https://api.agatz.xyz/api/twitterstalk?name={username}"
     try:
         response = requests.get(api_url)
         if response.status_code != 200:
