@@ -5,8 +5,13 @@ import json
 import requests
 from flask import Flask, jsonify, request, redirect
 import os
+import time
+import psutil
 
 app = Flask(__name__)
+
+# Discord webhook URL
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1307833033214263371/LwKikJE1Xd_tUMqjmPlXXPEovhWdnanCazOurkqmddrUgCqbYRAoDZTCWIncY-2P2z6O"
 
 # Define the path for persistent storage (e.g., in Vercel's file system)
 DATABASE_FILE = "/tmp/listurl.json"
@@ -30,6 +35,44 @@ def save_url_mappings(data):
 def generate_short_code(length=6):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
+# Function to send logs to Discord
+def send_discord_log(status_code, execution_time, memory_usage, request_path):
+    payload = {
+        "embeds": [
+            {
+                "title": "API Log",
+                "fields": [
+                    {"name": "Time", "value": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "inline": False},
+                    {"name": "Status Code", "value": status_code, "inline": True},
+                    {"name": "Request Path", "value": request_path, "inline": True},
+                    {"name": "Execution Time", "value": f"{execution_time:.2f} ms", "inline": True},
+                    {"name": "Memory Used", "value": f"{memory_usage} MB", "inline": True}
+                ],
+                "color": 3066993
+            }
+        ]
+    }
+    requests.post(DISCORD_WEBHOOK_URL, json=payload)
+
+@app.before_request
+def start_timer():
+    request.start_time = time.time()
+
+@app.after_request
+def log_request(response):
+    try:
+        execution_time = (time.time() - request.start_time) * 1000
+        memory_usage = psutil.Process(os.getpid()).memory_info().rss // 1024 ** 2
+        send_discord_log(
+            status_code=response.status_code,
+            execution_time=execution_time,
+            memory_usage=memory_usage,
+            request_path=request.path
+        )
+    except Exception as e:
+        print(f"Failed to send Discord log: {e}")
+    return response
+    
 @app.route('/api/shorturl', methods=['POST'])
 def create_short_url():
     try:
