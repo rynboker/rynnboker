@@ -421,7 +421,20 @@ def spotifydl():
                 "error": "Sorry, an error occurred with our external service. Please try again later."
             }), response.status_code
         
-        external_data = response.json().get("data", {})
+        external_data_str = response.json().get("data", "")
+        
+        # Jika ada data, kita parse string JSON tersebut
+        if external_data_str:
+            external_data = json.loads(external_data_str)
+
+            # Mengambil data yang dibutuhkan
+            formatted_data = {
+                "channel_name": external_data.get("nama_channel", None),
+                "title": external_data.get("judul", None),
+                "duration": external_data.get("durasi", None),
+                "thumbnail": external_data.get("gambar_kecil", [])[0].get("url", None) if external_data.get("gambar_kecil") else None,
+                "download_url": external_data.get("url_audio_v1", None)
+            }
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
         send_discord_log(
             {
@@ -436,7 +449,7 @@ def spotifydl():
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": external_data
+            "data": formatted_data
         })
     except requests.exceptions.RequestException as e:
         execution_time = (datetime.utcnow() - start_time).total_seconds() * 1000
