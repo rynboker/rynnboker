@@ -121,7 +121,7 @@ def coronaglobal():
 @app.route('/api/minecraft', methods=['GET'])
 def minecraft():
     serverurl = request.args.get('serverurl')
-    if not server:
+    if not serverurl:
         return jsonify({
             "status": 400,
             "creator": "Astri",
