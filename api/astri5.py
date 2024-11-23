@@ -60,7 +60,7 @@ def coronaindonesia():
         external_data = response.json()  # Data dari API agatz
 
         # Validasi apakah respons berisi data yang diharapkan
-        if "data" not in external_data or not external_data["result"]:
+        if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
                 "creator": "Astri",
@@ -95,7 +95,7 @@ def coronaglobal():
         external_data = response.json()  # Data dari API agatz
 
         # Validasi apakah respons berisi data yang diharapkan
-        if "data" not in external_data or not external_data["result"]:
+        if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
                 "creator": "Astri",
@@ -137,7 +137,7 @@ def minecraft():
         external_data = response.json()  # Data dari API agatz
 
         # Validasi apakah respons berisi data yang diharapkan
-        if "data" not in external_data or not external_data["result"]:
+        if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
                 "creator": "Astri",
@@ -172,7 +172,7 @@ def ppcouple():
         external_data = response.json()  # Data dari API agatz
 
         # Validasi apakah respons berisi data yang diharapkan
-        if "data" not in external_data or not external_data["result"]:
+        if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
                 "creator": "Astri",
@@ -214,7 +214,7 @@ def ytchannel():
         external_data = response.json()  # Data dari API agatz
 
         # Validasi apakah respons berisi data yang diharapkan
-        if "data" not in external_data or not external_data["result"]:
+        if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
                 "creator": "Astri",
