@@ -198,7 +198,7 @@ def ppcouple():
 @app.route('/api/ytchannel', methods=['GET'])
 def ytchannel():
     channel = request.args.get('channel')
-    if not server:
+    if not channel:
         return jsonify({
             "status": 400,
             "creator": "Astri",
