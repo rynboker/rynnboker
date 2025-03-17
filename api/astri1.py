@@ -141,7 +141,7 @@ def serve_image(filename):
 def gempa():
     # Call the external earthquake data API
     api_url1 = f"https://api.agatz.xyz/api/gempa"
-    api_url2 = f"https://itzpire.com/information/gempaWarning"
+    api_url2 = f"https://itzpire.com/information/gempa-warning"
 
     try:
         # Make the API requests
