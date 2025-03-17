@@ -203,8 +203,8 @@ def gempa():
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data1": formatted_data1,
-            "data2": formatted_data2
+            "data": formatted_data1,
+            "image": formatted_data2
         })
 
     except requests.exceptions.RequestException as e:
