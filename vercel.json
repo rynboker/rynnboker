@@ -64,6 +64,7 @@
     { "src": "/api/minecraft", "dest": "api/astri5.py" },
     { "src": "/api/ppcouple", "dest": "api/astri5.py" },
     { "src": "/api/ytchannel", "dest": "api/astri5.py" },
+    { "src": "/api/youtube/transcript", "dest": "api/astri5.py" },
     { "src": "/api/musicsearch", "dest": "api/astri6.py" },
     { "src": "/api/random_neko", "dest": "api/astri7.py" },
     { "src": "/api/removebg", "dest": "api/astri7.py" },
