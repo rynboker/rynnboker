@@ -294,7 +294,7 @@ def transcript():
     api_url = f"https://www.itzpire.com/tools/youtube/transcript?url={url}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()
 
