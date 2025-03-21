@@ -215,5 +215,173 @@ def gimage2():
             "error": f"Service is unavailable"
         }), 503
 
+                # Konfigurasi API Weather
+@app.route('/api/ouobypass', methods=['GET'])
+def ouobypass():
+    link = request.args.get('link')
+    if not link:
+        return jsonify({
+            "status": 400,
+            "creator": "Astri",
+            "error": "Parameter 'link' is required."
+        }), 400
+
+    # API eksternal
+    api_url = f"https://api.lolhuman.xyz/api/ouo?apikey=youga&url={link}"
+    try:
+        # Ambil data dari API eksternal
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+        external_data = response.json()  # Data dari API agatz
+
+        # Validasi apakah respons berisi data yang diharapkan
+        if "result" not in external_data or not external_data["result"]:
+            return jsonify({
+                "status": 502,
+                "creator": "Astri",
+                "error": "Invalid response from external API."
+            }), 502
+
+        # Kembalikan respons yang sudah sesuai format
+        return jsonify({
+            "status": 200,
+            "creator": "Astri",
+            "data": external_data["result"]  # Gunakan langsung data dari API eksternal
+        })
+    
+    except requests.exceptions.RequestException as e:
+        # Tangani error dari API eksternal
+        return jsonify({
+            "status": 503,
+            "creator": "Astri",
+            "error": f"Service is unavailable"
+        }), 503
+
+                # Konfigurasi API Weather
+@app.route('/api/tiktokmusic', methods=['GET'])
+def tiktokmusic():
+    link = request.args.get('link')
+    if not link:
+        return jsonify({
+            "status": 400,
+            "creator": "Astri",
+            "error": "Parameter 'link' is required."
+        }), 400
+
+    # API eksternal
+    api_url = f"https://api.lolhuman.xyz/api/tiktokmusic?apikey=youga&url={link}"
+    try:
+        # Ambil data dari API eksternal
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+        external_data = response.json()  # Data dari API agatz
+
+        # Validasi apakah respons berisi data yang diharapkan
+        if "result" not in external_data or not external_data["result"]:
+            return jsonify({
+                "status": 502,
+                "creator": "Astri",
+                "error": "Invalid response from external API."
+            }), 502
+
+        # Kembalikan respons yang sudah sesuai format
+        return jsonify({
+            "status": 200,
+            "creator": "Astri",
+            "data": external_data["result"]  # Gunakan langsung data dari API eksternal
+        })
+    
+    except requests.exceptions.RequestException as e:
+        # Tangani error dari API eksternal
+        return jsonify({
+            "status": 503,
+            "creator": "Astri",
+            "error": f"Service is unavailable"
+        }), 503
+
+ # Konfigurasi API Weather
+@app.route('/api/tiktoknowm', methods=['GET'])
+def tiktoknowm():
+    link = request.args.get('link')
+    if not link:
+        return jsonify({
+            "status": 400,
+            "creator": "Astri",
+            "error": "Parameter 'link' is required."
+        }), 400
+
+    # API eksternal
+    api_url = f"https://api.lolhuman.xyz/api/tiktok2?apikey=youga&url={link}"
+    try:
+        # Ambil data dari API eksternal
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+        external_data = response.json()  # Data dari API agatz
+
+        # Validasi apakah respons berisi data yang diharapkan
+        if "result" not in external_data or not external_data["result"]:
+            return jsonify({
+                "status": 502,
+                "creator": "Astri",
+                "error": "Invalid response from external API."
+            }), 502
+
+        # Kembalikan respons yang sudah sesuai format
+        return jsonify({
+            "status": 200,
+            "creator": "Astri",
+            "data": external_data["result"]  # Gunakan langsung data dari API eksternal
+        })
+    
+    except requests.exceptions.RequestException as e:
+        # Tangani error dari API eksternal
+        return jsonify({
+            "status": 503,
+            "creator": "Astri",
+            "error": f"Service is unavailable"
+        }), 503
+
+ # Konfigurasi API Weather
+@app.route('/api/telestick', methods=['GET'])
+def telestick():
+    link = request.args.get('link')
+    if not link:
+        return jsonify({
+            "status": 400,
+            "creator": "Astri",
+            "error": "Parameter 'link' is required."
+        }), 400
+
+    # API eksternal
+    api_url = f"https://api.lolhuman.xyz/api/telestick?apikey=youga&url={link}"
+    try:
+        # Ambil data dari API eksternal
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+        external_data = response.json()  # Data dari API agatz
+
+        # Validasi apakah respons berisi data yang diharapkan
+        if "result" not in external_data or not external_data["result"]:
+            return jsonify({
+                "status": 502,
+                "creator": "Astri",
+                "error": "Invalid response from external API."
+            }), 502
+
+        # Kembalikan respons yang sudah sesuai format
+        return jsonify({
+            "status": 200,
+            "creator": "Astri",
+            "data": external_data["result"]  # Gunakan langsung data dari API eksternal
+        })
+    
+    except requests.exceptions.RequestException as e:
+        # Tangani error dari API eksternal
+        return jsonify({
+            "status": 503,
+            "creator": "Astri",
+            "error": f"Service is unavailable"
+        }), 503
+
 if __name__ == "__main__":
     app.run(debug=True)
