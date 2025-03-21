@@ -93,6 +93,7 @@
     { "src": "/api/tiktokmusic", "dest": "api/astri9.py" },
     { "src": "/api/tiktoknowm", "dest": "api/astri9.py" },
     { "src": "/api/telestick", "dest": "api/astri9.py" },
+    { "src": "/api/growikibeta", "dest": "api/astri9.py" },
     { "src": "/photo2anime2_image/(.*)", "dest": "api/astri1.py" },
     { "src": "/(.*)", "dest": "api/astri2.py" }
   ],
