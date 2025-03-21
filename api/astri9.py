@@ -435,36 +435,50 @@ def growtopia():
     # Ambil halaman HTML dari URL
     try:
         response = requests.get(url, timeout=10)
-        response.raise_for_status()
+        response.raise_for_status()  # Raises an HTTPError if the status code is 4xx/5xx
     except requests.exceptions.RequestException as e:
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": "Service is unavailable"
+            "error": f"Service is unavailable. Error: {str(e)}"
         }), 503
     
     # Parsing halaman HTML dengan BeautifulSoup
     soup = BeautifulSoup(response.text, 'html.parser')
     
-    # Ambil jumlah online_user (Contoh selector, sesuaikan dengan elemen HTML yang sebenarnya)
-    online_user = soup.find('div', class_='online-user')  # Pastikan selector sesuai
-    online_user_count = online_user.text.strip() if online_user else "Unknown"
-
-    # Ambil full_size gambar (Contoh selector, sesuaikan dengan elemen HTML yang sebenarnya)
-    world_day_images = soup.find('img', class_='world-image')  # Pastikan selector sesuai
-    full_size = world_day_images['src'] if world_day_images else "Unknown"
+    # Ambil jumlah online_user (Pastikan selector sesuai dengan elemen HTML yang benar)
+    online_user = soup.find('div', class_='online-user')  # Ganti dengan selector yang benar
+    if online_user:
+        online_user_count = online_user.text.strip()
+    else:
+        return jsonify({
+            "status": 404,
+            "creator": "Astri",
+            "error": "Could not find the online user element on the page."
+        }), 404
+    
+    # Ambil full_size gambar (Pastikan selector sesuai dengan elemen HTML yang benar)
+    world_day_images = soup.find('img', class_='world-image')  # Ganti dengan selector yang benar
+    if world_day_images and 'src' in world_day_images.attrs:
+        full_size = world_day_images['src']
+    else:
+        return jsonify({
+            "status": 404,
+            "creator": "Astri",
+            "error": "Could not find the world of the day image on the page."
+        }), 404
 
     # Mengubah logika di sini: parse online_user dan full_size gambar sesuai permintaan kamu
-    playerCount = int(online_user_count) if online_user_count.isdigit() else 0
-    wotdURL = full_size
+    player_count = int(online_user_count) if online_user_count.isdigit() else 0
+    wotd_url = full_size
 
     # Kembalikan data dalam format JSON
     return jsonify({
         "status": 200,
         "creator": "Astri",
         "data": {
-            "player_count": playerCount,
-            "world_of_the_day_image": wotdURL
+            "player_count": player_count,
+            "world_of_the_day_image": wotd_url
         }
     })
 
