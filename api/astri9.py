@@ -406,14 +406,14 @@ def growikibeta():
         if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
-                "creator": "Astri",
+                "creator": "NoMeL",
                 "error": "Invalid response from external API."
             }), 502
 
         # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
-            "creator": "Astri",
+            "creator": "NoMeL",
             "data": external_data["result"]  # Gunakan langsung data dari API eksternal
         })
     
@@ -421,7 +421,7 @@ def growikibeta():
         # Tangani error dari API eksternal
         return jsonify({
             "status": 503,
-            "creator": "Astri",
+            "creator": "NoMeL",
             "error": f"Service is unavailable"
         }), 503
 
