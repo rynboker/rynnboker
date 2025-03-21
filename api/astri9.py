@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import requests
 import logging
 from datetime import datetime
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
@@ -424,6 +425,48 @@ def growikibeta():
             "creator": "NoMeL",
             "error": f"Service is unavailable"
         }), 503
+
+# API untuk mengambil data dari halaman Growtopia
+@app.route('/api/growtopia', methods=['GET'])
+def growtopia():
+    # Parameter untuk menentukan URL atau informasi tambahan lainnya
+    url = request.args.get('url', 'https://www.growtopiagame.com/detail')
+    
+    # Ambil halaman HTML dari URL
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        return jsonify({
+            "status": 503,
+            "creator": "Astri",
+            "error": "Service is unavailable"
+        }), 503
+    
+    # Parsing halaman HTML dengan BeautifulSoup
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    # Ambil jumlah online_user (Contoh selector, sesuaikan dengan elemen HTML yang sebenarnya)
+    online_user = soup.find('div', class_='online-user')  # Pastikan selector sesuai
+    online_user_count = online_user.text.strip() if online_user else "Unknown"
+
+    # Ambil full_size gambar (Contoh selector, sesuaikan dengan elemen HTML yang sebenarnya)
+    world_day_images = soup.find('img', class_='world-image')  # Pastikan selector sesuai
+    full_size = world_day_images['src'] if world_day_images else "Unknown"
+
+    # Mengubah logika di sini: parse online_user dan full_size gambar sesuai permintaan kamu
+    playerCount = int(online_user_count) if online_user_count.isdigit() else 0
+    wotdURL = full_size
+
+    # Kembalikan data dalam format JSON
+    return jsonify({
+        "status": 200,
+        "creator": "Astri",
+        "data": {
+            "player_count": playerCount,
+            "world_of_the_day_image": wotdURL
+        }
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)
