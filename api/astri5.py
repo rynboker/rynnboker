@@ -52,7 +52,7 @@ def weather():
 def coronaindonesia():
 
     # API eksternal
-    api_url = f"https://api.lolhuman.xyz/api/corona/indonesia?apikey=59485720964df592a349c173"
+    api_url = f"https://api.lolhuman.xyz/api/corona/indonesia?apikey=youga"
     try:
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
@@ -87,7 +87,7 @@ def coronaindonesia():
 def coronaglobal():
 
     # API eksternal
-    api_url = f"https://api.lolhuman.xyz/api/corona/global?apikey=59485720964df592a349c173"
+    api_url = f"https://api.lolhuman.xyz/api/corona/global?apikey=youga"
     try:
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
@@ -164,7 +164,7 @@ def minecraft():
 def ppcouple():
 
     # API eksternal
-    api_url = f"https://api.lolhuman.xyz/api/random/ppcouple?apikey=59485720964df592a349c173"
+    api_url = f"https://api.lolhuman.xyz/api/random/ppcouple?apikey=youga"
     try:
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
@@ -206,7 +206,7 @@ def ytchannel():
         }), 400
 
     # API eksternal
-    api_url = f"https://api.lolhuman.xyz/api/ytchannel?apikey=59485720964df592a349c173&query={channel}"
+    api_url = f"https://api.lolhuman.xyz/api/ytchannel?apikey=youga&query={channel}"
     try:
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
