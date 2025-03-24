@@ -39,7 +39,7 @@ def music_search():
         # Use the Catbox URL to fetch music information
         lolhuman_url = "https://api.lolhuman.xyz/api/musicsearch"
         params = {
-            "apikey": "59485720964df592a349c173",
+            "apikey": "youga",
             "file": catbox_url
         }
         
