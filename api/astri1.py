@@ -323,11 +323,10 @@ def gptlogic():
             "error": f"An unexpected error occurred"
         }), 500
 
-# /api/pinterest Endpoint
+        # Konfigurasi API Weather
 @app.route('/api/pinterest', methods=['GET'])
 def pinterest():
     message = request.args.get('message')
-
     if not message:
         return jsonify({
             "status": 400,
@@ -335,48 +334,78 @@ def pinterest():
             "error": "Parameter 'message' is required."
         }), 400
 
-    api_url = f"https://api.agatz.xyz/api/pinsearch?message={message}"
+    # API eksternal
+    api_url = f"https://api.lolhuman.xyz/api/pinterest?apikey=youga&query={message}"
     try:
-        response = requests.get(api_url)
+        # Ambil data dari API eksternal
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+        external_data = response.json()  # Data dari API agatz
 
-        if response.status_code != 200:
+        # Validasi apakah respons berisi data yang diharapkan
+        if "result" not in external_data or not external_data["result"]:
             return jsonify({
-                "status": response.status_code,
+                "status": 502,
                 "creator": "Astri",
-                "error": "Sorry, an error occurred with our external service. Please try again later."
-            }), response.status_code
+                "error": "Invalid response from external API."
+            }), 502
 
-        external_data = response.json().get("data", [])
-        formatted_data = [
-            {
-                "pin": item.get("pin"),
-                "created_at": item.get("created_at"),
-                "id": item.get("id"),
-                "images_url": item.get("images_url"),
-                "grid_title": item.get("grid_title")
-            }
-            for item in external_data
-        ]
-
+        # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": formatted_data
+            "data": external_data["result"]  # Gunakan langsung data dari API eksternal
         })
-
+    
     except requests.exceptions.RequestException as e:
+        # Tangani error dari API eksternal
         return jsonify({
             "status": 503,
             "creator": "Astri",
             "error": f"Service is unavailable"
         }), 503
 
-    except Exception as e:
+        # Konfigurasi API Weather
+@app.route('/api/pinterest2', methods=['GET'])
+def pinterest2():
+    message = request.args.get('message')
+    if not message:
         return jsonify({
-            "status": 500,
+            "status": 400,
             "creator": "Astri",
-            "error": f"An unexpected error occurred"
-        }), 500
+            "error": "Parameter 'message' is required."
+        }), 400
+
+    # API eksternal
+    api_url = f"https://api.lolhuman.xyz/api/pinterest2?apikey=youga&query={message}"
+    try:
+        # Ambil data dari API eksternal
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+        external_data = response.json()  # Data dari API agatz
+
+        # Validasi apakah respons berisi data yang diharapkan
+        if "result" not in external_data or not external_data["result"]:
+            return jsonify({
+                "status": 502,
+                "creator": "Astri",
+                "error": "Invalid response from external API."
+            }), 502
+
+        # Kembalikan respons yang sudah sesuai format
+        return jsonify({
+            "status": 200,
+            "creator": "Astri",
+            "data": external_data["result"]  # Gunakan langsung data dari API eksternal
+        })
+    
+    except requests.exceptions.RequestException as e:
+        # Tangani error dari API eksternal
+        return jsonify({
+            "status": 503,
+            "creator": "Astri",
+            "error": f"Service is unavailable"
+        }), 503
 
 if __name__ == '__main__':
     app.run(debug=True)
