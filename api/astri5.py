@@ -129,7 +129,7 @@ def minecraft():
         }), 400
 
     # API eksternal
-    api_url = f"https://api.lolhuman.xyz/api/minecraft/{serverurl}?apikey=59485720964df592a349c173"
+    api_url = f"https://api.lolhuman.xyz/api/minecraft/{serverurl}?apikey=youga"
     try:
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
