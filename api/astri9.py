@@ -406,14 +406,14 @@ def growikibeta():
         if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
-                "creator": "NoMeL",
+                "creator": "Astri",
                 "error": "Invalid response from external API."
             }), 502
 
         # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "data": external_data["result"]  # Gunakan langsung data dari API eksternal
         })
     
@@ -421,7 +421,7 @@ def growikibeta():
         # Tangani error dari API eksternal
         return jsonify({
             "status": 503,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "error": f"Service is unavailable"
         }), 503
 
@@ -448,14 +448,14 @@ def simi():
         if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
-                "creator": "NoMeL",
+                "creator": "Astri",
                 "error": "Invalid response from external API."
             }), 502
 
         # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "data": external_data["result"]  # Gunakan langsung data dari API eksternal
         })
     
@@ -463,7 +463,7 @@ def simi():
         # Tangani error dari API eksternal
         return jsonify({
             "status": 503,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "error": f"Service is unavailable"
         }), 503
 
@@ -490,14 +490,14 @@ def anime():
         if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
-                "creator": "NoMeL",
+                "creator": "Astri",
                 "error": "Invalid response from external API."
             }), 502
 
         # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "data": external_data["result"]  # Gunakan langsung data dari API eksternal
         })
     
@@ -505,7 +505,7 @@ def anime():
         # Tangani error dari API eksternal
         return jsonify({
             "status": 503,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "error": f"Service is unavailable"
         }), 503
 
@@ -532,14 +532,14 @@ def character():
         if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
-                "creator": "NoMeL",
+                "creator": "Astri",
                 "error": "Invalid response from external API."
             }), 502
 
         # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "data": external_data["result"]  # Gunakan langsung data dari API eksternal
         })
     
@@ -547,7 +547,7 @@ def character():
         # Tangani error dari API eksternal
         return jsonify({
             "status": 503,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "error": f"Service is unavailable"
         }), 503
 
@@ -617,14 +617,14 @@ def instagram():
         if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
-                "creator": "NoMeL",
+                "creator": "Astri",
                 "error": "Invalid response from external API."
             }), 502
 
         # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "data": external_data["result"]  # Gunakan langsung data dari API eksternal
         })
     
@@ -632,7 +632,7 @@ def instagram():
         # Tangani error dari API eksternal
         return jsonify({
             "status": 503,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "error": f"Service is unavailable"
         }), 503
 
@@ -659,14 +659,14 @@ def wiki():
         if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
-                "creator": "NoMeL",
+                "creator": "Astri",
                 "error": "Invalid response from external API."
             }), 502
 
         # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "data": external_data["result"]  # Gunakan langsung data dari API eksternal
         })
     
@@ -674,7 +674,7 @@ def wiki():
         # Tangani error dari API eksternal
         return jsonify({
             "status": 503,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "error": f"Service is unavailable"
         }), 503
 
