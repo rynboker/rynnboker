@@ -24,9 +24,7 @@ def send_log_to_discord(message, api_key):
         print(f"No webhook found for API Key: {api_key}")
         return
 
-    data = {
-        "content": message
-    }
+    data = {"content": message}
     try:
         requests.post(webhook_url, json=data)
     except Exception as e:
@@ -38,20 +36,23 @@ def send_email():
 
     # Menarik parameter dari request body
     api_key = data.get('api_key')  # API Key untuk memilih webhook
-    from_email = data.get('from')  # Email pengirim
     to_email = data.get('to')  # Email penerima
     subject = data.get('subject', 'Testing Command')  # Subjek email (default: 'Testing Command')
     content = data.get('content')  # Konten email
 
+    # Validasi API key
+    if not api_key or api_key not in API_KEYS:
+        return jsonify({'status': 'error', 'message': 'Invalid API Key'}), 403
+
     # Validasi input
-    if not api_key or not from_email or not to_email or not content:
-        return jsonify({'status': 'error', 'message': 'API key, From, To, and content are required'}), 400
+    if not to_email or not content:
+        return jsonify({'status': 'error', 'message': 'To and content are required'}), 400
 
     # Set up the email
     msg = MIMEMultipart()
     msg['From'] = from_email
-    msg['To'] = to_email
-    msg['Subject'] = subject
+     msg['To'] = to_email
+     msg['Subject'] = subject
 
     body = f"Hello,\n\n{content}\n\nThank You!"
     msg.attach(MIMEText(body, 'plain'))
@@ -73,3 +74,4 @@ def send_email():
 
 if __name__ == '__main__':
     app.run(port=3000)
+    
