@@ -20,7 +20,7 @@ def wmit():
     api_url = f"https://api.lolhuman.xyz/api/wmit?apikey=youga&img={img}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -62,7 +62,7 @@ def wait():
     api_url = f"https://api.lolhuman.xyz/api/wait?apikey=youga&img={img}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -104,7 +104,7 @@ def nhentai():
     api_url = f"https://api.lolhuman.xyz/api/nhentai/{code}?apikey=youga"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -146,7 +146,7 @@ def nhentaisearch():
     api_url = f"https://api.lolhuman.xyz/api/nhentaisearch?apikey=youga&query={message}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -188,7 +188,7 @@ def gimage2():
     api_url = f"https://api.lolhuman.xyz/api/gimage2?apikey=youga&query={message}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -230,7 +230,7 @@ def ouobypass():
     api_url = f"https://api.lolhuman.xyz/api/ouo?apikey=youga&url={link}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -272,7 +272,7 @@ def tiktokmusic():
     api_url = f"https://api.lolhuman.xyz/api/tiktokmusic?apikey=youga&url={link}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -314,7 +314,7 @@ def tiktoknowm():
     api_url = f"https://api.lolhuman.xyz/api/tiktok2?apikey=youga&url={link}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -356,7 +356,7 @@ def telestick():
     api_url = f"https://api.lolhuman.xyz/api/telestick?apikey=youga&url={link}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -398,7 +398,7 @@ def growikibeta():
     api_url = f"https://api.lolhuman.xyz/api/growiki?apikey=youga&query={item}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -440,7 +440,7 @@ def simi():
     api_url = f"https://api.lolhuman.xyz/api/simi?apikey=youga&text={text}&badword=true"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -482,7 +482,7 @@ def anime():
     api_url = f"https://api.lolhuman.xyz/api/anime?apikey=youga&query={message}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -524,7 +524,7 @@ def character():
     api_url = f"https://api.lolhuman.xyz/api/character?apikey=youga&query={message}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -567,7 +567,7 @@ def ocr():
     api_url = f"https://api.lolhuman.xyz/api/ocr?apikey=youga&img={img}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -609,7 +609,7 @@ def instagram():
     api_url = f"https://api.lolhuman.xyz/api/instagram?apikey=youga&url={url}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
@@ -651,7 +651,7 @@ def wiki():
     api_url = f"https://api.lolhuman.xyz/api/wiki?apikey=youga&query={message}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url)
         response.raise_for_status()
         external_data = response.json()  # Data dari API agatz
 
