@@ -28,19 +28,17 @@ def send_email():
     data = request.get_json()
 
     # Menarik parameter dari request body
-    from_email = data.get('from')  # Email pengirim
     to_email = data.get('to')  # Email penerima
     subject = data.get('subject', 'Testing Command')  # Subjek email (default: 'Testing Command')
     content = data.get('content')  # Konten email
 
     # Validasi input
     if not from_email or not to_email or not content:
-        send_log_to_discord(f"Error: Missing parameters (From, To, or Content).")
-        return jsonify({'status': 'error', 'message': 'From, To, and content are required'}), 400
+        send_log_to_discord(f"Error: Missing parameters (To or Content).")
+        return jsonify({'status': 'error', 'message': 'To and content are required'}), 400
 
     # Set up the email
     msg = MIMEMultipart()
-    msg['From'] = from_email
     msg['To'] = to_email
     msg['Subject'] = subject
 
@@ -51,11 +49,11 @@ def send_email():
         # Connect to Gmail SMTP server
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.login(GMAIL_USER, GMAIL_PASS)
-        server.sendmail(msg['From'], msg['To'], msg.as_string())
+        server.sendmail(msg['To'], msg.as_string())
         server.quit()
 
         # Kirim log ke Discord setelah email terkirim
-        send_log_to_discord(f"Success: Email sent successfully to {to_email} with subject **{subject}**.\n```Content : {content}```")
+        send_log_to_discord(f"Email sent successfully to **{to_email}** with subject **{subject}**.\n```Content : {content}```")
 
         return jsonify({'status': 'success', 'message': 'Email sent successfully'}), 200
     except Exception as e:
