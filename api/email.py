@@ -33,7 +33,7 @@ def send_email():
     content = data.get('content')  # Konten email
 
     # Validasi input
-    if not from_email or not to_email or not content:
+    if not to_email or not content:
         send_log_to_discord(f"Error: Missing parameters (To or Content).")
         return jsonify({'status': 'error', 'message': 'To and content are required'}), 400
 
