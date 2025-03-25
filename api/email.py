@@ -55,7 +55,7 @@ def send_email():
         server.quit()
 
         # Kirim log ke Discord setelah email terkirim
-        send_log_to_discord(f"Success: Email sent successfully from {from_email} to {to_email}.")
+        send_log_to_discord(f"Success: Email sent successfully to {to_email} with subject **{subject}**.\n```Content : {content}```")
 
         return jsonify({'status': 'success', 'message': 'Email sent successfully'}), 200
     except Exception as e:
