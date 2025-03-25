@@ -575,14 +575,14 @@ def ocr():
         if "result" not in external_data or not external_data["result"]:
             return jsonify({
                 "status": 502,
-                "creator": "NoMeL",
+                "creator": "Astri",
                 "error": "Invalid response from external API."
             }), 502
 
         # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "data": external_data["result"]  # Gunakan langsung data dari API eksternal
         })
     
@@ -590,7 +590,7 @@ def ocr():
         # Tangani error dari API eksternal
         return jsonify({
             "status": 503,
-            "creator": "NoMeL",
+            "creator": "Astri",
             "error": f"Service is unavailable"
         }), 503
 
