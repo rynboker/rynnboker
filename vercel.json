@@ -40,6 +40,10 @@
     {
       "src": "api/astri9.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "api/email.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
