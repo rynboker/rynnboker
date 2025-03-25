@@ -7,8 +7,8 @@ import requests  # Untuk mengirimkan log ke Discord webhook
 app = Flask(__name__)
 
 # Gmail credentials
-GMAIL_USER = 'yogaastri0902@gmail.com'  # Ganti dengan email Gmail kamu
-GMAIL_PASS = 'ensp qvfh kakk xuqw'   # Ganti dengan password Gmail kamu
+GMAIL_USER = 'siastri.api@gmail.com'  # Ganti dengan email Gmail kamu
+GMAIL_PASS = 'vgqb pcqs hswo yrfs'   # Ganti dengan password Gmail kamu
 
 # Menyimpan API key dan webhook Discord yang sesuai
 API_KEYS = {
