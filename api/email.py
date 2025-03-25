@@ -2,12 +2,26 @@ from flask import Flask, request, jsonify
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import requests  # Untuk mengirimkan log ke Discord webhook
 
 app = Flask(__name__)
 
 # Gmail credentials
 GMAIL_USER = 'yogaastri0902@gmail.com'  # Ganti dengan email Gmail kamu
 GMAIL_PASS = 'ensp qvfh kakk xuqw'   # Ganti dengan password Gmail kamu
+
+# URL webhook Discord untuk logging
+DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1353984087156588564/QrThblkHMruq7yt0jZ852SX7Lyc4b9thSpwieETZ-fVn8KSqSSmijuo04NbMz8iDXW3M'  # Ganti dengan webhook URL kamu
+
+def send_log_to_discord(message):
+    """Fungsi untuk mengirimkan log ke Discord Webhook"""
+    data = {
+        "content": message
+    }
+    try:
+        requests.post(DISCORD_WEBHOOK_URL, json=data)
+    except Exception as e:
+        print(f"Failed to send log to Discord: {e}")
 
 @app.route('/send/email', methods=['POST'])
 def send_email():
@@ -21,6 +35,7 @@ def send_email():
 
     # Validasi input
     if not from_email or not to_email or not content:
+        send_log_to_discord(f"Error: Missing parameters (From, To, or Content).")
         return jsonify({'status': 'error', 'message': 'From, To, and content are required'}), 400
 
     # Set up the email
@@ -38,9 +53,13 @@ def send_email():
         server.login(GMAIL_USER, GMAIL_PASS)
         server.sendmail(msg['From'], msg['To'], msg.as_string())
         server.quit()
-        
+
+        # Kirim log ke Discord setelah email terkirim
+        send_log_to_discord(f"Success: Email sent successfully from {from_email} to {to_email}.")
+
         return jsonify({'status': 'success', 'message': 'Email sent successfully'}), 200
     except Exception as e:
+        send_log_to_discord(f"Error: Failed to send email. Error: {str(e)}")
         return jsonify({'status': 'error', 'message': 'Failed to send email', 'error': str(e)}), 500
 
 if __name__ == '__main__':
