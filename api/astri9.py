@@ -437,7 +437,7 @@ def simi():
         }), 400
 
     # API eksternal
-    api_url = f"https://api.lolhuman.xyz/api/simi?apikey=youga&text={text}&badword=true”
+    api_url = f"https://api.lolhuman.xyz/api/simi?apikey=youga&text={text}&badword=true"
     try:
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
@@ -479,7 +479,7 @@ def anime():
         }), 400
 
     # API eksternal
-    api_url = f"https://api.lolhuman.xyz/api/anime?apikey=youga&query={message}”
+    api_url = f"https://api.lolhuman.xyz/api/anime?apikey=youga&query={message}"
     try:
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
@@ -521,7 +521,7 @@ def character():
         }), 400
 
     # API eksternal
-    api_url = f"https://api.lolhuman.xyz/api/character?apikey=youga&query={message}”
+    api_url = f"https://api.lolhuman.xyz/api/character?apikey=youga&query={message}"
     try:
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
@@ -564,7 +564,7 @@ def ocr():
         }), 400
 
     # API eksternal
-    api_url = f"https://api.lolhuman.xyz/api/ocr?apikey=youga&img={img}”
+    api_url = f"https://api.lolhuman.xyz/api/ocr?apikey=youga&img={img}"
     try:
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
@@ -606,7 +606,49 @@ def instagram():
         }), 400
 
     # API eksternal
-    api_url = f"https://api.lolhuman.xyz/api/instagram?apikey=youga&url={url}”
+    api_url = f"https://api.lolhuman.xyz/api/instagram?apikey=youga&url={url}"
+    try:
+        # Ambil data dari API eksternal
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+        external_data = response.json()  # Data dari API agatz
+
+        # Validasi apakah respons berisi data yang diharapkan
+        if "result" not in external_data or not external_data["result"]:
+            return jsonify({
+                "status": 502,
+                "creator": "NoMeL",
+                "error": "Invalid response from external API."
+            }), 502
+
+        # Kembalikan respons yang sudah sesuai format
+        return jsonify({
+            "status": 200,
+            "creator": "NoMeL",
+            "data": external_data["result"]  # Gunakan langsung data dari API eksternal
+        })
+    
+    except requests.exceptions.RequestException as e:
+        # Tangani error dari API eksternal
+        return jsonify({
+            "status": 503,
+            "creator": "NoMeL",
+            "error": f"Service is unavailable"
+        }), 503
+
+        # Konfigurasi API Weather
+@app.route('/api/wiki, methods=['GET'])
+def wiki():
+    message = request.args.get(message)
+    if not message:
+        return jsonify({
+            "status": 400,
+            "creator": "Astri",
+            "error": "Parameter message is required."
+        }), 400
+
+    # API eksternal
+    api_url = f"https://api.lolhuman.xyz/api/wiki?apikey=youga&query={message}"
     try:
         # Ambil data dari API eksternal
         response = requests.get(api_url, timeout=10)
