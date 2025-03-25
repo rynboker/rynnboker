@@ -428,7 +428,7 @@ def growikibeta():
 # Konfigurasi API Weather
 @app.route('/api/simi', methods=['GET'])
 def simi():
-    text = request.args.get(text)
+    text = request.args.get('text')
     if not text:
         return jsonify({
             "status": 400,
@@ -470,7 +470,7 @@ def simi():
 # Konfigurasi API Weather
 @app.route('/api/anime', methods=['GET'])
 def anime():
-    message = request.args.get(message)
+    message = request.args.get('message')
     if not message:
         return jsonify({
             "status": 400,
@@ -512,7 +512,7 @@ def anime():
 # Konfigurasi API Weather
 @app.route('/api/character', methods=['GET'])
 def character():
-    message = request.args.get(message)
+    message = request.args.get('message')
     if not message:
         return jsonify({
             "status": 400,
@@ -555,7 +555,7 @@ def character():
 # Konfigurasi API Weather
 @app.route('/api/ocr', methods=['GET'])
 def ocr():
-    img = request.args.get(img)
+    img = request.args.get('img')
     if not img:
         return jsonify({
             "status": 400,
@@ -597,7 +597,7 @@ def ocr():
 # Konfigurasi API Weather
 @app.route('/api/instagram', methods=['GET'])
 def instagram():
-    url = request.args.get(url)
+    url = request.args.get('url')
     if not url:
         return jsonify({
             "status": 400,
@@ -639,7 +639,7 @@ def instagram():
         # Konfigurasi API Weather
 @app.route('/api/wiki', methods=['GET'])
 def wiki():
-    message = request.args.get(message)
+    message = request.args.get('message')
     if not message:
         return jsonify({
             "status": 400,
