@@ -101,6 +101,7 @@
 { "src": "/api/character", "dest": "api/astri9.py" },
 { "src": "/api/anime", "dest": "api/astri9.py" },
 { "src": "/api/wiki", "dest": "api/astri9.py" },
+    { "src": "/send/email", "dest": "api/email.py" },
     { "src": "/photo2anime2_image/(.*)", "dest": "api/astri1.py" },
     { "src": "/(.*)", "dest": "api/astri2.py" }
   ],
