@@ -95,6 +95,12 @@
     { "src": "/api/tiktoknowm", "dest": "api/astri9.py" },
     { "src": "/api/telestick", "dest": "api/astri9.py" },
     { "src": "/api/growikibeta", "dest": "api/astri9.py" },
+{ "src": "/api/simi", "dest": "api/astri9.py" },
+{ "src": "/api/instagram", "dest": "api/astri9.py" },
+{ "src": "/api/ocr", "dest": "api/astri9.py" },
+{ "src": "/api/character", "dest": "api/astri9.py" },
+{ "src": "/api/anime", "dest": "api/astri9.py" },
+{ "src": "/api/wiki", "dest": "api/astri9.py" },
     { "src": "/photo2anime2_image/(.*)", "dest": "api/astri1.py" },
     { "src": "/(.*)", "dest": "api/astri2.py" }
   ],
@@ -102,3 +108,4 @@
     "FLASK_DEBUG": "true"
   }
 }
+
