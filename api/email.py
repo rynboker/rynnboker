@@ -19,12 +19,14 @@ API_KEYS = {
 def send_log_to_discord(message, api_key):
     """Fungsi untuk mengirimkan log ke Discord Webhook berdasarkan API Key"""
     webhook_url = API_KEYS.get(api_key)
-    
+
     if not webhook_url:
         print(f"No webhook found for API Key: {api_key}")
         return
 
-    data = {"content": message}
+    data = {
+        "content": message
+    }
     try:
         requests.post(webhook_url, json=data)
     except Exception as e:
@@ -36,6 +38,7 @@ def send_email():
 
     # Menarik parameter dari request body
     api_key = data.get('api_key')  # API Key untuk memilih webhook
+    from_email = data.get('from')  # Email pengirim
     to_email = data.get('to')  # Email penerima
     subject = data.get('subject', 'Testing Command')  # Subjek email (default: 'Testing Command')
     content = data.get('content')  # Konten email
@@ -74,4 +77,3 @@ def send_email():
 
 if __name__ == '__main__':
     app.run(port=3000)
-    
