@@ -51,8 +51,8 @@ def send_email():
     # Set up the email
     msg = MIMEMultipart()
     msg['From'] = from_email
-     msg['To'] = to_email
-     msg['Subject'] = subject
+    msg['To'] = to_email
+    msg['Subject'] = subject
 
     body = f"Hello,\n\n{content}\n\nThank You!"
     msg.attach(MIMEText(body, 'plain'))
