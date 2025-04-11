@@ -579,7 +579,7 @@ p {
   <ul class="profile-social-links">
     <li>
       <a target="_blank" href="https://github.com/nomel2837">
-        <i class="fa fa-github"></i>
+        <i class="fab fa-github"></i>
       </a>
     </li>
     <li>
@@ -589,7 +589,7 @@ p {
     </li>
     <li>
       <a target="_blank" href="https://instagram.com/_matchaamel">
-        <i class="fa fa-instagram"></i>
+        <i class="fab fa-instagram"></i>
       </a>
     </li>
     <li>
