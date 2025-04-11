@@ -583,7 +583,7 @@ p {
     </li>
     <li>
       <a target="_blank" href="https://discord.com/users/826098988725829662">
-        <i class="fa fa-user"></i>
+        <i class="fa-brands fa-discord"></i>
       </a>
     </li>
     <li>
