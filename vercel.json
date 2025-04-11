@@ -13,7 +13,8 @@
     { "src": "api/email.py", "use": "@vercel/python" }
   ],
   "routes": [
-    { "src": "/", "dest": "api/astri2.py" },      
+    { "src": "/", "dest": "api/astri2.py" },    
+    { "src": "/style.css", "dest": "style.css" },
     { "src": "/api/photo2anime2", "dest": "api/astri1.py" },
     { "src": "/api/gempa", "dest": "api/astri1.py" },
     { "src": "/api/gimage", "dest": "api/astri1.py" },
