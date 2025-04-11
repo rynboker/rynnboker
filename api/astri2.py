@@ -32,8 +32,8 @@ def generate_short_code(length=6):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
 @app.route('/', methods=['GET'])
-def index():
-    return send_from_directory('public', 'index.html')
+def serve_index():
+    return send_from_directory('../', 'index.html')
 
 @app.route('/api/shorturl', methods=['POST'])
 def create_short_url():
