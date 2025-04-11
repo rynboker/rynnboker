@@ -1,52 +1,19 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "api/astri1.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/astri2.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/astri3.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/astri4.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/astri5.py",
-      "use": "@vercel/python"
-    }
-    ,
-    {
-      "src": "api/astri6.py",
-      "use": "@vercel/python"
-    }
-    ,
-    {
-      "src": "api/astri7.py",
-      "use": "@vercel/python"
-    }
-    ,
-    {
-      "src": "api/astri8.py",
-      "use": "@vercel/python"
-    }
-    ,
-    {
-      "src": "api/astri9.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "api/email.py",
-      "use": "@vercel/python"
-    }
+    { "src": "api/astri1.py", "use": "@vercel/python" },
+    { "src": "api/astri2.py", "use": "@vercel/python" },
+    { "src": "api/astri3.py", "use": "@vercel/python" },
+    { "src": "api/astri4.py", "use": "@vercel/python" },
+    { "src": "api/astri5.py", "use": "@vercel/python" },
+    { "src": "api/astri6.py", "use": "@vercel/python" },
+    { "src": "api/astri7.py", "use": "@vercel/python" },
+    { "src": "api/astri8.py", "use": "@vercel/python" },
+    { "src": "api/astri9.py", "use": "@vercel/python" },
+    { "src": "api/email.py", "use": "@vercel/python" }
   ],
   "routes": [
+    { "src": "/$", "dest": "/index.html" },                     // ⬅️ root ke index.html
     { "src": "/api/photo2anime2", "dest": "api/astri1.py" },
     { "src": "/api/gempa", "dest": "api/astri1.py" },
     { "src": "/api/gimage", "dest": "api/astri1.py" },
@@ -107,10 +74,11 @@
     { "src": "/api/wiki", "dest": "api/astri9.py" },
     { "src": "/send/email", "dest": "api/email.py" },
     { "src": "/photo2anime2_image/(.*)", "dest": "api/astri1.py" },
+    
+    // 🧠 ShortURL handler di bawah ini
     { "src": "/(.*)", "dest": "api/astri2.py" }
   ],
   "env": {
     "FLASK_DEBUG": "true"
   }
 }
-
