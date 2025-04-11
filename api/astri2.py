@@ -3,9 +3,8 @@ import string
 from datetime import datetime, timedelta
 import json
 import requests
-from flask import Flask, jsonify, request, redirect
+from flask import Flask, jsonify, request, redirect, Response
 import os
-from flask import send_from_directory
 
 app = Flask(__name__)
 
@@ -31,9 +30,44 @@ def save_url_mappings(data):
 def generate_short_code(length=6):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
-@app.route('/', methods=['GET'])
-def serve_index():
-    return send_from_directory('../', 'index.html')
+@app.route("/")
+def index():
+    html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Welcome</title>
+        <style>
+            body {
+                background-color: #f0f0f0;
+                font-family: Arial, sans-serif;
+                color: #333;
+                text-align: center;
+                margin-top: 50px;
+            }
+
+            h1 {
+                color: #007acc;
+            }
+
+            a {
+                color: #ff4081;
+                text-decoration: none;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Selamat Datang di siastri.my.id</h1>
+        <p>Ini adalah halaman utama.</p>
+        <a href="/api/shorturl">Lihat API ShortURL</a>
+    </body>
+    </html>
+    """
+    return Response(html, mimetype='text/html')
 
 @app.route('/api/shorturl', methods=['POST'])
 def create_short_url():
