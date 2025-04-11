@@ -5,6 +5,7 @@ import json
 import requests
 from flask import Flask, jsonify, request, redirect
 import os
+from flask import send_from_directory
 
 app = Flask(__name__)
 
@@ -29,6 +30,10 @@ def save_url_mappings(data):
 # Function to generate short URL codes
 def generate_short_code(length=6):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+@app.route('/', methods=['GET'])
+def index():
+    return send_from_directory('public', 'index.html')
 
 @app.route('/api/shorturl', methods=['POST'])
 def create_short_url():
