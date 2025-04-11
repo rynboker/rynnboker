@@ -584,7 +584,7 @@ p {
     </li>
     <li>
       <a target="_blank" href="https://discord.com/users/826098988725829662">
-        <i class="fab fa-discord"></i>
+        <i class="fab fa-discord discord-icon"></i>
       </a>
     </li>
     <li>
