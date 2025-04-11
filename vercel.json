@@ -13,7 +13,7 @@
     { "src": "api/email.py", "use": "@vercel/python" }
   ],
   "routes": [
-    { "src": "/$", "dest": "/index.html" },                     // ⬅️ root ke index.html
+    { "src": "/$", "dest": "/index.html" },      
     { "src": "/api/photo2anime2", "dest": "api/astri1.py" },
     { "src": "/api/gempa", "dest": "api/astri1.py" },
     { "src": "/api/gimage", "dest": "api/astri1.py" },
@@ -75,7 +75,6 @@
     { "src": "/send/email", "dest": "api/email.py" },
     { "src": "/photo2anime2_image/(.*)", "dest": "api/astri1.py" },
     
-    // 🧠 ShortURL handler di bawah ini
     { "src": "/(.*)", "dest": "api/astri2.py" }
   ],
   "env": {
