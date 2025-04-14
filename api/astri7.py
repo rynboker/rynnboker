@@ -23,7 +23,7 @@ def random_neko():
         lolhuman_response = requests.get(lolhuman_url, stream=True)
         
         if lolhuman_response.status_code != 200:
-            return jsonify({"creator": "Astri", "error": "Failed to fetch image from Lolhuman API.", "status": 500})
+            return jsonify({"creator": "Astri", "error": "Failed to fetch image.", "status": 500})
 
         # Save the image locally to the temporary directory
         img_name = "neko_image.jpg"  # A default filename
