@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template_string
 import requests
 import logging
 
@@ -94,7 +94,7 @@ def status():
 </script>
 </html>
 """
-return Response(html, mimetype='text/html')
+    return render_template_string(html)
 
 # API /api/ytsearch
 @app.route('/api/ytsearch', methods=['GET'])
