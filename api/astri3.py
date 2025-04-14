@@ -72,7 +72,6 @@ def status():
 </head>
 <body oncontextmenu='return false;' onkeydown='return false;' onmousedown='return false;' ondragstart='return false' onselectstart='return false' style='-moz-user-select: none; cursor: default;'>
   <h1>API Status - siastri.my.id</h1>
-  <p>Berikut daftar API yang tersedia dan statusnya:</p>
   <ul id="api-list"></ul>
 </body>
 <script type='text/javascript'>
