@@ -14,6 +14,7 @@
   ],
   "routes": [
     { "src": "/", "dest": "api/astri2.py" },
+    { "src": "/status", "dest": "api/astri3.py" },
     { "src": "/api/photo2anime2", "dest": "api/astri1.py" },
     { "src": "/api/gempa", "dest": "api/astri1.py" },
     { "src": "/api/gimage", "dest": "api/astri1.py" },
