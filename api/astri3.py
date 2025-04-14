@@ -8,7 +8,7 @@ app = Flask(__name__)
 def status():
     html = """
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>API Status - siastri.my.id</title>
