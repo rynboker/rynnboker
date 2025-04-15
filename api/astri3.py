@@ -596,7 +596,7 @@ p {
 </script>
 </html>
     """
-    return Response(html, mimetype='text/html')
+    return render_template_string(html)
 
 @app.route("/status")
 def status():
