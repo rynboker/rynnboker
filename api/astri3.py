@@ -525,7 +525,7 @@ p {
   <header>
     <!-- here’s the avatar -->
     <a target="_blank" href="/">
-      <img src="yoga.jpg" class="hoverZoomLink">
+      <img src="https://raw.githubusercontent.com/Astri96/databse/main/database/yoga.jpg" class="hoverZoomLink">
     </a>
 
     <!-- the username -->
