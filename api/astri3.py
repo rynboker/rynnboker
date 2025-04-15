@@ -525,7 +525,7 @@ p {
   <header>
     <!-- here’s the avatar -->
     <a target="_blank" href="/">
-      <img src="https://avatars.githubusercontent.com/u/81070831?v=4" class="hoverZoomLink">
+      <img src="https://media.discordapp.net/attachments/1050054341446340630/1361545919698567448/yoga.jpg" class="hoverZoomLink">
     </a>
 
     <!-- the username -->
