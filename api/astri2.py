@@ -550,7 +550,7 @@ p {
 <aside class="profile-card">
   <header>
     <!-- here’s the avatar -->
-    <a target="_blank" href="#">
+    <a target="_blank" href="https://discord.gg/nHm2ZwvqC8">
       <img src="https://avatars.githubusercontent.com/u/81070831?v=4" class="hoverZoomLink">
     </a>
 
@@ -593,7 +593,7 @@ p {
       </a>
     </li>
     <li>
-      <a target="_blank" href="https://discord.gg/nHm2ZwvqC8">
+      <a target="_blank" href="/status">
        
         <i class="fa fa-link"></i>
       </a>
