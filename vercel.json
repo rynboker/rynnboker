@@ -63,7 +63,7 @@
     { "src": "/api/nhentai", "dest": "api/astri9.py" },
     { "src": "/api/nhentaisearch", "dest": "api/astri9.py" },
     { "src": "/api/gimage2", "dest": "api/astri9.py" },
-    { "src": "/api/ouo", "dest": "api/astri9.py" },
+    { "src": "/api/ouobypass", "dest": "api/astri9.py" },
     { "src": "/api/tiktokmusic", "dest": "api/astri9.py" },
     { "src": "/api/tiktoknowm", "dest": "api/astri9.py" },
     { "src": "/api/telestick", "dest": "api/astri9.py" },
