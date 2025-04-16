@@ -666,24 +666,25 @@ def status():
 ];
 
     async function checkStatus() {
-      const list = document.getElementById("api-list");
-      for (const endpoint of apis) {
-        const li = document.createElement("li");
-        li.textContent = `${endpoint} - Checking...`;
-        list.appendChild(li);
+  const list = document.getElementById("api-list");
+  for (const endpoint of apis) {
+    const li = document.createElement("li");
+    const display = endpoint.split("?")[0];
+    li.textContent = `${display} - Checking...`;
+    list.appendChild(li);
 
-        try {
-          const res = await fetch(endpoint, { method: "GET" });
-          if (res.ok) {
-            li.innerHTML = `<a href="${endpoint}" target="_blank">${endpoint}</a> - ✅ Online`;
-          } else {
-            li.innerHTML = `<a href="${endpoint}" target="_blank">${endpoint}</a> - ❌ Error (${res.status})`;
-          }
-        } catch (err) {
-          li.innerHTML = `<a href="${endpoint}" target="_blank">${endpoint}</a> - ❌ Offline`;
-        }
+    try {
+      const res = await fetch(endpoint, { method: "GET" });
+      if (res.ok) {
+        li.innerHTML = `<a href="${endpoint}" target="_blank">${display}</a> - ✅ Online`;
+      } else {
+        li.innerHTML = `<a href="${endpoint}" target="_blank">${display}</a> - ❌ Error (${res.status})`;
       }
+    } catch (err) {
+      li.innerHTML = `<a href="${endpoint}" target="_blank">${display}</a> - ❌ Offline`;
     }
+  }
+}
 
     window.onload = checkStatus;
   </script>
