@@ -608,18 +608,24 @@ def status():
   <title>API Status - siastri.my.id</title>
   <script>
     const apis = [
-      "/api/photo2anime2", "/api/gempa", "/api/gimage", "/api/pinterest", "/api/pinterest2",
-      "/api/gptlogic", "/api/shorturl", "/api/spotify", "/api/threads", "/api/translate",
-      "/api/ttsstalk", "/api/ytsearch", "/api/ytplayvid", "/api/ytplayaud", "/api/otakudesu",
-      "/api/otakudesulatest", "/api/soundcloud", "/api/soundclouddl", "/api/twitter",
-      "/api/twitterstalk", "/api/spotifydl", "/api/weather", "/api/corona/indonesia",
-      "/api/corona/global", "/api/minecraft", "/api/ppcouple", "/api/ytchannel",
-      "/api/youtube/transcript", "/api/musicsearch", "/api/random_neko", "/api/removebg",
+      "/api/photo2anime2", "/api/gempa", "/api/gimage?message=hantu", "/api/pinterest?message=loli%20kawaii", "/api/pinterest2?message=loli%20kawaii",
+      "/api/gptlogic?logic=Generate%20humanized%20chatgpt%20text%20in%20the%20requested%20language%2C%20you%20are%20an%20AI%20assistant%20named%20Ghostie%20Assistant%20and%20you%20are%20made%20by%20Ghostie&p=what's%20your%20name%20and%20who's%20your%20developer 
+", "/api/spotify?message=kugadaikan%20cintaku", "/api/threads?url=https://www.threads.net/@kalekkl/post/C8bhQGPyKEm/?xmt=AQGzc5jjHV_aIKyD-2Y6zHlDCXA6Pv7PEZZnAvMVJx7UJg", "/api/translate?text=halo,%20selamat%20pagi&to=it",
+      "/api/ttsstalk", "/api/ytsearch?message=kugadaikan%20cintaku 
+", "/api/ytplayvid?message=kugadaikan%20cintaku", "/api/ytplayaud?message=kugadaikan%20cintaku", "/api/otakudesu",
+      "/api/otakudesulatest", "/api/soundcloud?message=dhyo%20haw 
+", "/api/soundclouddl?url=https://soundcloud.com/user760526585/dhyo-haw-ada-aku-disini", "/api/twitter?url=https://twitter.com/Eminem/status/943590594491772928",
+      "/api/twitterstalk", "/api/spotifydl?url=https://open.spotify.com/track/2Tp8vm7MZIb1nnx1qEGYv5", "/api/weather?message=new%20york", "/api/corona/indonesia",
+      "/api/corona/global", "/api/minecraft?serverurl=org.mc-complex.com", "/api/ppcouple", "/api/ytchannel?channel=windah%20basudara 
+",
+      "/api/youtube/transcript?url=https://youtu.be/iovpVWXwUwQ?si=2LbISeOVc6I6xWMp", "/api/musicsearch", "/api/random_neko", "/api/removebg",
       "/api/upscale", "/api/bubblechat", "/api/nulis", "/api/welcome", "/api/ktp", "/api/rank",
-      "/api/leave", "/api/qrcode", "/api/diffusion", "/api/wmit", "/api/wait", "/api/nhentai",
-      "/api/nhentaisearch", "/api/gimage2", "/api/ouo", "/api/tiktokmusic", "/api/tiktoknowm",
-      "/api/telestick", "/api/growikibeta", "/api/simi", "/api/instagram", "/api/ocr",
-      "/api/character", "/api/anime", "/api/wiki"
+      "/api/leave", "/api/qrcode", "/api/diffusion", "/api/wmit?img=https://i.pinimg.com/736x/e7/41/e7/e741e7edf1bb992342a46e415a825338.jpg 
+", "/api/wait?img=https://i.ibb.co/qBQ7Xfs/photo-2021-02-14-05-53-10.jpg", "/api/nhentai?code=344253",
+      "/api/nhentaisearch?message=miku
+", "/api/gimage2?message=hantu", "/api/ouo", "/api/tiktokmusic?link=https://vt.tiktok.com/ZSwWCk5o/", "/api/tiktoknowm?link=https://vt.tiktok.com/ZSwWCk5o/",
+      "/api/telestick?link=https://t.me/addstickers/LINE_Menhera_chan_ENG", "/api/growikibeta?item=royal%20enchanted%20lock", "/api/simi?text=halo%20sim", "/api/instagram?url=https://www.instagram.com/p/Cul_Ct3tDGS/", "/api/ocr?img=https://i.ibb.co/rZHMCTS/testing.jpg",
+      "/api/character?message=miku%20nakano", "/api/anime?message=gotoubun%20no%20hanayome", "/api/wiki?message=tahu"
     ];
 
     async function checkStatus() {
