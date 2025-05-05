@@ -326,7 +326,6 @@ def gptlogic():
 # /api/gptnew Endpoint
 @app.route('/api/gptnew', methods=['GET'])
 def gptnew():
-    try:
         text = request.args.get('text')
         session = request.args.get('session')
 
@@ -337,19 +336,36 @@ def gptnew():
                 "error": "Missing parameters 'text' or 'session'."
             }), 400
 
-        api_url = f"https://api.ryzumi.vip/api/ai/chatgpt?text={text}&session={session}"
+    # API eksternal
+    api_url = f"https://api.ryzumi.vip/api/ai/chatgpt?text={text}&session={session}"
+    try:
+        # Ambil data dari API eksternal
         response = requests.get(api_url)
+        response.raise_for_status()
+        external_data = response.json()  # Data dari API agatz
 
-        data = response.json()
-        result = data.get("data", {}).get("result", "No result found.")
+        # Validasi apakah respons berisi data yang diharapkan
+        if "result" not in external_data or not external_data["result"]:
+            return jsonify({
+                "status": 502,
+                "creator": "Astri",
+                "error": "Invalid response from external API."
+            }), 502
 
+        # Kembalikan respons yang sudah sesuai format
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": {
-                "result": result
-            }
+            "data": external_data["result"]  # Gunakan langsung data dari API eksternal
         })
+    
+    except requests.exceptions.RequestException as e:
+        # Tangani error dari API eksternal
+        return jsonify({
+            "status": 503,
+            "creator": "Astri",
+            "error": f"Service is unavailable"
+        }), 503
 
         # Konfigurasi API Weather
 @app.route('/api/pinterest', methods=['GET'])
