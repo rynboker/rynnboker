@@ -22,6 +22,7 @@
     { "src": "/api/pinterest", "dest": "api/astri1.py" },
     { "src": "/api/pinterest2", "dest": "api/astri1.py" },
     { "src": "/api/gptlogic", "dest": "api/astri1.py" },
+    { "src": "/api/gptnew", "dest": "api/astri1.py" },
     { "src": "/api/shorturl", "dest": "api/astri2.py" },
     { "src": "/api/spotify", "dest": "api/astri2.py" },
     { "src": "/api/threads", "dest": "api/astri2.py" },
