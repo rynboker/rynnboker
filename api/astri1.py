@@ -326,24 +326,23 @@ def gptlogic():
 # /api/gptnew Endpoint
 @app.route('/api/gptnew', methods=['GET'])
 def gptnew():
-    try:
-        text = request.args.get('text')
-        session = request.args.get('session')
+    text = request.args.get('text')
+    session = request.args.get('session')
 
-        if not text or not session:
-            return jsonify({
-                "status": 400,
-                "creator": "Astri",
-                "error": "Missing parameters 'text' or 'session'."
-            }), 400
+    if not text or not session:
+        return jsonify({
+            "status": 400,
+            "creator": "Astri",
+            "error": "Missing parameters 'text' or 'session'."
+        }), 400
 
     # API eksternal
     api_url = f"https://api.ryzumi.vip/api/ai/chatgpt?text={text}&session={session}"
     try:
         # Ambil data dari API eksternal
-        response = requests.get(api_url)
+        response = requests.get(api_url, timeout=10)
         response.raise_for_status()
-        external_data = response.json()  # Data dari API agatz
+        external_data = response.json()
 
         # Validasi apakah respons berisi data yang diharapkan
         if "result" not in external_data or not external_data["result"]:
@@ -353,19 +352,19 @@ def gptnew():
                 "error": "Invalid response from external API."
             }), 502
 
-        # Kembalikan respons yang sudah sesuai format
+        # Kembalikan respons sukses
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": external_data["result"]  # Gunakan langsung data dari API eksternal
+            "data": external_data["result"]
         })
-    
-    except requests.exceptions.RequestException as e:
+
+    except requests.exceptions.RequestException:
         # Tangani error dari API eksternal
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": f"Service is unavailable"
+            "error": "Service is unavailable."
         }), 503
 
         # Konfigurasi API Weather
