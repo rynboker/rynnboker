@@ -351,20 +351,6 @@ def gptnew():
             }
         })
 
-    except requests.exceptions.RequestException as e:
-        return jsonify({
-            "status": 503,
-            "creator": "Astri",
-            "error": f"External API request failed"
-        }), 503
-
-    except Exception as e:
-        return jsonify({
-            "status": 500,
-            "creator": "Astri",
-            "error": f"An unexpected error occurred"
-        }), 500
-
         # Konfigurasi API Weather
 @app.route('/api/pinterest', methods=['GET'])
 def pinterest():
