@@ -326,6 +326,7 @@ def gptlogic():
 # /api/gptnew Endpoint
 @app.route('/api/gptnew', methods=['GET'])
 def gptnew():
+    try:
         text = request.args.get('text')
         session = request.args.get('session')
 
