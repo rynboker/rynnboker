@@ -340,13 +340,6 @@ def gptnew():
         api_url = f"https://api.ryzumi.vip/api/ai/chatgpt?text={text}&session={session}"
         response = requests.get(api_url)
 
-        if response.status_code != 200:
-            return jsonify({
-                "status": response.status_code,
-                "creator": "Astri",
-                "error": "External API failed."
-            }), response.status_code
-
         data = response.json()
         result = data.get("data", {}).get("result", "No result found.")
 
