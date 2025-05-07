@@ -343,7 +343,7 @@ def gptnew():
         headers = {
         "User-Agent": "Mozilla/5.0"
         }
-        response = requests.get(api_url, timeout=10)
+        response = requests.get(api_url, headers=headers, timeout=10)
         response.raise_for_status()
 
         # Paksa parsing JSON manual
@@ -371,11 +371,12 @@ def gptnew():
         })
 
     except requests.exceptions.RequestException as e:
-        print("Gagal ambil API eksternal:", str(e))
+        import traceback
+        traceback.print_exc()  # Print error lengkap
         return jsonify({
             "status": 503,
             "creator": "Astri",
-            "error": "Service is unavailable."
+            "error": str(e)  # tampilkan pesan asli
         }), 503
 
         # Konfigurasi API Weather
