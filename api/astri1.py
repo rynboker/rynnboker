@@ -341,8 +341,10 @@ def gptnew():
     
     try:
         headers = {
-        "User-Agent": "Mozilla/5.0"
-        }
+            "User-Agent": "Mozilla/5.0",
+            "Referer": "https://ryzumi.vip",
+            "Accept": "application/json"
+            }
         response = requests.get(api_url, headers=headers, timeout=10)
         response.raise_for_status()
 
