@@ -13,7 +13,7 @@ GMAIL_PASS = 'vgqb pcqs hswo yrfs'   # Ganti dengan password Gmail kamu
 # Menyimpan API key dan webhook Discord yang sesuai
 API_KEYS = {
     'ghost9094': 'https://discord.com/api/webhooks/1353984087156588564/QrThblkHMruq7yt0jZ852SX7Lyc4b9thSpwieETZ-fVn8KSqSSmijuo04NbMz8iDXW3M',  # Ganti dengan webhook URL untuk apikey_1
-    'monyeyitem': 'https://discord.com/api/webhooks/1353999735467278346/EiwefvJokLoPh0AB9VGMrs9gpSqjgoV_45hpJQGqE6b5ojlRixoIJ4islsvhlf9BB0Zo',  # Ganti dengan webhook URL untuk apikey_2
+    'monyeyitem': 'https://discord.com/api/webhooks/1369554337822543892/qhHAKje2SqEzdWrB0xRfkTID1rsrWckVKZff6qjd1Tz6M9YaRKF0cfyvGcYKgRdggiod',  # Ganti dengan webhook URL untuk apikey_2
     'focus2155': 'https://discord.com/api/webhooks/1355556545806733503/i2OP6Kq2A1OsrRqwztk2vDL8kpv4vUAM5hJfZLf-FZot5dJ_EO1k4N14JfwFCheXpLSA',
 }
 
