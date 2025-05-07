@@ -339,8 +339,8 @@ def gptnew():
     # API eksternal
     api_url = f"https://api.ryzumi.vip/api/ai/chatgpt?text={text}&session={session}"
     try:
-    response = requests.get(api_url, timeout=10)
-    response.raise_for_status()
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
     
     # Paksa parsing JSON manual
     import json
