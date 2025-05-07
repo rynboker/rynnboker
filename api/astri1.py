@@ -345,12 +345,13 @@ def gptnew():
         external_data = response.json()
 
         # Validasi apakah respons berisi data yang diharapkan
-        if "result" not in external_data or not external_data["result"]:
-            return jsonify({
-                "status": 502,
-                "creator": "Astri",
-                "error": "Invalid response from external API."
-            }), 502
+        if not external_data.get("success") or "result" not in external_data:
+    return jsonify({
+        "status": 502,
+        "creator": "Astri",
+        "error": "Invalid response from external API."
+    }), 502
+
 
         # Kembalikan respons sukses
         return jsonify({
