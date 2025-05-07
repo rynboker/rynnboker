@@ -340,6 +340,9 @@ def gptnew():
     api_url = f"https://api.ryzumi.vip/api/ai/chatgpt?text={text}&session={session}"
     
     try:
+        headers = {
+        "User-Agent": "Mozilla/5.0"
+        }
         response = requests.get(api_url, timeout=10)
         response.raise_for_status()
 
