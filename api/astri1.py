@@ -359,13 +359,13 @@ def gptnew():
             "data": external_data["result"]
         })
 
-    except requests.exceptions.RequestException:
-        # Tangani error dari API eksternal
-        return jsonify({
-            "status": 503,
-            "creator": "Astri",
-            "error": "Service is unavailable."
-        }), 503
+    except requests.exceptions.RequestException as e:
+    return jsonify({
+        "status": 503,
+        "creator": "Astri",
+        "error": f"Service is unavailable. Details: {str(e)}"
+    }), 503
+
 
         # Konfigurasi API Weather
 @app.route('/api/pinterest', methods=['GET'])
