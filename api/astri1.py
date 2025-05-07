@@ -339,33 +339,42 @@ def gptnew():
     # API eksternal
     api_url = f"https://api.ryzumi.vip/api/ai/chatgpt?text={text}&session={session}"
     try:
-        # Ambil data dari API eksternal
-        response = requests.get(api_url, timeout=10)
-        response.raise_for_status()
-        external_data = response.json()
-
-        # Validasi apakah respons berisi data yang diharapkan
-        if not external_data.get("success") or "result" not in external_data:
-    return jsonify({
-        "status": 502,
-        "creator": "Astri",
-        "error": "Invalid response from external API."
-    }), 502
-
-
-        # Kembalikan respons sukses
+    response = requests.get(api_url, timeout=10)
+    response.raise_for_status()
+    
+    # Paksa parsing JSON manual
+    import json
+    try:
+        external_data = json.loads(response.text)
+    except json.JSONDecodeError:
         return jsonify({
-            "status": 200,
+            "status": 502,
             "creator": "Astri",
-            "data": external_data["result"]
-        })
+            "error": "Failed to parse JSON from external API."
+        }), 502
 
-    except requests.exceptions.RequestException as e:
+    # Validasi isi respons
+    if "result" not in external_data:
+        return jsonify({
+            "status": 502,
+            "creator": "Astri",
+            "error": "Invalid response from external API."
+        }), 502
+
+    return jsonify({
+        "status": 200,
+        "creator": "Astri",
+        "data": external_data["result"]
+    })
+
+except requests.exceptions.RequestException as e:
+    print("Gagal ambil API eksternal:", str(e))
     return jsonify({
         "status": 503,
         "creator": "Astri",
-        "error": f"Service is unavailable. Details: {str(e)}"
+        "error": "Service is unavailable."
     }), 503
+
 
 
         # Konfigurasi API Weather
