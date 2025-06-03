@@ -335,7 +335,7 @@ def gptnew():
         return jsonify({
             "status": 400,
             "creator": "Astri",
-            "error": "Missing parameters 'text' or 'session_id' or 'logic'."
+            "error": "Missing parameters."
         }), 400
 
     api_url = f"http://47.85.106.16:8080/api/gptlogic?p={text}&session_id={session_id}&logic={logic}"
