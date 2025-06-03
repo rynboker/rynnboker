@@ -337,7 +337,7 @@ def gptnew():
             "error": "Missing parameters 'text' or 'session'."
         }), 400
 
-    api_url = f"https://api.ryzumi.vip/api/ai/chatgpt?text={text}&session={session}"
+    api_url = f"http://172.25.195.17:8080/api/chatgpt?text={text}&session={session}"
     
     try:
         headers = {
