@@ -325,8 +325,8 @@ def gptlogic():
             "error": f"An unexpected error occurred"
         }), 500
 
-@app.route('/api/gptnew', methods=['GET'])
-def gptnew():
+@app.route('/api/gptlogicv2', methods=['GET'])
+def gptlogicv2():
     try:
         text = request.args.get('text')
         session_id = request.args.get('session_id')
