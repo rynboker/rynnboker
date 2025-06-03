@@ -328,16 +328,17 @@ def gptlogic():
 @app.route('/api/gptnew', methods=['GET'])
 def gptnew():
     text = request.args.get('text')
-    session = request.args.get('session')
+    session_id = request.args.get('session_id')
+    logic = request.args.get('logic')
 
-    if not text or not session:
+    if not text or not sessionor not session:
         return jsonify({
             "status": 400,
             "creator": "Astri",
-            "error": "Missing parameters 'text' or 'session'."
+            "error": "Missing parameters 'text' or 'session_id' or 'logic'."
         }), 400
 
-    api_url = f"http://47.85106.16:8080/api/chatgpt?text={text}&session={session}"
+    api_url = f"http://47.85.106.16:8080/api/gptlogic?p={text}&session_id={session_id}&logic={logic}"
     
     try:
         response = requests.get(api_url, headers=headers, timeout=10)
