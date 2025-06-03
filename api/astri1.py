@@ -331,7 +331,7 @@ def gptnew():
     session_id = request.args.get('session_id')
     logic = request.args.get('logic')
 
-    if not text or not sessionor not session:
+    if not text or not session or not logic:
         return jsonify({
             "status": 400,
             "creator": "Astri",
