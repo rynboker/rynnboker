@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify, send_from_directory
 from io import BytesIO
 from pathlib import Path
 from PIL import Image
+import traceback
 
 app = Flask(__name__)
 
@@ -324,59 +325,60 @@ def gptlogic():
             "error": f"An unexpected error occurred"
         }), 500
 
-# /api/gptnew Endpoint
 @app.route('/api/gptnew', methods=['GET'])
 def gptnew():
     try:
         text = request.args.get('text')
         session_id = request.args.get('session_id')
         logic = request.args.get('logic')
-    
+
         if not text or not session_id or not logic:
             return jsonify({
                 "status": 400,
                 "creator": "Astri",
                 "error": "Missing parameters."
             }), 400
-    
-        api_url = f"http://47.85.106.16:8080/api/gptlogic?p={text}&session_id={session_id}&logic={logic}"
-        
-        try:
-            response = requests.get(api_url, headers=headers, timeout=10)
-            response.raise_for_status()
-    
-            # Paksa parsing JSON manual
-            try:
-                external_data = json.loads(response.text)
-            except json.JSONDecodeError:
-                return jsonify({
-                    "status": 502,
-                    "creator": "Astri",
-                    "error": "Failed to parse JSON from external API."
-                }), 502
-    
-            # Validasi isi respons
-            if "result" not in external_data:
-                return jsonify({
-                    "status": 502,
-                    "creator": "Astri",
-                    "error": "Invalid response from external API."
-                }), 502
-    
-            return jsonify({
-                "status": 200,
-                "creator": "Astri",
-                "data": external_data["result"]
-            })
 
-    except requests.exceptions.RequestException as e:
-        import traceback
-        traceback.print_exc()  # Print error lengkap
+        api_url = f"http://47.85.106.16:8080/api/gptlogic?p={text}&session_id={session_id}&logic={logic}"
+
+        # Header default
+        headers = {
+            "User-Agent": "AstriGPT/1.0"
+        }
+
+        response = requests.get(api_url, headers=headers, timeout=10)
+        response.raise_for_status()
+
+        # Coba parse JSON
+        try:
+            external_data = response.json()
+        except json.JSONDecodeError:
+            return jsonify({
+                "status": 502,
+                "creator": "Astri",
+                "error": "Failed to parse JSON from external API."
+            }), 502
+
+        if "result" not in external_data:
+            return jsonify({
+                "status": 502,
+                "creator": "Astri",
+                "error": "Invalid response from external API."
+            }), 502
+
         return jsonify({
-            "status": 503,
+            "status": 200,
             "creator": "Astri",
-            "error": str(e)  # tampilkan pesan asli
-        }), 503
+            "data": external_data["result"]
+        })
+
+    except Exception as e:
+        traceback.print_exc()
+        return jsonify({
+            "status": 500,
+            "creator": "Astri",
+            "error": str(e)
+        }), 500
 
         # Konfigurasi API Weather
 @app.route('/api/pinterest', methods=['GET'])
