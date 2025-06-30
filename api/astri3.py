@@ -727,7 +727,7 @@ li span {
   function(a){var a=a.toLowerCase(),b=this.all_shortcuts[a];delete this.all_shortcuts[a];if(b){var a=b.event,c=b.target,b=b.callback;
   c.detachEvent?c.detachEvent("on"+a,b):c.removeEventListener?c.removeEventListener(a,b,!1):c["on"+a]=!1}}},shortcut.add("Ctrl+U",function(){top.location.href="http://sahretech.com"});
 </script>
-
+<script type='text/javascript'>
 (function () {
   const second = 1000,
         minute = second * 60,
@@ -771,7 +771,7 @@ li span {
         //seconds
       }, 0)
   }());
-
+</script>
 </html>
     """
     return render_template_string(html)
