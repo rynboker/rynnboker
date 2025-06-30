@@ -693,7 +693,7 @@ li span {
 <body oncontextmenu='return false;' onkeydown='return false;' onmousedown='return false;' ondragstart='return false' onselectstart='return false' style='-moz-user-select: none; cursor: default;'>
 
 <div class="container">
-  <h1 id="headline">Countdowny</h1>
+  <h1 id="headline">Countdown Danil Kentod</h1>
   <div id="countdown">
     <ul>
       <li><span id="days"></span>days</li>
