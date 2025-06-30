@@ -599,7 +599,7 @@ p {
     return render_template_string(html)
 
 @app.route("/countdown/negro/gw/reset/premium/lu/anjing")
-def youga():
+def countdown():
     html = """
 <!DOCTYPE html>
 <html lang="en" >
