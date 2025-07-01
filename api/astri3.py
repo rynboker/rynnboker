@@ -605,7 +605,7 @@ def countdown():
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Countdown my Nigga</title>
+  <title>Countdown by Astri</title>
 <style>
 
 /* general styling */
@@ -693,7 +693,7 @@ li span {
 <body oncontextmenu='return false;' onkeydown='return false;' onmousedown='return false;' ondragstart='return false' onselectstart='return false' style='-moz-user-select: none; cursor: default;'>
 
 <div class="container">
-  <h1 id="headline">Countdown Danil Kentod</h1>
+  <h1 id="headline">Countdown Akmal Baik</h1>
   <div id="countdown">
     <ul>
       <li><span id="days"></span>days</li>
@@ -741,7 +741,7 @@ li span {
       mm = String(today.getMonth() + 1).padStart(2, "0"),
       yyyy = today.getFullYear(),
       nextYear = yyyy,
-      dayMonth = "07/01/",
+      dayMonth = "15/01/",
       birthday = dayMonth + yyyy;
   
   today = mm + "/" + dd + "/" + yyyy;
