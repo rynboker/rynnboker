@@ -15,7 +15,7 @@
   "routes": [
     { "src": "/", "dest": "api/astri2.py" },
     { "src": "/status", "dest": "api/astri3.py" },
-    { "src": "/countdown/negro/gw/reset/premium/lu/anjing", "dest": "api/astri3.py" },
+    { "src": "/menghitung/mundur/akmal/memberikan/daget/15-juta-rupiah", "dest": "api/astri3.py" },
     { "src": "/youga", "dest": "api/astri3.py" },
     { "src": "/api/photo2anime2", "dest": "api/astri1.py" },
     { "src": "/api/gempa", "dest": "api/astri1.py" },
