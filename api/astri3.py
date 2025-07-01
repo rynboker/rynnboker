@@ -598,7 +598,7 @@ p {
     """
     return render_template_string(html)
 
-@app.route("/countdown/negro/gw/reset/premium/lu/anjing")
+@app.route("/menghitung/mundur/akmal/memberikan/daget/15-juta-rupiah")
 def countdown():
     html = """
 <!DOCTYPE html>
