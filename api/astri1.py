@@ -341,7 +341,6 @@ def gptlogicv2():
 
         api_url = f"http://47.251.160.95:8000/api/gptlogic-history?user_id={session_id}&logic={logic}&p={text}"
 
-        # Header default
         headers = {
             "User-Agent": "AstriGPT/1.0"
         }
@@ -349,7 +348,6 @@ def gptlogicv2():
         response = requests.get(api_url, headers=headers, timeout=10)
         response.raise_for_status()
 
-        # Coba parse JSON
         try:
             external_data = response.json()
         except json.JSONDecodeError:
@@ -362,7 +360,7 @@ def gptlogicv2():
         return jsonify({
             "status": 200,
             "creator": "Astri",
-            "data": external_data["result"]
+            "data": external_data.get("data", {}).get("result", "")
         })
 
     except Exception as e:
