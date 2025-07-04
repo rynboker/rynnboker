@@ -290,7 +290,7 @@ def gptlogic():
                 "error": "Missing parameters 'logic' or 'p'."
             }), 400
 
-        api_url = f"https://api.agatz.xyz/api/gptlogic?logic={logic}&p={p}"
+        api_url = f"https://47.251.160.95:8000/api/gptlogic?logic={logic}&p={p}"
         response = requests.get(api_url)
 
         if response.status_code != 200:
@@ -339,7 +339,7 @@ def gptlogicv2():
                 "error": "Missing parameters."
             }), 400
 
-        api_url = f"http://47.85.106.16:8080/api/gptlogic?p={text}&session_id={session_id}&logic={logic}"
+        api_url = f"https://47.251.160.95:8000/api/gptlogic?p={text}&session_id={session_id}&logic={logic}"
 
         # Header default
         headers = {
