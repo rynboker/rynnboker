@@ -339,7 +339,7 @@ def gptlogicv2():
                 "error": "Missing parameters."
             }), 400
 
-        api_url = f"http://47.251.160.95:8000/api/gptlogic-history?p={text}&user_id={session_id}&logic={logic}"
+        api_url = f"http://47.251.160.95:8000/api/gptlogic-history?user_id={session_id}&logic={logic}&p={text}"
 
         # Header default
         headers = {
