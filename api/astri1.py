@@ -359,13 +359,6 @@ def gptlogicv2():
                 "error": "Failed to parse JSON from external API."
             }), 502
 
-        if "result" not in external_data:
-            return jsonify({
-                "status": 502,
-                "creator": "Astri",
-                "error": "Invalid response from external API."
-            }), 502
-
         return jsonify({
             "status": 200,
             "creator": "Astri",
