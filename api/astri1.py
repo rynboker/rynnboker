@@ -325,7 +325,7 @@ def gptlogic():
             "error": f"An unexpected error occurred"
         }), 500
 
-@app.route('/api/gptlogicv2', methods=['GET'])
+@app.route('/api/gptlogic-logic-lol-lmao', methods=['GET'])
 def gptlogicv2():
     try:
         text = request.args.get('text')
@@ -339,7 +339,7 @@ def gptlogicv2():
                 "error": "Missing parameters."
             }), 400
 
-        api_url = f"http://47.251.160.95:8000/api/gptlogic?p={text}&session_id={session_id}&logic={logic}"
+        api_url = f"http://47.251.160.95:8000/api/gptlogic-history?p={text}&user_id={session_id}&logic={logic}"
 
         # Header default
         headers = {
