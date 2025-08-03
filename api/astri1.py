@@ -290,7 +290,7 @@ def gptlogic():
                 "error": "Missing parameters 'logic' or 'p'."
             }), 400
 
-        api_url = f"http://47.251.160.95:8000/api/gptlogic?logic={logic}&p={p}"
+        api_url = f"http://47.88.58.240:8000/api/gptlogic?logic={logic}&p={p}"
         response = requests.get(api_url)
 
         if response.status_code != 200:
@@ -325,7 +325,7 @@ def gptlogic():
             "error": f"An unexpected error occurred"
         }), 500
 
-@app.route('/api/gptlogic-logic-lol-lmao', methods=['GET'])
+@app.route('/api/gptlogic2', methods=['GET'])
 def gptlogicv2():
     try:
         text = request.args.get('text')
@@ -339,7 +339,7 @@ def gptlogicv2():
                 "error": "Missing parameters."
             }), 400
 
-        api_url = f"http://47.251.160.95:8000/api/gptlogic-history?user_id={session_id}&logic={logic}&p={text}"
+        api_url = f"http://47.88.58.240:8000/api/gptlogic-history?user_id={session_id}&logic={logic}&p={text}"
 
         headers = {
             "User-Agent": "AstriGPT/1.0"
