@@ -556,12 +556,12 @@ p {
 
     <!-- the username -->
     <h1>
-            Putri Amelia
+            Riyan Saputra 
           </h1>
 
     <!-- and role or location -->
     <h2>
-            A.D.I Family
+            the power ranger
           </h2>
 
   </header>
@@ -570,7 +570,7 @@ p {
   <div class="profile-bio">
 
     <p>
-      My name is Putri Amelia, you can call me Lia. I was born in Bandung, Indonesia. I'm 24 years old and still in collage. This is an API website, you can join my discord server.
+      My name is Riyan Saputra, you can call me ryn. I was born in Jakarta, Indonesia. I'm 18 years old and still in.
     </p>
 
   </div>
@@ -578,22 +578,22 @@ p {
   <!-- some social links to show off -->
   <ul class="profile-social-links">
     <li>
-      <a target="_blank" href="https://github.com/nomel2837">
-        <i class="fab fa-github"></i>
+      <a target="_blank" href="https://wa.me/6289601819298">
+        <i class="fa fa-whatsapp"></i>
       </a>
     </li>
     <li>
-      <a target="_blank" href="https://discord.com/users/826098988725829662">
-        <i class="fab fa-discord discord-icon"></i>
+      <a target="_blank" href="https://tiktok.com/@_rynnprojeck">
+        <i class="fa-brands fa-tiktok"></i>
       </a>
     </li>
     <li>
-      <a target="_blank" href="https://instagram.com/_matchaamel">
+      <a target="_blank" href="https://www.instagram.com/999rynnnnn?igsh=MTU5dDlpZWZtMHBneA==">
         <i class="fab fa-instagram"></i>
       </a>
     </li>
     <li>
-      <a target="_blank" href="/status">
+      <a target="_blank" href="/">
        
         <i class="fa fa-link"></i>
       </a>
