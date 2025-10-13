@@ -482,9 +482,38 @@ body {
   body {
     background-size: cover;
   }
-  body:before {
-    width: 0px;
+  body {
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* penuh tinggi layar */
+  width: 100vw;  /* penuh lebar layar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000; /* warna latar */
+}
+
+/* Efek pada kartu */
+.kartu-profil {
+  transform: scale(1.3);
+  transition: transform 0.3s ease;
+}
+
+.kartu-profil:hover {
+  transform: scale(1.4);
+}
+
+/* Efek animasi (lanjut di bawah sini) */
+@-webkit-keyframes ripple {
+  0% {
+    transform: scale3d(0, 0, 0);
   }
+  50%, 100% {
+    -webkit-transform: scale3d(1, 1, 1);
+  }
+}
+
+/* dst... (lanjut animasi lain atau @media) */
   @ -webkit-keyframes puff {
     0% {
       top: 100%;
