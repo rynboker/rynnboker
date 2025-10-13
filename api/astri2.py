@@ -433,7 +433,25 @@ p {
     transform: scale(1);
   }
 }
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* penuh tinggi layar */
+  width: 100vw;  /* penuh lebar layar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000; /* bisa ubah warna sesuai selera */
+}
 
+.kartu-profil {
+  transform: scale(1.3); /* biar lebih besar */
+  transition: transform 0.3s ease;
+}
+
+.kartu-profil:hover {
+  transform: scale(1.4);
+}
 @-webkit-keyframes ripple {
   0% {
     transform: scale3d(0, 0, 0);
