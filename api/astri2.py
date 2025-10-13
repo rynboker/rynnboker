@@ -624,11 +624,7 @@ p {
     """
     return Response(html, mimetype='text/html')
 
-  @app.route("/")
-def index():
-    html = """
-     """
-    return Response(html, mimetype='text/html')   
+   
         
 if __name__ == "__main__":
     app.run(debug=True)
