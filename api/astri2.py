@@ -37,7 +37,7 @@ def index():
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>Putri Amelia</title>
+  <title>Hi Riyan</title>
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
   <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'>
