@@ -551,7 +551,7 @@ p {
   <header>
     <!-- here’s the avatar -->
     <a target="_blank" href="https://discord.gg/nHm2ZwvqC8">
-      <img src="https://i.ibb.co.com/QjzwR9bK/kCL8Q7.jpg" class="hoverZoomLink">
+      <img src="https://i.imgur.com/oirgLVj.jpeg" class="hoverZoomLink">
     </a>
 
     <!-- the username -->
