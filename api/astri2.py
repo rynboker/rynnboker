@@ -550,7 +550,7 @@ p {
 <aside class="profile-card">
   <header>
     <!-- here’s the avatar -->
-    <a target="_blank" href="https://discord.gg/nHm2ZwvqC8">
+    <a target="_blank" href="https://www.instagram.com/archive.rynnn?igsh=MWlod3U0bjRibXJ1aA==">
       <img src="https://i.imgur.com/oirgLVj.jpeg" class="hoverZoomLink">
     </a>
 
