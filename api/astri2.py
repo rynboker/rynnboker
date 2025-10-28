@@ -608,7 +608,7 @@ body {
 
     <!-- and role or location -->
     <h2>
-            the power ranger
+            my singel era
           </h2>
 
   </header>
@@ -617,7 +617,7 @@ body {
   <div class="profile-bio">
 
     <p>
-      My name is Riyan Saputra, you can call me ryn. I was born in Jakarta, Indonesia. I'm 18 years old and still in high school .
+      My name is Riyan Saputra, you can call me iyan. I was born in Jakarta, Indonesia. I'm 18 years old and still in high school .
     </p>
 
   </div>
