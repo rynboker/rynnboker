@@ -635,7 +635,7 @@ body {
       </a>
     </li>
     <li>
-      <a target="_blank" href="https://www.instagram.com/999rynnnnn?igsh=MTU5dDlpZWZtMHBneA==">
+      <a target="_blank" href="https://www.instagram.com/aboutrynn10?igsh=MTU5dDlpZWZtMHBneA==">
         <i class="fab fa-instagram"></i>
       </a>
     </li>
